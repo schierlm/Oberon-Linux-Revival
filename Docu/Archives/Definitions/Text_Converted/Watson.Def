@@ -1,0 +1,40 @@
+DEFINITION Watson;	(* portable *)	(* PS/tk  *)
+
+	IMPORT
+		Texts;
+
+		(* valid options are:
+			i: force output of comments to italic (only for mod file)
+			p: force output to Fonts.Default font (only for mod file)
+
+			d: show detail information (entry number, offset, key, etc) (only for symbol & object files)
+			x: expand type (only for symbol file)
+
+			following letters define lookup order of source files	(left most = most desired)
+			D: definiton file
+			M: module file
+			S: symbol file
+			C: commands
+			T: Tutorial
+		*)
+	PROCEDURE MakeDef (VAR mod: ARRAY OF CHAR; T: Texts.Text);
+
+	(* command called by document's menu button 'Back' *)
+	PROCEDURE Back;	(* param:  none *)
+
+	(* command called by control-gadegets in the generated def-texts (can only be used by Watson) *)
+	PROCEDURE Goto;	(* param:  object-name *)
+
+	(* user command to get best information about the given module *)
+	PROCEDURE ShowDef;	(* param: ["\"options] mod *)
+
+	(* user command to get best information about the given object in the specified module *)
+	PROCEDURE ShowObj;	(* param: ["\"options] mod.obj *)
+	PROCEDURE LookupObj;
+
+	(* user command to make definition files of given modules (if 'c' in options -> converts defs to HTML docs) *)
+	PROCEDURE MakeDefs;	(* param: ["\"options] mods *)
+
+	(* user command to convert definition files to HTML documents *)
+	PROCEDURE ConvertDefs;	(* param: ["\"options] defs *)
+END Watson.

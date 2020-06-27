@@ -1,0 +1,18 @@
+DEFINITION Curves;	(* portable *)
+
+	IMPORT Graphics;
+
+	TYPE
+		Curve = POINTER TO CurveDesc;
+		CurveDesc = RECORD ( Graphics.ObjectDesc ) 
+			kind, lw: INTEGER
+		END;
+
+	VAR 
+		method: Graphics.Method;
+	PROCEDURE New;
+	PROCEDURE MakeLine;
+	PROCEDURE MakeCircle;
+	PROCEDURE MakeEllipse;
+
+END Curves.

@@ -1,0 +1,84 @@
+DEFINITION Lists; (* portable *)
+
+(*Implementation of scrollable lists.
+*)
+	IMPORT Objects, Gadgets, Texts;
+
+	TYPE
+		Item = POINTER TO ItemDesc;
+		ItemDesc = RECORD
+			sel: BOOLEAN;	(* Is the list item selected ? *)
+			s: ARRAY 64 OF CHAR;	(* Item value. *)
+			prev, next: Item;
+		END;
+
+		List = POINTER TO ListDesc;
+		ListDesc = RECORD ( Gadgets.FrameDesc ) 
+			items, last: Item;	(* First and last element of list of items. *)
+			beg: Item;	(* First item displayed in list. *)
+			pointed: Item;	(* Item pointed at last with the middle mouse button. *)
+			time: LONGINT;	(* Selection time. *)
+			focus: BOOLEAN;	(* Is the list focused ? *)
+			sorted: BOOLEAN;	(* Are list entries sorted ? *)
+			noitems: INTEGER;	(* Number of entries in the list. *)
+			cmd: ARRAY 64 OF CHAR;	(* Cmd command attribute. *)
+			scrollbar: BOOLEAN;	(* Does the list have a scrollbar ? *)
+		END;
+
+(* Insert an item into the list. Entry comes at the end if the list is unsorted. *)
+	PROCEDURE InsertItem (F: List; s: ARRAY OF CHAR);
+
+(* Inserts the stretch [beg, end) of text T into the list as entries. *)
+	PROCEDURE InsertItems (F: List; T: Texts.Text; beg, end: LONGINT);
+	PROCEDURE CopyList (VAR M: Objects.CopyMsg; from, to: List);
+
+(* Deselect all entries in the list. redraw indicates if the list has to be redrawn (only set if items were selected). *)
+	PROCEDURE DeselectList (F: List; VAR redraw: BOOLEAN);
+
+(* Delete all selected entries the list. *)
+	PROCEDURE DeleteSelection (F: List);
+
+(* Returns all selected entries as a text. Entries that contain spaces are quoted. *)
+	PROCEDURE GetSelection (F: List; VAR T: Texts.Text);
+	PROCEDURE ListHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitList (F: List);
+	PROCEDURE NewList;
+
+(* Used in the form:
+
+	Lists.Directory "<pattern>" <Objname> ~
+	
+Determines all the filenames that match pattern and inserts them into the list named <Objname> in the current context.
+*)
+	PROCEDURE Directory;
+
+(* Used in the form:
+
+	Lists.Library <Libname> <ObjName>
+	
+Inserts a list of all object names in <Libname> into the list named <ObjName> in the current context. <Libname> must not include the ".Lib" extension.
+*)
+	PROCEDURE Library;
+END Lists.
+
+(* Remarks:
+
+1. Here is some code that illustrates how to insert items into a list. Note that you have to update F.beg to the start of the items you want to show. F.bar.pos says where the scroll bar must be positioned.
+
+	PROCEDURE InsertItems(F: List; T: Texts.Text; beg, end: LONGINT);
+	VAR S: Attributes.Scanner;
+	BEGIN
+		Attributes.OpenScanner(S, T, beg);
+		Attributes.Scan(S);
+		WHILE (S.class = Attributes.Name) OR (S.class = Attributes.String) DO
+			InsertItem(F, S.s);
+			IF (S.R.text = T) & (Attributes.Pos(S.R) >= end) THEN (* base text + beyond end of selection *)
+				S.class := Attributes.Inval
+			ELSE Attributes.Scan(S)
+			END
+		END;
+		F.beg := F.items; F.bar.pos := 0;
+		Gadgets.Update(F);
+	END InsertItems;
+
+*)

@@ -1,0 +1,7 @@
+DEFINITION BookCompiler;	(* portable *)
+	PROCEDURE Compile;
+	PROCEDURE NewTextDoc;
+	PROCEDURE Browse;
+	PROCEDURE InsertCmd;
+
+END BookCompiler.

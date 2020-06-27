@@ -1,0 +1,13 @@
+DEFINITION MenuViewers;	(* portable *)
+
+	IMPORT Objects, Display, Viewers;
+
+	TYPE
+		Viewer = POINTER TO ViewerDesc;
+		ViewerDesc = RECORD ( Viewers.ViewerDesc ) 
+			menuH: INTEGER
+		END;
+	PROCEDURE Handle (V: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE GetName (V: Viewer; VAR name: ARRAY OF CHAR);
+	PROCEDURE New (Menu, Main: Display.Frame; menuH, X, Y: INTEGER): Viewer;
+END MenuViewers.

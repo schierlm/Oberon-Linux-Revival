@@ -1,0 +1,17 @@
+{% (PAR 2) (FONT Oberon20b.Scn.Fnt) (COL 6) (LEAD 2)
+{% (COL 4) Slide Show %} %\ %\
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt2.Pict))) 1 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt3.Pict))) 2 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt5.Pict))) 3 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt6.Pict))) 4 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt7.Pict))) 5 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt9.Pict))) 6 %} 
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt10.Pict))) 7 %}
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt11.Pict))) 8 %}
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt12.Pict))) 9 %} %\
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt13.Pict))) 10 %} %\
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt14.Pict))) 11 %} %\
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt15.Pict))) 12 %} %\
+{% (COM PowerDoc.Replace P4 (FRAME P4 (BG Egypt16.Pict))) 13 %} %\
+
+

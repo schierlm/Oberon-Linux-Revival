@@ -1,0 +1,16 @@
+DEFINITION TextMail;	(* portable *)
+
+	VAR 
+		res: INTEGER;
+	PROCEDURE Directory;
+	PROCEDURE Delete;
+	PROCEDURE DeleteAll;
+	PROCEDURE Show;
+	PROCEDURE GetAll;
+	PROCEDURE Store;
+	PROCEDURE Search;
+	PROCEDURE Open;
+	PROCEDURE Send;
+	PROCEDURE Cite;
+
+END TextMail.

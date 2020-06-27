@@ -1,0 +1,114 @@
+DEFINITION Zip;	(* Stefan Walthert  *)
+
+	IMPORT
+		Files, ZlibWriters;
+
+	CONST
+
+	(* result codes *)
+		Ok = 0;	(* operation on zip-file was successful *)
+		FileError = -1;	(* file not found *)
+		NotZipArchiveError = -2;	(* file is not in zip format *)
+		EntryNotFound = -3;	(* specified file was not found in zip-file *)
+		EntryAlreadyExists = -4;	(* file is already stored in zip-file -> can not add specified file to zip-file *)
+		NotSupportedError = -5;	(* can not extract specified file (compression method not supported/file is encrypted) *)
+		DataError = -6;	(* file is corrupted *)
+		BadName = -7;	(* bad file name *)
+		ReaderError = -8;	(* e.g. Reader not opened before Read *)
+
+	(* compression levels *)
+		DefaultCompression = ZlibWriters.DefaultCompression;
+		NoCompression = ZlibWriters.NoCompression;
+		BestSpeed = ZlibWriters.BestSpeed;
+		BestCompression = ZlibWriters.BestCompression;
+
+	(* compression strategies *)
+		DefaultStrategy = ZlibWriters.DefaultStrategy;
+		Filtered = ZlibWriters.Filtered;
+		HuffmanOnly = ZlibWriters.HuffmanOnly;
+
+	TYPE
+		Entry = POINTER TO EntryDesc;	(* description of a file stored in the zip-archive *)
+		EntryDesc = RECORD
+			name-: ARRAY 256 OF CHAR;	(* name of file stored in the zip-archive *)
+			time-, date-: LONGINT;	(* (Oberon) time and date when file was last modified *)
+			compSize-, uncompSize-: LONGINT;	(* size of compressed / uncompressed file *)
+			comment-: POINTER TO ARRAY OF CHAR;	(* comment for this file *)
+		END;
+
+		Archive = POINTER TO ArchiveDesc;	(* description of a zipfile *)
+		ArchiveDesc = RECORD
+			nofEntries-: INTEGER;	(* total number of files stored in the zipfile *)
+			comment-: POINTER TO ARRAY OF CHAR;	(* comment for zipfile *)
+		END;
+
+		Reader = POINTER TO ReaderDesc;
+		ReaderDesc = RECORD	(* structure for reading from a zip-file into a buffer *)
+			res-: LONGINT;	(* result of last operation *)
+		END;
+
+(* Returns an Archive data structure corresponding to the specified zipfile;
+	possible results: 
+	- Ok: operation was successful
+	- FileError: file with specified name does not exist
+	- NotZipArchiveError: file is not a correct zipfile *)
+	PROCEDURE OpenArchive (name: ARRAY OF CHAR; VAR res: LONGINT): Archive;
+
+(* Returns an Archive that corresponds to a file with specified name;
+	if there is already a zip-file with the same name, this already existing archive is returned;
+	possible results: cf. OpenArchive *)
+	PROCEDURE CreateArchive (VAR name: ARRAY OF CHAR; VAR res: LONGINT): Archive;
+
+(* Returns the first entry of the Archive arc (NIL if there is no Entry) *)
+	PROCEDURE FirstEntry (arc: Archive): Entry;
+
+(* Returns the next Entry after ent *)
+	PROCEDURE NextEntry (ent: Entry): Entry;
+
+(* Returns the Entry that corresponds to the file with the specified name and that is stored in the Archive arc;
+	possible results:
+	- Ok: Operation was successful
+	- NotZipArchiveError: arc is not a valid Archive
+	- EntryNotFound: no Entry corresponding to name was found *)
+	PROCEDURE GetEntry (arc: Archive; VAR name: ARRAY OF CHAR; VAR res: LONGINT): Entry;
+
+(* Uncompresses and writes the data of Entry ent to Files.Rider dst;
+	possible results:
+	- Ok: Data extracted
+	- NotZipArchiveError: arc is not a valid zip-archive
+	- EntryNotFound: ent is not an Entry of arc
+	- NotSupportedError: data of ent are encrypted or compression method is not supported
+	- DataError: zipfile is corrupted
+	- BadName: entry has a bad file name *)
+	PROCEDURE ExtractEntry (arc: Archive; ent: Entry; VAR dst: Files.Rider; VAR res: LONGINT);
+
+(* Reads and compresses len bytes from Files.Rider src with specified level and strategy 
+	and writes them to a new Entry in the Archive arc;
+	possible results:
+	- Ok: file was added to arc
+	- NotZipArchiveError: arc is not a valid zip-archive
+	- EntryAlreadyExists: there is already an Entry in arc with the same name
+	- DataError: error during compression
+	- BadName: src is not based on a valid file *)
+	PROCEDURE AddEntry (arc: Archive; VAR name: ARRAY OF CHAR; VAR src: Files.Rider; len: LONGINT; level, strategy: SHORTINT; VAR res: LONGINT);
+
+(* Deletes Entry ent from Archive arc;
+	Possible results:
+	- Ok: ent was deleted, ent is set to NIL
+	- NotZipArchiveError: arc is not a valid zip-archive
+	- EntryNotFound: ent is not an Entry of Archive arc *)
+	PROCEDURE DeleteEntry (arc: Archive; VAR ent: Entry; VAR res: LONGINT);
+
+(* open a Reader to read uncompressed data from a zip entry directly to memory *)
+	PROCEDURE OpenReader (arc: Archive; ent: Entry): Reader;
+
+(* read len bytes of uncompressed data into buf[offset] and return number of bytes actually read; Reader must be opened *)
+	PROCEDURE ReadBytes (r: Reader; VAR buf: ARRAY OF CHAR; offset, len: LONGINT; VAR read: LONGINT);
+
+(* read decompressed byte *)
+	PROCEDURE Read (r: Reader; VAR ch: CHAR);
+
+(* close Reader *)
+	PROCEDURE Close (r: Reader);
+
+END Zip.

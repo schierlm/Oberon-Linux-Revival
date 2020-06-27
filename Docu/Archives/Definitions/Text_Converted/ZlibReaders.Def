@@ -1,0 +1,35 @@
+DEFINITION ZlibReaders;	(* Stefan Walthert  *)
+
+	IMPORT
+		Files, ZlibInflate;
+
+	CONST
+	(* result codes *)
+		Ok = ZlibInflate.Ok; StreamEnd = ZlibInflate.StreamEnd;
+		FileError = -1; StreamError = ZlibInflate.StreamError; DataError = ZlibInflate.DataError; BufError = ZlibInflate.BufError;
+
+	TYPE
+	(* structure for reading from a file with deflated data *)
+		Reader = RECORD
+			res-: LONGINT;	(* current stream state *)
+			crc32-: LONGINT;
+			wrapper-: BOOLEAN;	(* if set, a zlib header and a checksum are present *)
+		END;
+
+(* open reader on a Rider for input; is wrapper is not set, no zlib header and no checksum are present *)
+	PROCEDURE Open (VAR r: Reader; wrapper: BOOLEAN; VAR fr: Files.Rider);
+
+(* read specified number of bytes into buffer and return number of bytes actually read *)
+	PROCEDURE ReadBytes (VAR r: Reader; VAR buf: ARRAY OF CHAR; offset, len: LONGINT; VAR read: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 <= len) & (offset + len <= LEN(buf)) *)
+
+(* read decompressed byte *)
+	PROCEDURE Read (VAR r: Reader; VAR ch: CHAR);
+
+(* close reader *)
+	PROCEDURE Close (VAR r: Reader);
+
+(* uncompress deflated data from scr and write them to dst *)
+	PROCEDURE Uncompress (VAR src, dst: Files.Rider; VAR crc32: LONGINT; VAR res: LONGINT);
+
+END ZlibReaders.

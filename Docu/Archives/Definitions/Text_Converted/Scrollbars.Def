@@ -1,0 +1,26 @@
+DEFINITION Scrollbars;	(* portable *)		(* ps (based on sources of rv and Effects),  *)
+
+	IMPORT
+		Objects, Gadgets;
+
+	CONST
+
+		(* frame states *)
+		hasarrows = 0;
+		dodrag = 1;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			state0: SET;
+			backC: INTEGER;
+			min, max, step, val: LONGINT;
+			stepO, minO, maxO: Objects.Object;
+			vertical: BOOLEAN
+		END;
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame);
+	PROCEDURE New;
+
+END Scrollbars.

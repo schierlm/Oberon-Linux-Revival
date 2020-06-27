@@ -1,0 +1,74 @@
+DEFINITION Books0;	(* portable *)
+
+	IMPORT Texts, Objects, Gadgets;
+
+	CONST
+		none = 0;
+		nameLen = 128;
+		identLen = 32;
+		node = 0; leaf = 1;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		LocFrame = POINTER TO LocFrameDesc;
+		ExtFrame = POINTER TO ExtFrameDesc;
+		ExtLabel = POINTER TO ExtLabelDesc;
+		ImpList = POINTER TO ImpListDesc;
+		TextList = POINTER TO TextListDesc;
+		ContElem = POINTER TO ContElemDesc;
+		Bar = POINTER TO BarDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			mode: SHORTINT
+		END;
+
+		LocFrameDesc = RECORD ( FrameDesc ) 
+			pos1, pos2: LONGINT
+		END;
+
+		ExtFrameDesc = RECORD ( FrameDesc ) 
+			imp: ExtLabel
+		END;
+
+		ImpListDesc = RECORD
+			name: ARRAY nameLen OF CHAR;
+			notes: Texts.Text;
+			ind: LONGINT;
+			extLabels: ExtLabel;
+			next: ImpList
+		END;
+
+		ExtLabelDesc = RECORD
+			frame: Frame;
+			book: ImpList;
+			name: ARRAY identLen OF CHAR;
+			mode: SHORTINT;
+			pos1, pos2: LONGINT;
+			next: ExtLabel
+		END;
+
+		TextListDesc = RECORD
+			text: Texts.Text;
+			prev, next: TextList
+		END;
+
+		ContElemDesc = RECORD ( Gadgets.FrameDesc ) 
+			mode: SHORTINT;
+			beg, end: LONGINT;
+		END;
+
+	VAR 
+		loading: ImpList;
+		error: BOOLEAN;
+		Action: PROCEDURE (F: ContElem);
+	PROCEDURE NewLoc;
+	PROCEDURE NewExt;
+	PROCEDURE NewContElem;
+	PROCEDURE InsertFrame (T: Texts.Text; pos: LONGINT; obj: Gadgets.Frame);
+	PROCEDURE AppendFrame (T: Texts.Text; obj: Gadgets.Frame);
+	PROCEDURE StrConcat (VAR str0: ARRAY OF CHAR; str1: ARRAY OF CHAR);
+	PROCEDURE CutSuffix (VAR str: ARRAY OF CHAR);
+	PROCEDURE ColorBar (F: Bar; col: INTEGER);
+	PROCEDURE BarFrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewBar;
+
+END Books0.

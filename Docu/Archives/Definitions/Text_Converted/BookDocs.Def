@@ -1,0 +1,33 @@
+DEFINITION BookDocs;	(* portable *)
+
+	IMPORT Books, Books0, Files, Fonts, Display, Objects;
+
+	CONST
+		W = 8*Books.buttonW-2; H = 400;
+
+	TYPE
+		InValMsg = RECORD ( Display.FrameMsg ) 
+			name: ARRAY 64 OF CHAR
+		END;
+
+	VAR 
+		titleFont, textFont, noteFont, linkFont, callFont: Fonts.Font;
+		sectionFonts: ARRAY Books.maxSect OF Fonts.Font;
+	PROCEDURE WriteHeader (VAR R: Files.Rider; x, y, w, h: INTEGER; ind, pos: LONGINT; options: SET; iconStr: ARRAY OF CHAR);
+	PROCEDURE SkipHeader (VAR R: Files.Rider): BOOLEAN;
+	PROCEDURE Import (il: Books0.ImpList; new: BOOLEAN): BOOLEAN;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDoc;
+	PROCEDURE Pop;
+	PROCEDURE Next;
+	PROCEDURE Prev;
+	PROCEDURE Contents;
+	PROCEDURE Index;
+	PROCEDURE History;
+	PROCEDURE DoLink;
+	PROCEDURE DoNote;
+	PROCEDURE Search;
+	PROCEDURE CopyToFile;
+	PROCEDURE PrintDoc;
+
+END BookDocs.

@@ -1,0 +1,7 @@
+DEFINITION WTSFold;	(* portable *)
+
+	CONST
+		colLeft = 0; colRight = 1; expRight = 2; expLeft = 3;
+	PROCEDURE New;
+
+END WTSFold.

@@ -1,0 +1,34 @@
+PanelDocs.NewDocrBIERyK36{/ZZNac@C		+
+~
+
+!X,hu
+)
+`
+
+
+
++8}=9
+rC?$Oberon10b.Scn.FntTools
+CVDrawing+>CCmdPanelDocs.AppendPanel Rembrandt.DrawingToolRColorn>CCmdPanelDocs.AppendPanel Rembrandt.ColorToolZOperation>CCmdPanelDocs.AppendPanel Rembrandt.OperationTool*w{C	
+
+%/
+2rCNameOperationToolNRPCCmdRembrandt.BlockSelectFieldYesValOU&PCCmdRembrandt.ObjectSelectFieldYesValQXFPCCmdRembrandt.FreehandSelectFieldYesValG\ZCCmdRembrandt.MoveFieldYesValM_&ZCCmdRembrandtTools.ScaleFieldYesValNbFZCCmdRembrandtTools.RotateFieldYesValMfgdCCmdRembrandtTools.FlipVFieldYesValMjhCCmdRembrandtTools.FlipHFieldYesValgShow^lCCmdDirectories.Directory "*.Pict" ListFieldYesValColor
+PCopyNCCmdRembrandt.ClipboardCopyFieldYesValNCutNCCmdRembrandt.ClipboardCutFieldYesValRPasteNCCmdRembrandt.ClipboardPasteFieldYesValH$Oberon10b.Scn.FntOperation ToolI
+CA#Oberon10.Scn.FntPictures&
+CB#Oberon10.Scn.Fnt		Clipboard1
+CJ#Oberon10.Scn.FntKind of selectionR
+CP#Oberon10.Scn.FntOperations on selectiont
+CWvZCColor
+CmdPanelDocs.RemovePanelFieldYesValWyFCColor
+CmdPanelDocs.DetachPanelFieldYesValrXl}CConstraints0 0 18 0CmdDesktops.OpenDoc #Point ~
+
+Oberon10.Scn.Fntz{M{[rlzCConstraints-18 0 0 0,fNCkNew PictureNCCmdRembrandtDocs.Open &genw.Value  &genh.ValueFieldYesVal1 "#
+V1C?#Oberon10.Scn.FntWidth:!
+C6640.!!CCmdFieldNamegenwC@#Oberon10.Scn.FntHeight:#
+C6400.!$CCmdFieldNamegenhC,&(fN&CrMake IconN'CCmdRembrandtTools.MakeIcon &iconw.Value  &iconh.ValueFieldYesVal	C1)+,.
+N1C632(!*CCmdFieldNameiconh C@#Oberon10.Scn.FntHeight:#
+C632(!-CCmdFieldNameiconw C?#Oberon10.Scn.FntWidth:!
+C,01XfN0C]Print *NCCmdDesktops.PrintDoc &Pname.Value *~FieldYesVal%2
+NC6LPT1
+<CCmdFieldNamePname
+Panels.NewPanelTextFields.NewCaptionBasicGadgets.NewButtonBasicFigures.NewLineListGadgets.NewFrameScrollbars.NewIcons.NewIconizerTextFields.NewTextFieldBasicGadgets.NewIntegerBasicGadgets.NewBooleanRembrandt.Lib

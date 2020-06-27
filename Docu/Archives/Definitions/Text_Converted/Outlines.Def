@@ -1,0 +1,38 @@
+DEFINITION Outlines; (* portable *)
+
+	IMPORT
+		Texts, Objects, Gadgets;
+
+	CONST
+		open = 0; close = 1; folded = 2;
+		tempOpen = 3;
+		openMode = {open, tempOpen};
+
+	TYPE
+		Outline = POINTER TO OutlineDesc;
+		OutlineDesc = RECORD ( Gadgets.FrameDesc ) 
+			fstate: INTEGER;
+			len: LONGINT;
+			buf: Texts.Buffer;
+		END;
+	PROCEDURE MakeOutline (state: INTEGER): Outline;
+	PROCEDURE ExpandAll (T: Texts.Text; from: LONGINT; temporal: BOOLEAN);
+
+(* Collapse from the position of the next Outline to its matching one. *)
+	PROCEDURE CollapseFromTo (T: Texts.Text; beg, end: LONGINT; modes: SET);
+	PROCEDURE CollapseAll (T: Texts.Text; modes: SET);
+	PROCEDURE CopyOutline (VAR M: Objects.CopyMsg; from, to: Outline);
+	PROCEDURE OutlineHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewOutline;
+	PROCEDURE New;
+	PROCEDURE InsertText (T: Texts.Text; beg, end: LONGINT);
+	PROCEDURE RemoveAll (T: Texts.Text);
+	PROCEDURE Remove;
+	PROCEDURE Insert;
+	PROCEDURE Search;
+	PROCEDURE Replace;
+	PROCEDURE ReplaceAll;
+	PROCEDURE Expand;
+	PROCEDURE Collapse;
+
+END Outlines.

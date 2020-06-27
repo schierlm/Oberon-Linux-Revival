@@ -1,0 +1,141 @@
+DEFINITION Desktops; (* portable *)	(* , jm 1.2.95 *)
+
+(*Implementation of the Oberon Desktop, with Viewers for displaying documents in the tiled and overlapping windowing systems of Oberon.
+ *)
+	IMPORT
+		Objects, Display, Viewers, Gadgets, Documents;
+
+	TYPE
+	(* Viewer for displaying documents in a desktop. *)
+		DocGadget = POINTER TO DocGadgetDesc;
+		DocGadgetDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+	(* Viewers.Viewer for displaying documents in the tiled viewer system. *)
+		DocViewer = POINTER TO DocViewerDesc;
+		DocViewerDesc = RECORD ( Viewers.ViewerDesc ) 
+			menuH: INTEGER;	(* Menubar height. *)
+		END;
+
+		UpdateNameMsg = RECORD ( Display.FrameMsg ) 
+			obj: Objects.Object
+		END;
+
+	VAR 
+		menuH: INTEGER;	(* Default menubar heigth of DocGadget and DocViewer *)
+		menuC: INTEGER;	(* Default menubar panel color *)
+		menuButtonW: INTEGER;	(* Default menu button width *)
+		namePlateW: INTEGER;	(* Default nameplate width *)
+		recDocWidth: INTEGER;	(* recommended minimal document width *)
+
+(* Does the DocViewer have a menubar? Only the desktops are DocViewers without menubars. *)
+	PROCEDURE HasMenu (V: DocViewer): BOOLEAN;
+	PROCEDURE DocViewerHandle (V: Objects.Object; VAR M: Objects.ObjMsg);
+
+  (* Create and open a new DocViewer. Analogue to  old-fashioned MenuViewers.New. X, Y indicate the opening position. *)
+	PROCEDURE NewDocViewer (Menu, Main: Display.Frame; menuH, X, Y: INTEGER): DocViewer;
+
+(* Returns the menubar of a DocGadget. *)
+	PROCEDURE Menu (F: DocGadget): Gadgets.Frame;
+
+(* Returns the contents of a DocGadget. *)
+	PROCEDURE Main (F: DocGadget): Gadgets.Frame;
+	PROCEDURE CopyDocGadget (VAR M: Objects.CopyMsg; from, to: DocGadget);
+	PROCEDURE DocGadgetHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDocGadget;
+
+(* Initialize a DocGadget with a menu and main frame. The adjust flag is TRUE if the DocGadget should determine its
+size according to the combined size of the menu and main frames. This is the default case. *)
+	PROCEDURE Init (F: DocGadget; menu, main: Gadgets.Frame; adjust: BOOLEAN);
+
+(* Create a new menubar from the menu string. Menu strings are sequences of names. The caption
+of a menu button can be set by following the name by the caption text in square brackets, for example
+"MyDoc.Do[Do] MyDoc.Undo[Undo]" etc. The complete syntax is: { cmd [ title ] } . cmd = name | string . string = "'" chars "'" . title = "[" chars "]" . *)
+	PROCEDURE NewMenu (menubar: ARRAY OF CHAR): Display.Frame;
+
+(* Document gadget enclosing the current context. *)
+	PROCEDURE CurDoc (context: Objects.Object): Documents.Document;
+
+(* Menu bar of the document enclosing the current context. *)
+	PROCEDURE CurMenu (context: Objects.Object): Display.Frame;
+
+(* TRUE if context is within a Document-Menu. *)
+	PROCEDURE IsInMenu (context: Objects.Object): BOOLEAN;
+
+(* Used in the form: Desktops.Open <filename>
+Tries to open <filename> as a desktop; on failure a new desktop is created. *)
+	PROCEDURE Open;
+
+(* Stores the desktop from which this command is activated. *)
+	PROCEDURE Store;
+
+(* Used in the form: Desktops.ChangeBackdrop <picturename>
+	Changes the backdrop of the marked desktop. *)
+	PROCEDURE ChangeBackdrop;
+
+(* Grow the current DocViewer or size DocGadgets to its default size. *)
+	PROCEDURE Grow;
+
+(* Copy the current DocViewer. *)
+	PROCEDURE Copy;
+
+(* Close the current DocViewer. *)
+	PROCEDURE Close;
+
+(* Open a document in the viewer system or in the desktop, depending on the context and the marker. *)
+	PROCEDURE ShowDoc (D: Documents.Document);
+
+(* Replace the document enclosing the current context with the document D. *)
+	PROCEDURE ReplaceCurrentDoc (D: Documents.Document);
+
+(* Close the document D. *)
+	PROCEDURE CloseThisDoc (D: Documents.Document);
+
+(* Used in the forms:
+	Desktops.OpenDoc <documentname>		(* open an existing document *)
+	Desktops.OpenDoc (<document-generator>)		(* create a new document *)
+	Desktops.OpenDoc <document-name>(<document-generator>)		(* cast existing document to new type *)
+
+The document is loaded, and opened in the desktop or viewer system depending on the context and the marker.
+*)
+	PROCEDURE OpenDoc;
+
+(* Same usage as Desktops.OpenDoc. Document is inserted without menubar at the caret. *)
+	PROCEDURE InsertDoc;
+
+(* Same usage as Desktops.OpenDoc. Current document is exchanged with the new document. *)
+	PROCEDURE ReplaceDoc;
+	PROCEDURE StoreThisDoc (doc: Documents.Document);
+
+(* Used in the forms:
+	Desktops.StoreDoc		(* in menubar, or inside of a document *)
+	Desktops.StoreDoc *	(* for a marked document *)
+Stores a document under its given name.
+ *)
+	PROCEDURE StoreDoc;
+
+(* Closes the current document. Works both in the viewer and desktop systems. *)
+	PROCEDURE CloseDoc;
+
+(* Recalls last closed document. *)
+	PROCEDURE Recall;
+
+(* Used in the form:
+	Desktops.PrintDoc <printer-name> [ "\" options ] <list-of files> ~
+	Desktops.PrintDoc <printer-name> [ "\" options ] *	(* Marked document *)
+Prints a document.
+*)
+	PROCEDURE PrintDoc;
+
+(* Desktops.MenuCmd docgadget cmd *)
+	PROCEDURE MenuCmd;
+
+END Desktops.
+
+(* Remarks:
+
+1. The gadgets defined in the desktop module act as wrappers for documents. They also manage the menubar for the document. This allows a degree of compatibility between the older viewer system and the the newer desktop system. The new Viewers manage the documents in the viewer system while the DocGadgets does it in the desktop. In fact, the desktop itself is also managed in one of the new Viewers with an empty menubar.
+
+2. Viewer structure
+Each Viewer (both DocViewer of DocGadget) have a menubar and a main frame. The main frame is typically a document or a camera-view on a document.
+*)

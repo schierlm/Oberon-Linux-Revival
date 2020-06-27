@@ -1,0 +1,7 @@
+DEFINITION Find;	(* portable *)
+	PROCEDURE Search;
+	PROCEDURE SetDetOutput;
+	PROCEDURE Domain;
+	PROCEDURE All;
+
+END Find.

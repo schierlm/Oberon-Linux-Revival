@@ -1,0 +1,25 @@
+DEFINITION Snapshot;	(* portable *)
+
+(*
+	jm 10.7.95 / pjm 17.10.97
+
+	Snapshot.Viewer *		Make snapshot of viewer
+	Snapshot.Document *		Make snapshot of document
+	Snapshot.Gadget *		Make snapshot of marked gadget
+
+	Snapshot.InsertViewer *		Insert snapshot of viewer at caret
+	Snapshot.InsertDocument *		Insert snapshot of document at caret
+	Snapshot.InsertGadget *		Insert snapshot of marked gadget
+
+	Snapshot.Screen 	Make snapshot of the screen
+*)
+	IMPORT Pictures, Gadgets;
+	PROCEDURE SnapFrame (F: Gadgets.Frame; VAR P: Pictures.Picture);
+	PROCEDURE Viewer;
+	PROCEDURE InsertViewer;
+	PROCEDURE Document;
+	PROCEDURE Gadget;
+	PROCEDURE InsertDocument;
+	PROCEDURE InsertGadget;
+	PROCEDURE Screen;
+END Snapshot.

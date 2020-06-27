@@ -1,0 +1,7 @@
+DEFINITION HTML;	(* portable *)
+
+(* Show a preview of the HTML text in a text viewer - Processes ONLY one text! *)
+	PROCEDURE Show;
+	PROCEDURE Compile;
+
+END HTML.

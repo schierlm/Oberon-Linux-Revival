@@ -1,0 +1,34 @@
+DEFINITION Miscellaneous;	(* portable, except where noted *)
+
+	(* Count the number of lines in the specified texts. With \s switch count semicolons. *)
+	PROCEDURE CountLines;	(* non-portable *)
+
+(* Get the variable, constant and code segment sizes for the specified object files. *)
+	PROCEDURE GetObjSize;	(* non-portable *)
+
+(* Convert Oberon text files to plain ASCII.  Syntax like System.CopyFiles. *)
+	PROCEDURE MakeAscii;	(* non-portable *)
+
+(* Convert DOS text files to Oberon.  Syntax like System.CopyFiles. *)
+	PROCEDURE MakeOberonText;	(* non-portable *)
+
+(* Convert Oberon text to DOS ASCII format.  Syntax like System.CopyFiles. *)
+	PROCEDURE MakeDOSText;	(* non-portable *)
+
+(* Send the listed files directly to the printer specified as first parameter. *)
+	PROCEDURE PrintFiles;	(* non-portable *)
+
+(* Copy the specified file "File" into subfiles named "File0", "File1" etc., maximally 700KB (or size specified as first parameter) each *)
+	PROCEDURE SplitFile;
+
+(* Copy subfiles "File0", "File1" etc. to a combined file "File".  Specify only parameter "File". *)
+	PROCEDURE JoinFiles;
+
+(* Usage: Miscellaneous.ShowMod <modname>
+	Show the source code for module <modname>. *)
+	PROCEDURE ShowMod;
+
+(* Compare files byte-by-byte. *)
+	PROCEDURE CompareFiles;	(* { file1 => file2 } ~ *)
+
+END Miscellaneous.

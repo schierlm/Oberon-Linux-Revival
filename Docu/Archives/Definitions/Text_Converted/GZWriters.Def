@@ -1,0 +1,43 @@
+DEFINITION GZWriters;	(* Stefan Walthert  *)
+
+	IMPORT
+		Files, ZlibWriters;
+
+	CONST
+	(* result codes *)
+		Ok = ZlibWriters.Ok; StreamEnd = ZlibWriters.StreamEnd;
+		FileError = -1; StreamError = ZlibWriters.StreamError; DataError = ZlibWriters.DataError; BufError = ZlibWriters.BufError;
+
+	(* compression levels *)
+		DefaultCompression = ZlibWriters.DefaultCompression; NoCompression = ZlibWriters.NoCompression;
+		BestSpeed = ZlibWriters.BestSpeed; BestCompression = ZlibWriters.BestCompression;
+
+	(* compression strategies *)
+		DefaultStrategy = ZlibWriters.DefaultStrategy; Filtered = ZlibWriters.Filtered; HuffmanOnly = ZlibWriters.HuffmanOnly;
+
+	TYPE
+	(* structure for writing to a .gz file *)
+		Writer = RECORD
+			file-: Files.File;	(* underlying Oberon file *)
+			res-: LONGINT;	(* current stream state *)
+		END;
+
+(* change deflate parameters within the writer *)
+	PROCEDURE SetParams (VAR w: Writer; level, strategy: SHORTINT);
+
+(* open writer on .gz-file *)
+	PROCEDURE Open (VAR w: Writer; level, strategy: SHORTINT; file: Files.File);
+
+(* write specified number of bytes from buffer into .gz-file and return number of bytes actually written *)
+	PROCEDURE WriteBytes (VAR w: Writer; VAR buf: ARRAY OF CHAR; offset, len: LONGINT; VAR written: LONGINT);
+
+(* write byte *)
+	PROCEDURE Write (VAR w: Writer; ch: CHAR);
+
+(* close writer *)
+	PROCEDURE Close (VAR w: Writer);
+
+(* get position of reader within uncompressed output stream *)
+	PROCEDURE Pos (VAR w: Writer): LONGINT;
+
+END GZWriters.

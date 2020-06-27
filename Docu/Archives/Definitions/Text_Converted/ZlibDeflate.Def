@@ -1,0 +1,68 @@
+DEFINITION ZlibDeflate;	(* Stefan Walthert  *)
+(* AUTHOR "swalthert"; PURPOSE "Zlib compression"; *)
+
+	(*
+		Compression of byte streams with deflate algorithm
+	*)
+	IMPORT
+		Zlib, ZlibBuffers;
+
+	CONST
+	(* Result codes for compression/decompression functions *)
+		Ok = Zlib.Ok; StreamEnd = Zlib.StreamEnd; (* regular termination *)
+		StreamError = Zlib.StreamError; DataError = Zlib.DataError; MemError = Zlib.MemError; BufError = Zlib.BufError; (* errors *)
+
+	(* Flush values *)
+		NoFlush = Zlib.NoFlush; SyncFlush = Zlib.SyncFlush; FullFlush = Zlib.FullFlush; Finish = Zlib.Finish;
+
+	(* compression levels *)
+		DefaultCompression = Zlib.DefaultCompression; NoCompression = Zlib.NoCompression;
+		BestSpeed = Zlib.BestSpeed; BestCompression = Zlib.BestCompression;
+
+	(* compression strategies *)
+		DefaultStrategy = Zlib.DefaultStrategy; Filtered = Zlib.Filtered; HuffmanOnly = Zlib.HuffmanOnly;
+
+	(* data type *)
+		Binary = Zlib.Binary; Ascii = Zlib.Ascii; Unknown = Zlib.Unknown;
+
+	TYPE
+
+	(* deflate stream *)
+		Stream = RECORD
+			in, out: ZlibBuffers.Buffer;
+			res-: LONGINT;		(* result of last operation *)
+			level-: SHORTINT;	(* compression level *)
+			strategy-: SHORTINT;	(*compression strategy *)
+			dataType-: SHORTINT;	(* Unknown, Binary or Ascii *)
+			wrapper-: BOOLEAN;	(* if set, zlib header and checksum are generated *)
+			open-: BOOLEAN;		(* if set, stream is initialized *)
+		END;
+
+(*---Streams---*)
+
+(* reset stream *)
+	PROCEDURE Reset (VAR stream: Stream);
+
+(* close deflate stream *)
+	PROCEDURE Close (VAR stream: Stream);
+
+(* initialize deflate stream with compression level and strategy; if wrapper is not set, no header and checksum are generated *)
+	PROCEDURE Open (VAR stream: Stream; level, strategy: SHORTINT; wrapper: BOOLEAN);
+
+(* initializes the compression dictionary from the given byte sequence without producing any compressed output.
+	Must be called immediately after Open or Reset before any call of Deflate *)
+	PROCEDURE SetDictionary (VAR stream: Stream; VAR dict: ARRAY OF CHAR; len: LONGINT);
+
+(* Deflate compresses as much data as possible, and stops when the input buffer becomes empty or the output buffer becomes full;
+	the flush parameter decides if and how blocks are terminated *)
+	PROCEDURE Deflate (VAR stream: Stream; flush: SHORTINT);
+		(* invariant (111):	stream.out.avail > 0 *)
+
+(* change deflate parameters within the stream. If the compression level is changed, the input available so far 
+	is compressed with the old level (and may be flushed); the new level will take effect only at the next call of Deflate *)
+	PROCEDURE SetParams (VAR stream: Stream; level, strategy: SHORTINT);
+
+(* compress complete stream and return output length in len *)
+	PROCEDURE Compress (VAR src, dst: ARRAY OF CHAR; srcoffset, srclen, dstoffset, dstlen: LONGINT; level, strategy: SHORTINT; VAR len: LONGINT; VAR res: LONGINT);
+
+END ZlibDeflate.

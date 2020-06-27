@@ -1,0 +1,389 @@
+; Scheme library procedures
+;
+
+;
+; equivalence
+;
+
+(define equal?
+	(lambda (x y)
+		(define equal-vector?
+			(lambda (v w i)
+				(and
+					(equal? (vector-ref v i) (vector-ref w i))
+					(or (= i 0) (equal-vector? v w (- i 1))))))
+		(define equal-string?
+			(lambda (s t i)
+				(and
+					(equal? (string-ref s i) (string-ref t i))
+					(or (= i 0) (equal-string? s t (- i 1))))))
+		(cond
+			((and (pair? x) (pair? y))
+				(and (equal? (car x) (car y)) (equal? (cdr x) (cdr y))))
+			((and (vector? x) (vector? y) (= (vector-length x) (vector-length y)))
+				(equal-vector? x y (- (vector-length x) 1)))
+			((and (string? x) (string? y) (= (string-length x) (string-length y)))
+				(equal-string? x y (- (string-length x) 1)))
+			(else (eqv? x y)))))
+
+;
+; numbers
+;
+
+(define zero? (lambda (x) (= x 0)))
+(define positive? (lambda (x) (> x 0)))
+(define negative? (lambda (x) (< x 0)))
+(define even? (lambda (x)
+	(let ((ex (inexact->exact x))) (and (integer? ex) (integer? (/ ex 2))))))
+(define odd? (lambda (x)
+	(let ((ex (inexact->exact x))) (and (integer? ex) (not (integer? (/ ex 2)))))))
+
+(define max (lambda (x . z)
+	(if (null? z)
+		x
+		(let ((y (max . z)))
+			(if (and (exact? x) (exact? y))
+				(if (> x y) x y)
+				(let ((u (exact->inexact x)) (v (exact->inexact y)))
+					(if (> u v) u v)))))))
+
+(define min (lambda (x . z)
+	(if (null? z)
+		x
+		(let ((y (min . z)))
+			(if (and (exact? x) (exact? y))
+				(if (< x y) x y)
+				(let ((u (exact->inexact x)) (v (exact->inexact y)))
+					(if (< u v) u v)))))))
+
+(define abs (lambda (x) (if (>= x 0) x (- x))))
+
+
+;
+; booleans
+;
+
+(define not (lambda (b) (if (eqv? b #f) #t #f)))
+
+
+;
+; pairs and lists
+;
+
+(define caar (lambda (x) (car (car x))))
+(define cadr (lambda (x) (car (cdr x))))
+(define cdar (lambda (x) (cdr (car x))))
+(define cddr (lambda (x) (cdr (cdr x))))
+(define caaar (lambda (x) (car (car (car x)))))
+(define caadr (lambda (x) (car (car (cdr x)))))
+(define cadar (lambda (x) (car (cdr (car x)))))
+(define caddr (lambda (x) (car (cdr (cdr x)))))
+(define cdaar (lambda (x) (cdr (car (car x)))))
+(define cdadr (lambda (x) (cdr (car (cdr x)))))
+(define cddar (lambda (x) (cdr (cdr (car x)))))
+(define cdddr (lambda (x) (cdr (cdr (cdr x)))))
+(define caaaar (lambda (x) (car (car (car (car x))))))
+(define caaadr (lambda (x) (car (car (car (cdr x))))))
+(define caadar (lambda (x) (car (car (cdr (car x))))))
+(define caaddr (lambda (x) (car (car (cdr (cdr x))))))
+(define cadaar (lambda (x) (car (cdr (car (car x))))))
+(define cadadr (lambda (x) (car (cdr (car (cdr x))))))
+(define caddar (lambda (x) (car (cdr (cdr (car x))))))
+(define cadddr (lambda (x) (car (cdr (cdr (cdr x))))))
+(define cdaaar (lambda (x) (cdr (car (car (car x))))))
+(define cdaadr (lambda (x) (cdr (car (car (cdr x))))))
+(define cdadar (lambda (x) (cdr (car (cdr (car x))))))
+(define cdaddr (lambda (x) (cdr (car (cdr (cdr x))))))
+(define cddaar (lambda (x) (cdr (cdr (car (car x))))))
+(define cddadr (lambda (x) (cdr (cdr (car (cdr x))))))
+(define cdddar (lambda (x) (cdr (cdr (cdr (car x))))))
+(define cddddr (lambda (x) (cdr (cdr (cdr (cdr x))))))
+
+(define null? (lambda (x) (eq? x '())))
+(define list? (lambda (x)
+	(define terminates? (lambda (slow fast)
+		(cond
+			((null? fast) #t)
+			((eq? slow fast) #f)
+			((not (pair? fast)) #f)
+			((null? (cdr fast)) #t)
+			((eq? slow (cdr fast)) #f)
+			(else (terminates? (cdr slow) (cddr fast))))))
+	(if (null? x) #t
+		(if (pair? x) (terminates? x (cdr x))))))
+
+(define list (lambda x x))
+(define length (lambda (x) (if (null? x) 0 (+ 1 (length (cdr x))))))
+
+(define append (lambda (x . y)
+	(define append2 (lambda (x  y)
+		(if (null? x) y (cons (car x) (append2 (cdr x) y)))))
+	(if (null? y)
+		x
+		(let ((tail (cdr y))) (append (append2 x (car y)) . tail)))))
+
+(define reverse (lambda (x)
+	(define rev (lambda (head tail)
+		(if (null? head) tail (rev (cdr head) (cons (car head) tail)))))
+	(rev x '())))
+
+(define list-tail (lambda (x k)
+	(if (zero? k) x (list-tail (cdr x) (- k 1)))))
+(define list-ref (lambda (x k) (car (list-tail x k))))
+
+(define memq
+	(lambda (obj list)
+		(if (null? list) #f
+			(if (eq? obj (car list)) list (memq obj (cdr list))))))
+(define memv
+	(lambda (obj list)
+		(if (null? list) #f
+			(if (eqv? obj (car list)) list (memv obj (cdr list))))))
+(define member
+	(lambda (obj list)
+		(if (null? list) #f
+			(if (equal? obj (car list)) list (member obj (cdr list))))))
+
+(define assq
+	(lambda (obj alist)
+		(if (null? alist) #f
+			(if (eq? obj (caar alist)) (car alist) (assq obj (cdr alist))))))
+(define assv
+	(lambda (obj alist)
+		(if (null? alist) #f
+			(if (eqv? obj (caar alist)) (car alist) (assv obj (cdr alist))))))
+(define assoc
+	(lambda (obj alist)
+		(if (null? alist) #f
+			(if (equal? obj (caar alist)) (car alist) (assoc obj (cdr alist))))))
+
+
+;
+; characters
+;
+
+(define char-upcase (lambda (x)
+	(if (and (char>=? x #\a) (char<=? x #\z)) (integer->char (- (char->integer x) 32)) x)))
+(define char-downcase (lambda (x)
+	(if (and (char>=? x #\A) (char<=? x #\Z)) (integer->char (+ (char->integer x) 32)) x)))
+
+(define char-ci=? (lambda (x y) (char=? (char-downcase x) (char-downcase y))))
+(define char-ci<? (lambda (x y) (char<? (char-downcase x) (char-downcase y))))
+(define char-ci>? (lambda (x y) (char>? (char-downcase x) (char-downcase y))))
+(define char-ci<=? (lambda (x y) (char<=? (char-downcase x) (char-downcase y))))
+(define char-ci>=? (lambda (x y) (char>=? (char-downcase x) (char-downcase y))))
+
+(define char-alphabetic? (lambda (x) (and (char-ci>=? x #\a) (char-ci<=? x #\z))))
+(define char-numeric? (lambda (x) (and (char>=? x #\0) (char<=? x #\9))))
+(define char-whitespace? (lambda (x) (char<=? x #\space)))
+(define char-upper-case? (lambda (x) (and (char>=? x #\A) (char<=? x #\Z))))
+(define char-lower-case? (lambda (x) (and (char>=? x #\a) (char<=? x #\z))))
+
+
+;
+; Strings
+;
+
+(define string (lambda args
+	(define loop (lambda (str pos list)
+		(if (null? list) str (begin (string-set! str pos (car list)) (loop str (+ pos 1) (cdr list))))))
+	(loop (make-string (length args)) 0 args)))
+
+(define string=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) (= (string-length y) i))
+			((= (string-length y) i) #f)
+			((not (char=? (string-ref x i) (string-ref y i))) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string-ci=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) (= (string-length y) i))
+			((= (string-length y) i) #f)
+			((not (char-ci=? (string-ref x i) (string-ref y i))) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+
+(define string<? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length y) i) #f)
+			((= (string-length x) i) #t)
+			((char<? (string-ref x i) (string-ref y i)) #t)
+			((char>? (string-ref x i) (string-ref y i)) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string>? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) #f)
+			((= (string-length y) i) #t)
+			((char<? (string-ref x i) (string-ref y i)) #f)
+			((char>? (string-ref x i) (string-ref y i)) #t)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string<=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length y) i) (= (string-length x) i))
+			((= (string-length x) i) #t)
+			((char<? (string-ref x i) (string-ref y i)) #t)
+			((char>? (string-ref x i) (string-ref y i)) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string>=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) (= (string-length y) i))
+			((= (string-length y) i) #t)
+			((char<? (string-ref x i) (string-ref y i)) #f)
+			((char>? (string-ref x i) (string-ref y i)) #t)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+
+(define string-ci<? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length y) i) #f)
+			((= (string-length x) i) #t)
+			((char-ci<? (string-ref x i) (string-ref y i)) #t)
+			((char-ci>? (string-ref x i) (string-ref y i)) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string-ci>? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) #f)
+			((= (string-length y) i) #t)
+			((char-ci<? (string-ref x i) (string-ref y i)) #f)
+			((char-ci>? (string-ref x i) (string-ref y i)) #t)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string-ci<=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length y) i) (= (string-length x) i))
+			((= (string-length x) i) #t)
+			((char-ci<? (string-ref x i) (string-ref y i)) #t)
+			((char-ci>? (string-ref x i) (string-ref y i)) #f)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+(define string-ci>=? (lambda (x y)
+	(define cmp (lambda (x y i)
+		(cond
+			((= (string-length x) i) (= (string-length y) i))
+			((= (string-length y) i) #t)
+			((char-ci<? (string-ref x i) (string-ref y i)) #f)
+			((char-ci>? (string-ref x i) (string-ref y i)) #t)
+			(else (cmp x y (+ i 1))))))
+	(cmp x y 0)))
+
+(define substring (lambda (str start end)
+	(define copy (lambda (src dst i j n)
+		(if (= n 0) dst (begin (string-set! dst j (string-ref src i)) (copy src dst (+ i 1) (+ j 1) (- n 1))))))
+	(copy str (make-string (- end start)) start 0 (- end start))))
+(define string-copy (lambda (str)
+	(substring str 0 (string-length str))))
+
+(define string-append (lambda list
+	(define len (lambda (list) (if (null? list) 0 (+ (string-length (car list)) (len (cdr list))))))
+	(define app (lambda (list dst start)
+		(define copy (lambda (src dst i j n)
+			(if (= n 0) dst (begin (string-set! dst j (string-ref src i)) (copy src dst (+ i 1) (+ j 1) (- n 1))))))
+		(if (null? list)
+			dst
+			(let ((l (string-length (car list))))
+				(copy (car list) dst 0 start l)
+				(app (cdr list) dst (+ start l))))))
+	(app list (make-string (len list)) 0)))
+
+(define string->list (lambda (str)
+	(define loop (lambda (str i)
+		(if (= i (string-length str)) '() (cons (string-ref str i) (loop str (+ i 1))))))
+	(loop str 0)))
+(define list->string (lambda (list)
+	(string . list)))
+
+(define string-fill! (lambda (str char)
+	(define loop (lambda (str char i)
+		(if (< i 0) str (begin (string-set! str i char) (loop str char (- i 1))))))
+	(loop str char (- (string-length str) 1))))
+
+;
+; Vectors
+;
+
+(define vector (lambda args
+	(define loop (lambda (vec pos list)
+		(if (null? list) vec (begin (vector-set! vec pos (car list)) (loop vec (+ pos 1) (cdr list))))))
+	(loop (make-vector (length args)) 0 args)))
+
+(define vector->list (lambda (vec)
+	(define loop (lambda (vec i)
+		(if (= i (vector-length vec)) '() (cons (vector-ref vec i) (loop vec (+ i 1))))))
+	(loop vec 0)))
+(define list->vector (lambda (list)
+	(vector . list)))
+
+(define vector-fill! (lambda (vec elem)
+	(define loop (lambda (vec elem i)
+		(if (< i 0) vec (begin (vector-set! vec i elem) (loop vec elem (- i 1))))))
+	(loop vec elem (- (vector-length vec) 1))))
+
+
+;
+; Procedures
+;
+
+(define map (lambda args
+	(define cars (lambda (lists)
+		(if (null? lists) '() (cons (caar lists) (cars (cdr lists))))))
+	(define cdrs (lambda (lists)
+		(if (null? lists) '() (cons (cdar lists) (cdrs (cdr lists))))))
+	(define loop (lambda (proc lists)
+		(if (null? (car lists)) '() (cons (apply proc (cars lists)) (loop proc (cdrs lists))))))
+	(loop (car args) (cdr args))))
+
+(define for-each (lambda args
+	(define cars (lambda (lists)
+		(if (null? lists) '() (cons (caar lists) (cars (cdr lists))))))
+	(define cdrs (lambda (lists)
+		(if (null? lists) '() (cons (cdar lists) (cdrs (cdr lists))))))
+	(define loop (lambda (proc lists)
+		(if (null? (car lists)) #f (begin (apply proc (cars lists)) (loop proc (cdrs lists))))))
+	(loop (car args) (cdr args))))
+
+(define force
+	(lambda (object) (object)))
+(define make-promise
+	(lambda (proc)
+		(let ((result-ready? #f) (result #f))
+			(lambda ()
+				(if result-ready?
+					result
+					(let ((x (proc)))
+						(if result-ready?
+							result
+							(begin (set! result-ready? #t) (set! result x) result))))))))
+
+
+;
+; Ports
+;
+
+(define call-with-input-file (lambda (string proc)
+	(apply proc (open-input-file string))))
+(define call-with-output-file (lambda (string proc)
+	(apply proc (open-output-file string))))
+
+(define display (lambda (obj . args)
+	(define write-string (lambda (str i . args)
+		(if (not (= i (string-length str)))
+			(begin (write-char (string-ref str i) . args) (write-string str (+ i 1) . args)))))
+	(cond
+		((char? obj) (write-char obj . args))
+		((string? obj) (write-string obj 0 . args))
+		(else (write obj . args)))))
+(define newline (lambda args (write-char #\newline . args)))

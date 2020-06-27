@@ -1,0 +1,150 @@
+SaveScreen 1.1.4
+Ben Smith-Mannschott
+
+1 Purpose
+
+SaveScreen came out of the desire to provide a screen saver for the Shark network computers running Oberon at ETH. It is designed to be a small simple screen saver which can be easily extended by "faders" provided in external modules. 
+
+SaveScreen has a small memory footprint. It requires only modules available in the basic System 3: Modules, Objects, Texts, In, Input and Display. The Gadgets libraries need not be loaded. 
+
+2 Usage
+
+2.1 SaveScreen
+
+SaveScreen provides four user commands:
+
+SaveScreen.Activate activates the screen saver. When it is active the screen saver watches mouse activity to see how long the system has been idle. If the system has been idle long enough (default 10 minutes) the current fader begins running.
+	
+	SaveScreen.Activate [minutesToWait]
+
+	SaveScreen.Activate ~	activates the SaveScreen with the default minutesToWait = 30
+	SaveScreen.Activate 10 ~  activates the SaveScreen with 10 minutes to wait.
+
+SaveScreen.Deactivate deactivates the screen saver. It will no longer come on automatically.
+
+SaveScreen.Run immediately runs the currently installed fader. This is useful if you are trying out different faders. Changed Semantics in 1.1.3: Run no longer has Activate as a side-effect.
+	
+SaveScreen.InstallDefault makes the default fader (blank, black screen) the current fader. The default fader is automatically installed when SaveScreen first starts up.
+
+2.2 SaveTiles: the sliding tiles fader
+
+SaveTiles.Install installs Tiles as the current fader. Install can be given additional parameters to configure the behavior of SaveTiles
+
+	SaveTiles.Install {(speed | columnCount | rowCount) integer}
+	
+	SaveTitles.Install speed 64 columnCount 12 rowCount 10 ~
+	SaveTitles.Install speed 8 ~
+
+SaveTiles.Configuration writes the current configuration (values of speed, columnCount and rowCount) to the System.Log. This is also a good way of getting the names of the values that can be specified in Install.
+
+2.3 SaveParticles: colorful particles bounce around the screen
+
+SaveParticles.Install installs Particles as the current fader. You can, optionally, specify the number and size of the particles.
+
+	SaveParticles.Install {(particleCount | particleSize | speed | frameRate | origin ) integer}
+	
+	SaveParticles.Install particleCount 16 particleSize 32 ~
+	SaveParticles.Install particleCount 256 particleSize 2 ~
+
+SaveParticles.Configuration writes the current configuration to the System.Log.
+
+2.4 SaveDecay: black ooze flows down from above
+
+SaveDecay.Install installs Decay as the current fader. Decay is not configurable.
+
+3 Programming
+
+Conceptually, a fader is a tuple of three parameterless procedures: Start, Step and Stop.
+
+Writing a simple fader for SaveScreen is easy. Your module need only define 5 procedures, one of which is exported. Making your screen saver configurable, as in the case of SaveParticles, takes only a little more work.
+
+You are encouraged to give each fader its own module so that the users of your fader only need to have the code loaded that their current fader actually needs. 
+
+3.1 A Minimal Fader
+
+A minimal Fader must provide 5 procedures: Start, Step, Stop, Install and Remove. Only Install should be exported. Please see SaveDecay.Mod for an example of a minimal fader.
+
+PROCEDURE Start
+Start is called by SaveScreen only once: when your fader is started. Set up the starting state for your fader. You should also call SaveScreen.SetFrameRate(), to set the freqeuncy with which your Step procedure will be called. Legal frame rates are between 1 and 30 frames per second. You may also want to clear the screen, by drawing a black rectangle over the display. This is not handled automatically by SaveScreen, since some faders (like SaveTiles) work by modifying the screen image.
+
+PROCEDURE Step
+Step is called repeatedly while your fader is running. You should do a frame (or so) of animation and relinquish control again quickly. 
+
+PROCEDURE Stop
+Stop is called when the user moves the mouse. This would be a good place to release any resources that your fader aquired during Start.  For example, if your fader does some kind of sprite animation you'll probably want to load the sprites when Start is called. Stop would be a good place to set the pointers to the sprites to NIL so that the garbage collector can reclaim the memory. If you've changed the color map, this is the place to restore it.
+
+PROCEDURE Install*
+Install your fader by calling SaveScreen.InstallFader(Start, Step, Stop).
+
+PROCEDURE Remove
+Remove your fader by calling SaveScreen.RemoveFader(Start, Step, Stop). This should be installed as your module's termination handler in the module body so that the pointers to your fader procedures will not dangle when your fader module is unloaded. Put Modules.InstallTermHandler(Remove) into your module's body. If your module provides more than one fader, RemoveFader should be called once for each of your faders.
+
+3.2 Making Your Fader Configurable
+
+You may wish to allow your fader to be configured. For example, SaveParticles.Mod allows the user to set the number of particles as well as their size. To make your fader configurable you'll have to add the command Configuration and modify Install.
+
+PROCEDURE Install*
+You'll have to add code to Install to read the parameters from the text following your Install command. A simple pattern, which works well if all the configurable variables are integers is used in both SaveParticles.Install and SaveTiles.Install:
+
+	In.Open;
+	LOOP
+		In.Name(name); IF ~In.Done THEN EXIT END;
+		In.Int(n); IF ~In.Done THEN EXIT END;
+		IF (name = "particleCount") THEN
+			particleCount := SaveScreen.Limit(minParticleCount, n, maxParticleCount)
+		ELSIF (name = "particleSize") THEN
+			particleSize := SaveScreen.Limit(minParticleSize, n, maxParticleSize)
+		END;
+	END;
+
+Most of your configurable variables will have upper and lower bounds.SaveScreen provides the function procedure Limit to help you here. Limit(min, n, max) makes sure n is between min and max inclusive. If it is too large, it returns max instead; if it is too small it returns min, if it is within the range, n is returned.
+
+PROCEDURE Configuration*
+Here you should write the current values of all your configurable variables using. You're encouraged to follow the pattern set forth in the SaveParticles.Mod.
+
+	Out.String("SaveParticles: "); Out.Ln;
+	Out.String("    particleCount "); Out.Int(particleCount, 0); Out.Ln;
+	Out.String("    particleSize "); Out.Int(particleSize, 0); Out.Ln;
+
+3.3 SaveScreen Module Definition
+
+	DEFINITION SaveScreen;
+		TYPE FaderProc = PROCEDURE;
+		PROCEDURE Rand (range: INTEGER): INTEGER;
+		PROCEDURE Limit (min, val, max: INTEGER): INTEGER;
+		PROCEDURE SetWaitTime (seconds: LONGINT);
+		PROCEDURE SetFrameRate (framesPerSecond: INTEGER);
+		PROCEDURE InstallFader (newStart, newStep, newStop: FaderProc);
+		PROCEDURE InstallDefault;
+		PROCEDURE RemoveFader (start, step, stop: FaderProc);
+		PROCEDURE Deactivate;
+		PROCEDURE Activate;
+		PROCEDURE Run;
+	END SaveScreen.
+	
+PROCEDURE Rand (range: INTEGER): INTEGER;	
+Rand(range) returns a random number in the range [0..range-1]. It is based on the module RandomNumbers, included with System 3. Unlike RandomNumbers.Rand, it uses only integer math, making it suitable for the Shark NC's, which have (slow) emulated floating point.
+
+PROCEDURE Limit (min, val, max: INTEGER): INTEGER;
+Limit returns val limited to the range [min..max]. If val < min, then min is returned instead. If val > max, then max is returned in its place.
+
+PROCEDURE SetWaitTime (seconds: LONGINT);
+Sets the amount of time (in seconds) the system must be idle before the screen saver starts.
+
+PROCEDURE SetFrameRate (framesPerSecond: INTEGER);
+Sets the frame rate (how often per second) the current fader's Step procedure is called. Each fader should set it as required in its Start procedure. It may be between 1 and 30 frames per second.
+
+PROCEDURE InstallFader (newStart, newStep, newStop: FaderProc);
+Installs the fader implemented by the three fader procedures. It's generally called from the fader modules' Install command. Do be careful to pass the three FaderProcs in the right order. The type checker won't catch it if you pass the procedures in the wrong order since their types are all the same.
+
+PROCEDURE InstallDefault;
+Removes any custom fader and re-installs the default fader.
+
+PROCEDURE RemoveFader (start, step, stop: FaderProc);
+If start, step, stop is the current fader, this will re-install the default fader. Otherwise, nothing happens. This should be called from a fader module's termination handler to prevent pointers to its FaderProcs from dangling after the module has been freed. 
+
+Additional developer documentation:
+
+
+SaveLife developer documentation:
+

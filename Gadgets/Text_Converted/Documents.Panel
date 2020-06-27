@@ -1,0 +1,14 @@
+PanelDocs.NewDocJBIER_
+
+l$ble.jw<IV!		
+3
+q	
+
+
+JCXiCCmdDirectories.Directory '#Value ' ListFieldNamePatternMIcon *>4CCmdIcons.InsertIcon *FieldYesVal_Print *(4CCmdDesktops.PrintDoc &Printer.Value  *FieldYesVal8LPT1(jCCmdFieldNamePrinterOUnix ^T4CCmdEditTools.OpenUnix ^FieldYesValQAscii ^T4CCmdEditTools.OpenAscii ^FieldYesValXColumbus>4CCmdColumbus.InspectFieldYesValColor
+HjjCCmdDesktops.OpenDoc #ValueFieldNameFileUOpenj4CCmdDesktops.OpenDoc &File.ValueFieldYesValJRecall>4CCmdDesktops.RecallFieldYesValMOpen ^T4CCmdDesktops.OpenDoc ^FieldYesValpShow3CCmdDirectories.Directory '&Pattern.Value ' ListFieldYesValColor
+60^CCC8^CCmdDirectories.Directory '#Point ' List
+Oberon10.Scn.Fnt.&'	 
+!)*
+#$,+-182*.Arc*.Bak*.Def.*.Fig*.Fnt&*.Graph'*.Lib*.Mod*.Obj *.Panel!*.Pict)*.Scn.Fnt**.Sym#*.Text$*.Tool,*.gif+*.html-*.jpg1*.zipC6(CCClRename4CCmdSystem.RenameFiles &theView.Sel => &theName.ValueFieldYesValSDelete ^4CCmdSystem.DeleteFiles ^ ~FieldYesValhCopy4CCmdSystem.CopyFiles &theView.Sel => &theName.ValueFieldYesVal~(CCmdDesktops.OpenDoc '#Point 'NametheView
+Oberon10.Scn.FntCNameList&CNametheNamePanels.NewPanelTextFields.NewTextFieldBasicGadgets.NewButtonScrollbars.NewBasicGadgets.NewIntegerListGadgets.NewFrameListModels.NewList

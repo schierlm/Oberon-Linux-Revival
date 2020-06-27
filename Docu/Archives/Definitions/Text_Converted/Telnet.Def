@@ -1,0 +1,9 @@
+DEFINITION Telnet;	(* portable *)
+	PROCEDURE Open;	(* ^ |  ( hostname | IP address ) [port] *)
+	PROCEDURE Close;
+	PROCEDURE Reset;
+	PROCEDURE Send;
+	PROCEDURE OpenLog;
+	PROCEDURE Clear;
+
+END Telnet.

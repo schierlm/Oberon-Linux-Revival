@@ -1,0 +1,16 @@
+DEFINITION Gages;	(* portable *)
+
+	IMPORT
+		Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			points: ARRAY  128 OF LONGINT;
+		END;
+	PROCEDURE NewMem;
+	PROCEDURE NewLoad;
+	PROCEDURE NewLap;
+	PROCEDURE NewFrame;
+
+END Gages.

@@ -1,0 +1,4 @@
+DEFINITION WTSStamp;	(* portable *)
+	PROCEDURE New;
+
+END WTSStamp.

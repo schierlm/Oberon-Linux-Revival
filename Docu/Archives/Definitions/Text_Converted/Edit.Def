@@ -1,0 +1,14 @@
+DEFINITION Edit;	(* portable *)
+	PROCEDURE Open;
+	PROCEDURE Show;
+	PROCEDURE Store;
+	PROCEDURE CopyFont;
+	PROCEDURE ChangeFont;
+	PROCEDURE ChangeColor;
+	PROCEDURE Search;
+	PROCEDURE Locate;
+	PROCEDURE AddPrefix;
+	PROCEDURE RemovePrefix;
+	PROCEDURE Recall;
+	PROCEDURE Print;
+END Edit.

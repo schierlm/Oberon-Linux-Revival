@@ -1,0 +1,10 @@
+DEFINITION BooksHelp;	(* portable *)
+
+	IMPORT Objects, Oberon;
+
+	VAR 
+		MagnifyHand: Oberon.Marker;
+	PROCEDURE SetTutorial (obj: Objects.Object; val: ARRAY OF CHAR);
+	PROCEDURE NewIcon;
+
+END BooksHelp.

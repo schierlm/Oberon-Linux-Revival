@@ -1,0 +1,34 @@
+DEFINITION MD5;	(* portable *)
+
+(* The MD5 Message-Digest Algorithm (RFC1321)
+
+The algorithm takes as input a message of arbitrary length and produces
+as output a 128-bit "fingerprint" or "message digest" of the input. It is
+conjectured that it is computationally infeasible to produce two messages
+having the same message digest, or to produce any message having a
+given prespecified target message digest. The MD5 algorithm is intended
+for digital signature applications, where a large file must be "compressed"
+in a secure manner before being encrypted with a private (secret) key
+under a public-key cryptosystem such as RSA. *)
+	TYPE
+		Context = POINTER TO ContextDesc;
+		Digest = ARRAY 16 OF CHAR;
+
+(* Begin an MD5 operation, with a new context. *)
+	PROCEDURE New (): Context;
+
+(* Continues an MD5 message-digest operation, processing another
+	message block, and updating the context. *)
+	PROCEDURE Write (context: Context; ch: CHAR);
+
+(* Continues an MD5 message-digest operation, processing another
+	message block, and updating the context. *)
+	PROCEDURE WriteBytes (context: Context; VAR buf: ARRAY OF CHAR; len: LONGINT);
+
+(* Ends an MD5 message-digest operation, writing the message digest. *)
+	PROCEDURE Close (context: Context; VAR digest: Digest);
+
+(* Convert the digest into an hexadecimal string. *)
+	PROCEDURE ToString (digest: Digest; VAR str: ARRAY OF CHAR);
+
+END MD5.

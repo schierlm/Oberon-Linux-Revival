@@ -1,0 +1,14 @@
+-- VinciDocs.Open *
+define lines() as
+	for x = 20 to 290 by 8 do
+		stroke from (x, 10) to (x, 100) end
+	end
+end lines;
+
+saveclip
+	with font="Oberon-Bold", size=72, width=5 do
+		clip text "Oberon" at (20, 20) end;
+		lines()
+	end
+restore;
+lines()

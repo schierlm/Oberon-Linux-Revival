@@ -1,0 +1,37 @@
+DEFINITION TerminalGadgets;	(* portable *)
+
+	IMPORT Objects, Terminals, Texts, Display, Display3, Gadgets, Fonts;
+
+	CONST
+		NoCursor = 0; FadedCursor = 1; FullCursor = 2;
+		Gap = 2;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			text: Terminals.Terminal;
+			fnt: Fonts.Font;
+			cursorState, charW, lineH, textcol, profile: INTEGER;
+			hasSel: BOOLEAN;
+			selTime: LONGINT;
+			selFrom, selTo: Terminals.Location;
+		END;
+
+		UpdateMsg = RECORD ( Display.FrameMsg ) 
+		END;
+	PROCEDURE NotifyDisplay (t: Terminals.Terminal; op, fromLine, fromCol, toLine, toCol: INTEGER; oldCur: Terminals.Location);
+	PROCEDURE Open (f: Frame; handle: Objects.Handler; t: Terminals.Terminal; fnt: Fonts.Font);
+	PROCEDURE Copy (from, to: Frame);
+	PROCEDURE GetSelection (f: Frame; VAR text: Texts.Text; VAR beg, end, time: LONGINT);
+	PROCEDURE Neutralize (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask);
+	PROCEDURE Update (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask; op: INTEGER; 
+										fromLine, fromCol, toLine, toCol: INTEGER; oldCur: Terminals.Location);
+	PROCEDURE TrackSelection (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask; VAR keySum: SET; x, y: INTEGER);
+	PROCEDURE Call (f: Frame; cmdLine, cmdCol: INTEGER; new: BOOLEAN);
+	PROCEDURE TrackWord (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask; x, y: INTEGER; VAR cmdLine, cmdCol: INTEGER; VAR keySum: SET);
+	PROCEDURE Edit (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask; keys: SET; mouseX, mouseY: INTEGER);
+	PROCEDURE Modify (f: Frame; frameX, frameY: INTEGER; R: Display3.Mask; id, Y, H, dY: INTEGER);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+END TerminalGadgets.

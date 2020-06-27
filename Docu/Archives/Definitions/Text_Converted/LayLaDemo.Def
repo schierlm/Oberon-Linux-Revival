@@ -1,0 +1,8 @@
+DEFINITION LayLaDemo;	(* portable *)
+	PROCEDURE Insert;
+	PROCEDURE InsertDoc;
+	PROCEDURE Insert2;
+	PROCEDURE Build1;
+	PROCEDURE Build2;
+
+END LayLaDemo.

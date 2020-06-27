@@ -1,0 +1,12 @@
+PanelDocs.NewDoc^BIERsIZ
+J#h1r3sL	
+
+
+^CNameHPCalc$
+CFieldS3CNameCM$
+CFieldS2$
+CFieldS1$
+CFieldS0,donejCFieldStatus:
+jCCmdHPCalc.Do #ValueNameInputD#Oberon10.Scn.FntHPCalc 2.05
+9C@Real"(CCmdFieldModeYesVal0CInteger"(CCmdFieldModeYesVal1?Bin"(CCmdFieldBaseYesVal2@Dec
+"~(CCmdFieldBaseYesVal10@Hex"j(CCmdFieldBaseYesVal167PCFieldTOS@;RESET(CCmdHPCalc.Do #Caption;CLEAR(CCmdHPCalc.Do #Caption:DROP(CCmdHPCalc.Do #Caption:DUPL(CCmdHPCalc.Do #Caption:SWAP(CCmdHPCalc.Do #Caption<ROTATE(CCmdHPCalc.Do #CaptionEMath(CCmdHPCalc.ShowFunctions #CaptionFLogic(CCmdHPCalc.ShowFunctions #CaptionETrig(CCmdHPCalc.ShowFunctions #CaptionDLog(CCmdHPCalc.ShowFunctions #CaptionPanels.NewPanelHPCalc.NewLockedTFHPCalc.NewModelTextFields.NewTextFieldTextFields.NewCaptionBasicGadgets.NewButtonProgressMeters.NewFrame

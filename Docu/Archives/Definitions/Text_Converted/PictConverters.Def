@@ -1,0 +1,33 @@
+DEFINITION PictConverters;	(* portable *)
+
+	IMPORT Files, Pictures;
+
+(* Store P in gif format in to R. *)
+	PROCEDURE Pict2GIF (P: Pictures.Picture; VAR R: Files.Rider);
+
+(* PictConverters.PictToGIF { pict => gif }
+	Converts oberon picture files into gif pictures. *)
+	PROCEDURE PictToGIF;
+
+(* PictConverters.GIFToPict { gif => pict }
+	Converts gif pictures into oberon pictures. *)
+	PROCEDURE GIFToPict;
+
+(* PictConverters.JPEGToPict { jpeg => pict }
+	Converts jpeg pictures into oberon pictures. *)
+	PROCEDURE JPEGToPict;
+
+(* PictConverters.XBMToPict { xbm => pict }
+	Converts xbm pictures into oberon pictures. *)
+	PROCEDURE XBMToPict;
+
+(* PictConverters.BMPToPict { bmp => pict }
+	Converts bmp pictures into oberon pictures. *)
+	PROCEDURE BMPToPict;
+
+(* PictConverters.AnyToPict { any => pict }
+	Converts any registered picture format into oberon pictures.
+	(See System.Get PictureConverters) *)
+	PROCEDURE AnyToPict;
+
+END PictConverters.

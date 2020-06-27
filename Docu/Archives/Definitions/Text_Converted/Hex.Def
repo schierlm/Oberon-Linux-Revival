@@ -1,0 +1,58 @@
+DEFINITION Hex; (* portable *)
+
+	IMPORT
+		Files, Display, Objects, Texts, Gadgets;
+
+	TYPE
+		Loc = RECORD
+			org, pos: LONGINT;	(* pos and line origin of location *)
+			x, y, w: INTEGER;	(* rel. coords *)
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			org: LONGINT;
+			car: BOOLEAN;
+			carloc: Loc;
+		END;
+
+		CaretMsg = RECORD ( Display.FrameMsg ) 
+			loc: Loc
+		END;
+
+(* ------------ frame stuff ------------ *)
+	PROCEDURE LinesVisible (H: INTEGER): LONGINT;
+	PROCEDURE LocateLine (F: Frame; y, Y: INTEGER; VAR loc: Loc);
+	PROCEDURE LocateChar (F: Frame; x, y, X, Y: INTEGER; VAR loc: Loc);
+	PROCEDURE LocatePos (F: Frame; pos: LONGINT; hexBlock: BOOLEAN; VAR loc: Loc);
+	PROCEDURE ScrollTo (F: Frame; pos: LONGINT);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame; file: Texts.Text);
+	PROCEDURE NewFrame;
+
+(* ------------ document stuff ------------ *)
+	PROCEDURE NewDoc;
+
+(* ------------ commands ------------ *)
+	PROCEDURE OpenFile (F: Files.File);
+
+(* Opens the given file in a hex document.
+	Usage: Hex.Open '^' | file
+*)
+	PROCEDURE Open;
+
+(* Used internaly to handle middle mouse click *)
+	PROCEDURE Interpret;
+
+(* Searches for the given pattern in the current or marked document. The pattern is either a string,
+	a hex-stream or a bit-stream.
+ 	Usage: HexDocs.Seach ['^' | string | #b{bitdigit} | #h{hexdigit}]
+ *)
+	PROCEDURE Search;
+
+(* Sets the caret to the given position in the current (menu) or marked document.
+  Usage: Hex.Locate '^' | pos
+*)
+	PROCEDURE Locate;
+END Hex.

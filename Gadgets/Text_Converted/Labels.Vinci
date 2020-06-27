@@ -1,0 +1,17 @@
+-- VinciDocs.Open *
+define point (x, y) as
+	fill from (x-1, y-1) to (x+1, y-1) to (x+1, y+1) to (x-1, y+1) close end
+end point;
+
+with font="Oberon", size=16 do
+	label "over" over (100, 100); point(100, 100);
+	label "above" above (100, 140); point(100, 140);
+	label "to upper right" to upper right of (140, 140); point(140, 140);
+	label "right" to right of (140, 100); point(140, 100); point(140, 100);
+	label "to lower right" to lower right of (140, 60); point(140, 60);
+	label "below" below (100, 60); point(100, 60);
+	label "to lower left" to lower left of (60, 60); point(60, 60);
+	label "left" left of (60, 100); point(60, 100);
+	label "to upper left" to upper left of (60, 140); point(60, 140)
+end
+

@@ -1,0 +1,18 @@
+DEFINITION Scramble;	(* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewFrame;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDoc;
+	PROCEDURE Scramble;
+	PROCEDURE Num;
+	PROCEDURE ChangePict;
+	PROCEDURE ChangeSize;
+
+END Scramble.

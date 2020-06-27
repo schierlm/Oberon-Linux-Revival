@@ -1,0 +1,64 @@
+-- shape definition for a coordinate system
+import matrix, shapes;
+
+const name = "Coordinate System";
+
+const org = shapes.point(0, 0); shapes.component("org");
+const axis = shapes.point(200, 0); shapes.component("axis");
+
+const xmin = -20; shapes.real("xmin", "Min. X");
+const xmax = 200; shapes.real("xmax", "Max. X");
+const ymin = -20; shapes.real("ymin", "Min. Y");
+const ymax = 200; shapes.real("ymax", "Max. Y");
+const unit = 91.44/2.4; shapes.real("unit", "Unit");
+const scale = 10; shapes.integer("scale", "Scale");
+
+const tick = 5; shapes.real("tick", "Tick Length");
+
+define matrix as
+	let x0 = attr(org, "X"), y0 = attr(org, "Y"), x1 = attr(axis, "X"), y1 = attr(axis, "Y") in
+		matrix.rotate(matrix.init(1, 0, 0, 1, x0, y0), atan(y1 - y0, x1 - x0))
+	end
+end matrix;
+
+define bbox as
+	rectangles.init(xmin, ymin, xmax, ymax)
+end bbox;
+
+define drag as
+	stroke from (xmin, 0) to (xmax, 0) end;
+	stroke from (0, ymin) to (0, ymax) end;
+end drag;
+
+define render as
+	const xx = xmax-2*tick, yy = ymax-2*tick;
+	with size=8 do
+		if (ymin <= 0) & (0 <= ymax) then
+			stroke from (xmin, 0) to (xx, 0) end;
+			for i = `inexact->exact`(ceiling(xmin/unit)) to `inexact->exact`(floor(xx/unit)) do
+				let x = i*unit in
+					stroke from (x, -tick) to (x, tick) end;
+					label `number->string`(`inexact->exact`(i*scale)) at (x-4, -10)
+				end
+			end;
+			fill from (xmax, 0) to (xx, tick) to (xx, -tick) close end
+		end;
+		if (xmin <= 0) & (0 <= xmax) then
+			stroke from (0, ymin) to (0, yy) end;
+			for j = `inexact->exact`(ceiling(ymin/unit)) to `inexact->exact`(floor(yy/unit)) do
+				let y = j*unit in
+					stroke from (-tick, y) to (tick, y) end;
+					label `number->string`(`inexact->exact`(j*scale)) at (-12, y+2)
+				end
+			end;
+			fill from (0, ymax) to (tick, yy) to (-tick, yy) close end
+		end
+	end
+end render;
+
+define locate(llx, lly, urx, ury) as
+	let rect = rectangles.init(llx, lly, urx, ury) in
+		rectangles.overlap?(rect, rectangles.init(xmin, -tick, xmax, tick)) or
+		rectangles.overlap?(rect, rectangles.init(-tick, ymin, tick, ymax))
+	end
+end locate;

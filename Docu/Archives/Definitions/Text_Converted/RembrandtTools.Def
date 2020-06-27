@@ -1,0 +1,67 @@
+DEFINITION RembrandtTools;	(* portable *)
+(* Enthlt alle Operationen zum Rembrandt-Editor *)
+
+	IMPORT
+		Oberon, Rembrandt;
+
+(* Spiegelt den selektierten Bereich an der Y-Achse *)
+	PROCEDURE FlipH;
+
+(* Spiegelt den selektierten Bereich an der X-Achse *)
+	PROCEDURE FlipV;
+
+(* Generiert aus dem selektierten Bereich ein Picture der Grsse eines Icons *)
+	PROCEDURE MakeIcon;
+
+(* Dithert ein markiertes Picture mit den Parameter Helligkeit und Sttigung *)
+	PROCEDURE Reduce;
+
+(* Weist dem Handler fr die mittlere Maustaste eine neue Prozedur zu *)
+	PROCEDURE Assign (proc: Rembrandt.TrackMMProc; cursor: Oberon.Marker);
+
+(* Operationen dem Handler fr die mittlere Maustaste zuordnen; sind selbstsprechend *)
+	PROCEDURE Points;
+	PROCEDURE Lines;
+	PROCEDURE Rectangles;
+	PROCEDURE Fill;
+	PROCEDURE Spray;
+	PROCEDURE Smear;
+	PROCEDURE Clone;
+	PROCEDURE Circles;
+	PROCEDURE Rotate;
+	PROCEDURE Scale;
+	PROCEDURE SpecialDel;
+	PROCEDURE Erease;
+	PROCEDURE PickColor;
+
+(* Symmetriechsen einstellen *)
+	PROCEDURE SetSymmXaxis;
+	PROCEDURE SetSymmYaxis;
+	PROCEDURE SetSymmDeg45;
+
+(* Attribut Filled einstellen *)
+	PROCEDURE SetFilled;
+	PROCEDURE GetFilled (): BOOLEAN;
+	PROCEDURE Filled (set: BOOLEAN);
+
+(* Attribut Width einstellen *)
+	PROCEDURE SetWidth;
+	PROCEDURE GetWidth (): INTEGER;
+	PROCEDURE Width (w: INTEGER);
+
+(* Attribut Double einstellen *)
+	PROCEDURE SetDouble;
+
+(* Sprayspeed einstellen *)
+	PROCEDURE SetSpraySpeed;
+
+(* Smearspeed einstellen *)
+	PROCEDURE SetSmearSpeed;
+
+(* Picturepalette des markierten Pictures laden *)
+	PROCEDURE LoadColors;
+
+(* Bildschirmpalette in markiertes Picture speichern *)
+	PROCEDURE StoreColors;
+
+END RembrandtTools.

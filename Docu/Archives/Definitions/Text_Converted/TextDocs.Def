@@ -1,0 +1,90 @@
+DEFINITION TextDocs; (* portable *)	(* jm 1.2.95 / tk 1.6.95 *)
+
+(* Implementations of text and Oberon log documents. *)
+	IMPORT
+		Objects, Display, Texts, Documents;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Normal text document *)
+	PROCEDURE InitDoc (D: Documents.Document);
+
+(* Normal text document generator *)
+	PROCEDURE NewDoc;
+	PROCEDURE LogHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Oberon log document *)
+	PROCEDURE InitLog (D: Documents.Document);
+
+(* Generator for Oberon log document *)
+	PROCEDURE NewLog;
+
+(* Get the marked text *)
+	PROCEDURE GetText (VAR par: Display.Frame): Texts.Text;
+
+(* Set the caret at the indicated position in the indicated frame. The text has to correspond. *)
+	PROCEDURE SetCaret (F: Display.Frame; T: Texts.Text; pos: LONGINT);
+
+(* Same function as Edit.Locate *)
+	PROCEDURE Locate;
+
+(* Used in the forms:
+	TextDocs.Controls *		(* toggles showing the control objects in the marked text document *)
+	TextDocs.Controls 		(* toggles showing the control objects in the selected text documents *)
+*)
+	PROCEDURE Controls;
+
+	(* Same as Edit.Search. Also can be used in the form: TextDocs.Search "string" to search for the
+		specified string in the current or marked document. *)
+	PROCEDURE Search;
+
+	(* Replace the last searched for string with the current selection *)
+	PROCEDURE Replace;
+
+	(* Replace all occurances of the last searched for string with the current selection *)
+	PROCEDURE ReplaceAll;
+
+	(* Recalls last deleted text stretch *)
+	PROCEDURE Recall;
+
+(* Used in the form: TextDocs.Show M.P
+	Shows the module M at the position where P occurs for the first time *)
+	PROCEDURE Show;
+
+(* Used in the form: TextDocs.ChangeFont <fontname>
+	Changes the font of the selection. *)
+	PROCEDURE ChangeFont;
+
+(* Used in the form: TextDocs.ChangeColor <col-no>
+	Changes the color of the selection. *)
+	PROCEDURE ChangeColor;
+
+(* Used in the form: TextDocs.ChangeOffset <offset>
+	Changes the offset of the selection. Offset is measured in pixels, and may be negative. *)
+	PROCEDURE ChangeOffset;
+
+(* Starts searching for textual differences starting at the selection positions of the last two selected texts
+		Call: TextDocs.SearchDiff [text1 text2]			exact comparison 
+				TextDocs.SearchDiff \w [text1 text2]		compare ignoring 'white space'	
+*)
+	PROCEDURE SearchDiff;
+
+(* Searches for a colored text in the document containing the caret. ColorNumber is
+implicitely passed by the text color of the selected text. *)
+	PROCEDURE SearchColor;
+
+(* Set all styles to paper width *)
+	PROCEDURE AdjustStyles;
+
+(* Used in the form: TextDocs.PrintSetup [ ( \hoff | \hon ) ] [ ( \poff | \pon) ]
+	Sets printing of document name headers and page numbers. *)
+	PROCEDURE PrintSetup;
+
+(* Open a text in a TextDoc. W, H is used to determine the original size of the document. *)
+	PROCEDURE ShowText (title: ARRAY OF CHAR; T: Texts.Text; W, H: INTEGER);
+
+(* Replace the default system editor with a textdoc. *)
+	PROCEDURE ReplaceSystemEditor;
+	PROCEDURE Left;
+	PROCEDURE Right;
+
+END TextDocs.

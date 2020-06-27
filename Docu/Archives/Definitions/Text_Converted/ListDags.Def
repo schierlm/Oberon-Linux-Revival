@@ -1,0 +1,25 @@
+DEFINITION ListDags;	(* portable *)
+(* Dag is a model designed for the access mechanism defined in module Riders. *)
+
+	IMPORT Objects, Gadgets, ListRiders;
+
+	TYPE
+		Dag = POINTER TO DagDesc;
+		DagDesc = RECORD ( Gadgets.ObjDesc ) 
+		END;
+
+		Rider = POINTER TO RiderDesc;
+		RiderDesc = RECORD ( ListRiders.RiderDesc ) 
+		END;
+	PROCEDURE CopyDag (VAR M: Objects.CopyMsg; from, to: Dag);
+
+(* Standard handler for Dag models *)
+	PROCEDURE DagHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Initialize a dag model *)
+	PROCEDURE InitDag (obj: Dag);
+
+(* Generator for a dag *)
+	PROCEDURE New;
+
+END ListDags.

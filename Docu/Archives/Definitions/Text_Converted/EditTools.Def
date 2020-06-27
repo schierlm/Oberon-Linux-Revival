@@ -1,0 +1,87 @@
+DEFINITION EditTools; (* portable *)	(* CAS/HM 3.12.93  jm 3.5.95 ported/extended to System 3 /  tk 6.2.96*)
+
+	IMPORT
+		Texts;
+
+	(* text manipulation *)
+	PROCEDURE IncFontSize (T: Texts.Text; beg, end: LONGINT; delta: INTEGER);
+	PROCEDURE ChangeFontSize (T: Texts.Text; beg, end: LONGINT; old, new: INTEGER);
+	PROCEDURE ChangeFontFamily (T: Texts.Text; beg, end: LONGINT; old, new: ARRAY OF CHAR);
+	PROCEDURE ChangeFontStyle (T: Texts.Text; beg, end: LONGINT; old, new: CHAR);
+	PROCEDURE ChangeFont (T: Texts.Text; beg, end: LONGINT; old, new: ARRAY OF CHAR);
+
+	(* increment or decrement font size of selected text *)
+	PROCEDURE IncSize;	(* size; selection *)
+
+	(* change font size of selected text (from => to) *)
+	PROCEDURE ChangeSize;	(* {old "=>" new}, selection *)
+
+	(* change style of selected text (from => to) *)
+	PROCEDURE ChangeStyle;	(* {old "=>" new}, selection *)
+
+	(* change font family of selected text (from => to) *)
+	PROCEDURE ChangeFamily;	(* {old "=>" new}, selection *)
+
+	(* change font of selected text *)
+	PROCEDURE Change;	(* {old "=>" new}, selection *)
+	PROCEDURE ChangeCol (T: Texts.Text; beg, end: LONGINT; old, new: INTEGER);
+
+	(* change color of selected text *)
+	PROCEDURE ChangeColor;	(* {old "=>" new}, selection / old may be "?" / Color = 0 .. 255 *)
+	PROCEDURE Changevoff (T: Texts.Text; beg, end: LONGINT; old, new: INTEGER);
+
+	(* change offset of selected text *)
+	PROCEDURE ChangeVoff;	(* {old "=>" new}, selection / old may be "?" / Voff = -32 .. 32 *)
+	PROCEDURE Incvoff (T: Texts.Text; beg, end: LONGINT; delta: INTEGER);
+	PROCEDURE IncVoff;	(* Voff increment; selection / size = -32 .. 32 *)
+	PROCEDURE upper (T: Texts.Text; beg, end: LONGINT);
+
+	(* make selection uppercase *)
+	PROCEDURE Upper;
+	PROCEDURE lower (T: Texts.Text; beg, end: LONGINT);
+
+	(* make selection lowercase *)
+	PROCEDURE Lower;
+	PROCEDURE flipCase (T: Texts.Text; beg, end: LONGINT);
+
+	(* flip case of the selection *)
+	PROCEDURE FlipCase;
+
+	(* Open ASCII file as Oberon text *)
+	PROCEDURE OpenAscii;
+
+	(* Open UNIX ASCII file as Oberon text *)
+	PROCEDURE OpenUnix;
+
+	(* Open Unicode file as Oberon text *)
+	PROCEDURE OpenUnicode;
+
+	(* Store Oberon text as ASCII file *)
+	PROCEDURE StoreAscii;
+
+	(* Store Oberon text as UNIX ASCII file *)
+	PROCEDURE StoreUnix;
+
+	(* Store Oberon text as Macintosh ASCII file *)
+	PROCEDURE StoreMac;
+
+	(* Store Oberon text as Unicode file *)
+	PROCEDURE StoreUnicode;
+
+	(* Strip objects from text *)
+	PROCEDURE RemoveObjects;
+	PROCEDURE Count (T: Texts.Text; beg, end: LONGINT; VAR wc, pc, ec: LONGINT);
+
+	(* Calculates # words, chars, and objects *)
+	PROCEDURE Words;	(* "@" | "^" | "*" *)
+
+	(* Show attributes of selected text *)
+	PROCEDURE ShowAttrs;	(* "^" *)
+
+	(* Show position of selected text *)
+	PROCEDURE ShowPos;	(* "^" *)
+
+(* EditTools.LocateLine ^ *)
+	PROCEDURE LocateLine;
+
+END EditTools.

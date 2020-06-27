@@ -1,0 +1,13 @@
+DEFINITION AsciiCoder;	(* portable *)
+
+	IMPORT Texts, Files;
+	PROCEDURE Compress (src, dest: Files.File);
+	PROCEDURE Expand (src, dest: Files.File);
+	PROCEDURE Code (from: Files.File; to: Texts.Text);
+	PROCEDURE Decode (from: Texts.Text; VAR pos: LONGINT; to: Files.File; VAR ok: BOOLEAN);
+	PROCEDURE CodeFiles;
+	PROCEDURE DecodeFiles;
+	PROCEDURE CodeText;
+	PROCEDURE DecodeText;
+
+END AsciiCoder.

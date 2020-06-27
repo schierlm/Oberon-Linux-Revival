@@ -1,0 +1,12 @@
+DEFINITION CRA; (* portable *)
+	PROCEDURE Length (s: ARRAY OF CHAR): INTEGER;
+	PROCEDURE NewComment (from, to: INTEGER; nested: BOOLEAN);
+	PROCEDURE ConvertToStates (gp0, sp: INTEGER);
+	PROCEDURE MatchDFA (s: ARRAY OF CHAR; sp: INTEGER; VAR matchedSp: INTEGER);
+	PROCEDURE MakeDeterministic (VAR correct: BOOLEAN);
+	PROCEDURE PrintStates;
+	PROCEDURE Backup (VAR name: ARRAY OF CHAR);
+	PROCEDURE WriteScanner;
+	PROCEDURE Init;
+
+END CRA.

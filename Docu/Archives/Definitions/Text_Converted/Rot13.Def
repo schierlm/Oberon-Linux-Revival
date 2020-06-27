@@ -1,0 +1,6 @@
+DEFINITION Rot13;	(* portable *)	(* eos 24-Nov-95 *)
+
+	(* decode rot13 encrypted selection *)
+	PROCEDURE Decode;
+
+END Rot13.

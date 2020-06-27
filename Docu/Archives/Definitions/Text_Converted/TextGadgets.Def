@@ -1,0 +1,48 @@
+DEFINITION TextGadgets; (* portable *)
+
+	IMPORT TextGadgets0, Objects, Gadgets, Texts;
+
+	CONST
+		left = 1; middle = 2; right = 3; pad = 4; pagebreak = 5; wysiwyg = 6; span = 7; printerW = 8; frameW = 9;
+		nocontrol = 1;
+
+	TYPE
+		Style = POINTER TO StyleDesc;
+		StyleDesc = RECORD ( Gadgets.FrameDesc ) 
+			text: Texts.Text;
+			mode: SET;
+			leftM, width: INTEGER;
+			noTabs: SHORTINT;
+			tab: ARRAY  32 OF INTEGER;
+		END;
+
+		Control = POINTER TO ControlDesc;
+		ControlDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( TextGadgets0.FrameDesc ) 
+			control: SET;
+		END;
+
+	VAR 
+		methods: TextGadgets0.Methods;
+		macroHook: Objects.Handler;
+		popupHook: Objects.Handler;
+	PROCEDURE FindStyle (T: Texts.Text; beg: LONGINT): Style;
+	PROCEDURE LocateString (F: TextGadgets0.Frame; x, y, X, Y: INTEGER; VAR loc: TextGadgets0.Loc);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Init (F: Frame; T: Texts.Text; note: BOOLEAN);
+	PROCEDURE New;
+	PROCEDURE NewNote;
+	PROCEDURE CopyStyle (VAR M: Objects.CopyMsg; from, to: Style);
+	PROCEDURE StyleHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE newStyle (): Style;
+	PROCEDURE NewStyleProc;
+	PROCEDURE NewStyle;
+	PROCEDURE CopyControl (VAR M: Objects.CopyMsg; from, to: Control);
+	PROCEDURE ControlHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewControl;
+
+END TextGadgets.

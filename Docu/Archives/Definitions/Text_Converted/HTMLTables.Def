@@ -1,0 +1,16 @@
+DEFINITION HTMLTables;	(* portable *)
+
+(* HTML 3.0 Table support.
+	[HTMLTags]
+	CAPTION=HTMLTables.NewCAPTION
+	TABLE=HTMLTables.NewTABLE
+	TD=HTMLTables.NewTD
+	TH=HTMLTables.NewTH
+	TR=HTMLTables.NewTR *)
+	PROCEDURE NewTABLE;
+	PROCEDURE NewTR;
+	PROCEDURE NewTH;
+	PROCEDURE NewTD;
+	PROCEDURE NewCAPTION;
+
+END HTMLTables.

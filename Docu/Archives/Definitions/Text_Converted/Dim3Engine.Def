@@ -1,0 +1,282 @@
+DEFINITION Dim3Engine;	(* portable *)
+(* This module contains a 3D Engine to draw 3D worlds consisting of polygons *)
+
+	IMPORT
+		Files, Gadgets, Objects, Pictures;
+
+	CONST
+		invisible = 0; mustClip = 1; selected = 2; smooth = 3; dither = 4; gouraud = 5; specular = 6; (* shape state flags *)
+		locked = 0; needUpdate = 1;	(* world state flags *)
+		DirectLight = 0; PointLight = 1;	(* types of light sources *)
+		MaxString = 64; (* maximal number of characters in StringTextures *)
+
+	TYPE
+		Vector = ARRAY 3 OF REAL;	(* 4th homogenous coordinate (W) is always assumed to be 1 *)
+		Matrix = ARRAY 3, 4 OF REAL;	(* bottom row is always assumed to be [0, 0, 0, 1] *)
+		Color = ARRAY 3 OF REAL;	(* red, green and blue value *)
+
+	(* directional  or point light sources *)
+		Light = POINTER TO LightDesc;
+		LightDesc = RECORD
+			next: Light;
+			type: INTEGER;	(* direct light source -> type = DirectLight; point light source -> type = PointLight *)
+			inten: REAL;	(* light intensity, 0 < inten <= 1 *)
+			dir: Vector;	(* light direction or position of point light source in world space *)
+		END;
+
+	(* geometric structures *)
+		Point = POINTER TO PointDesc;
+		PointRef = POINTER TO PointRefDesc;
+		Polygon = POINTER TO PolygonDesc;
+		Shape = POINTER TO ShapeDesc;
+		PointDesc = RECORD
+			next: Point;
+			wc: Vector;	(* 3D world coordinates (WC) *)
+			vrc: Vector;	(* 3D view reference coordinates (VRC) *)
+		END;
+
+		PointRefDesc = RECORD
+			next, prev: PointRef;	(* successor and predecessor in doubly linked polygon list *)
+			p: Point;	(* referenced point *)  (* texture coordinates *)
+			inten: REAL; (* light intensity in point, 0 < inten <= 1 *)
+		END;
+
+		PolygonDesc = RECORD
+			next: Polygon;
+			contour: PointRef;	(* list of contour point references *)
+			normal: Vector;	(* vector pointing away from polygon (in WC) *)
+			dist: REAL;	(* distance of polygon to origin => poly.normal * X + poly.dist = (signed) distance of vector X to plane *)
+			col: INTEGER;	(* color number of shaded polygon *)
+			shape: Shape;	(* shape that contains polygon *)
+			texture: Texture; 	(* texture, the plane has to be filled with, NIL if no texture *)
+		END;
+
+		ShapeDesc = RECORD
+			next: Shape;	(* successor in parent's subshape list *)
+			parent: Shape;	(* the shape this shape is a part of *)
+			subshapes: Shape;
+			points: Point;
+			polygons: Polygon;
+			lights: Light;	(* local light sources *)
+			T: Matrix;	(* local transformation matrix (to be set by application) *)
+			state: SET;
+			color: Color;	(* shape surface color *)
+			grayscale: BOOLEAN;	(* use grayscale colors *)
+			diffuse: REAL;	(* coefficient for diffuse reflection *)
+			speccoef: REAL;	(* coefficien for specular reflection *)
+			specexpo: INTEGER;	(* exponent for specular reflection *)
+			cmd: POINTER TO ARRAY 64 OF CHAR;	(* associated command string *)
+		END;
+
+	(* polygon world *)
+		World = POINTER TO WorldDesc;
+		WorldDesc = RECORD ( Gadgets.ObjDesc ) 
+			state: SET;
+			shape: Shape;	(* the "world shape" *)
+			ambient: REAL;	(* intensity of ambient light *)
+			skyCol, gndCol: INTEGER;	(* color numbers for sky and ground *)
+			horizon: BOOLEAN;	(* flag whether to draw horizon or not *)
+			time: LONGINT;	(* time of selection *)
+			selCount: INTEGER;	(* number of selected shapes *)
+			selShape: Shape;	(* selected shape (if only one selected) *)
+		END;
+
+	(* view specification *)
+		Camera = RECORD
+			fov: REAL;	(* field of view angle *)
+			pos, u, v, w: Vector;	(* camera position and coordinate axes *)
+		END;
+
+	VAR 
+		identity: Matrix;	(* transformation matrix containing identity transformation *)
+		white, black: Color;	(* default color vectors *)
+		executor: Shape;	(* shape that issued a command *)
+
+(*--- Memory Management of Frequently Used Structures ---*)
+(* allocate new point *)
+	PROCEDURE NewPoint (VAR p: Point);
+
+(* allocate new point ref structure*)
+	PROCEDURE NewRef (VAR ref: PointRef);
+
+(* allocate new polygon structure*)
+	PROCEDURE NewPolygon (VAR poly: Polygon);
+
+(* free point list to pool *)
+	PROCEDURE FreePointList (p: Point);
+
+(* free point ref list to pool *)
+	PROCEDURE FreeRefList (ref: PointRef);
+
+(* free polygon list to pool *)
+	PROCEDURE FreePolyList (poly: Polygon);
+
+(* free structure pools *)
+	PROCEDURE ReleaseMem;
+
+(* --- Arc tangent of y/x ---*)
+	PROCEDURE Atan2 (y, x: REAL): REAL;
+
+(*--- Vector Operations ---*)
+	PROCEDURE InitVector (VAR v: Vector; x, y, z: REAL);
+	PROCEDURE MakeVector (VAR from, to, v: Vector);
+
+(* cross product of two vectors *)
+	PROCEDURE CrossProd (VAR u, v, w: Vector);
+
+(*  dot product of two vectors *)
+	PROCEDURE DotProd (VAR u, v: Vector): REAL;
+
+(* scale vector to unit length *)
+	PROCEDURE Normalize (VAR x: Vector);
+
+(*--- Matrix Operations ---*)
+
+(* concat matrices A and B and store result in C *)
+	PROCEDURE ConcatMatrix (VAR A, B, C: Matrix);
+
+(* apply transformation matrix to vector *)
+	PROCEDURE Transform (VAR M: Matrix; VAR x, y: Vector);
+
+(* compute rotation matrix *)
+	PROCEDURE GetRotation (VAR M: Matrix; angle, x, y, z: REAL);
+
+(* prepend translation to transformation *)
+	PROCEDURE Translate (VAR M: Matrix; dx, dy, dz: REAL);
+
+(* prepend rotation to transformation *)
+	PROCEDURE Rotate (VAR M: Matrix; angle, x, y, z: REAL);
+
+(* prepend scale to transformation *)
+	PROCEDURE Scale (VAR M: Matrix; sx, sy, sz: REAL);
+
+(*
+ * Decompose matrix into rotation angle and axis, scale and translation vectors. In order to achieve the given transformation,
+ * you first have to scale, then rotate and finally translate any given point. It is assumed that the matrix consists only of
+ * concatenated rotations, translations and scaling transformations.
+ *)
+	PROCEDURE Decompose (VAR M: Matrix; VAR angle: REAL; VAR axis, scale, trans: Vector);
+
+(*--- Colors ---*)
+	PROCEDURE InitColor (VAR col: Color; r, g, b: REAL);
+
+(*--- Points ---*)
+	PROCEDURE InitPoint (p: Point; x, y, z: REAL);
+
+(*--- Contours ---*)
+
+(* append point reference to contour, inten = light intensity in point (if known) *)
+	PROCEDURE AppendPoint (VAR contour: PointRef; p: Point);
+
+(* append point reference to contour and texture coordinates *)
+	PROCEDURE AppendTexturePoint (VAR contour: PointRef; p: Point; u, v: REAL);
+
+(*--- Textures ---*)
+
+(* build the texture for a string *)
+	PROCEDURE InitStringTexture (poly: Polygon; string, font: ARRAY OF CHAR; col, backCol: Color; transparent: BOOLEAN);
+
+(* calculate and init the texture of the polygon *)
+	PROCEDURE InitTexture (poly: Polygon; name: ARRAY OF CHAR; transparent: BOOLEAN);
+
+(*--- Polygons ---*)
+	PROCEDURE InitPolygon (poly: Polygon);
+
+(*--- Binary Space Partitioning Trees ---*)
+
+(* return frontmost polygon that intersects given ray; x, y are taken as normalized picture coordinates (-1..1) *)
+	PROCEDURE FrontPolygon (w: World; VAR C: Camera; x, y: REAL): Polygon;
+
+(*--- Lights ---*)
+(* Initialisation of light sources; point light -> type = PointLight; direct light -> type = DirectLight *)
+	PROCEDURE InitLight (l: Light; type: INTEGER; VAR dir: Vector; inten: REAL);
+
+(*--- Shapes ---*)
+
+(* Shapes are not real objects (this would probably be overkill), nevertheless, they can handle Attribute messages *)
+	PROCEDURE HandleShapeAttr (s: Shape; VAR M: Objects.AttrMsg);
+
+(* set shading method *)
+	PROCEDURE SetShadingShape (s: Shape; doGouraud: BOOLEAN);
+
+(* set specular reflection of shape *)
+	PROCEDURE SetSpecularReflection (s: Shape; doSpecular: BOOLEAN);
+
+(* set smoothing of shape *)
+	PROCEDURE SetSmoothShape (s: Shape; doSmooth: BOOLEAN);
+
+(* set dithering of shape *)
+	PROCEDURE SetDitherShape (s: Shape; doDither: BOOLEAN);
+	PROCEDURE InitShape (s: Shape; VAR T: Matrix; VAR color: Color; diffuse, coef: REAL; expo: INTEGER; 
+								doGouraud, doSmooth, doDither, doSpecular: BOOLEAN);
+	PROCEDURE FreeShape (s: Shape);
+
+(* add point to shape *)
+	PROCEDURE AddPoint (s: Shape; p: Point);
+
+(* add polygon to shape *)
+	PROCEDURE AddPolygon (s: Shape; poly: Polygon);
+
+(* add local light source to shape *)
+	PROCEDURE AddLight (s: Shape; l: Light);
+
+(* add subshape to shape *)
+	PROCEDURE AddSubshape (s, sub: Shape);
+
+(*--- Cameras ---*)
+
+(* initialize camera *)
+	PROCEDURE InitCamera (VAR C: Camera);
+
+(* move camera position in its own coordinate system *)
+	PROCEDURE MoveCamera (VAR C: Camera; right, up, forward: REAL);
+
+(* rotate camera in its local coordinate system *)
+	PROCEDURE RotateCamera (VAR C: Camera; angle, x, y, z: REAL);
+
+(* get azimute, pitch and roll angle *)
+	PROCEDURE GetCameraAngles (VAR C: Camera; VAR azi, pitch, roll: REAL);
+
+(* set camera orientation by azimute, pitch and roll angles *)
+	PROCEDURE SetCameraAngles (VAR C: Camera; azi, pitch, roll: REAL);
+
+(* get transformation that translates and rotates from WC into camera space *)
+	PROCEDURE GetCameraTrafo (VAR C: Camera; VAR N: Matrix);
+	PROCEDURE WriteCamera (VAR R: Files.Rider; VAR C: Camera);
+	PROCEDURE ReadCamera (VAR R: Files.Rider; VAR C: Camera);
+
+(*--- Worlds ---*)
+
+(* notify clients of changes *)
+	PROCEDURE Update (w: World);
+
+(* enable/disable update messages *)
+	PROCEDURE EnableUpdate (w: World; enable: BOOLEAN);
+
+(* select a shape and its subshapes *)
+	PROCEDURE SelectShape (w: World; shape: Shape; sel: BOOLEAN);
+
+(* shade shape polygons according to shape base color and light sources (shades subshapes, too) *)
+	PROCEDURE ShadeShape (w: World; shape: Shape);
+
+(* invert color of each polygon for temporary highlighting *)
+	PROCEDURE HighlightShape (w: World; shape: Shape);
+
+(* change color of Selection to col *)
+	PROCEDURE ColorSelection (w: World; VAR col: Color);
+	PROCEDURE Neutralize (w: World);
+	PROCEDURE InitWorld (w: World);
+	PROCEDURE FreeWorld (w: World);
+	PROCEDURE WorldHandler (w: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewWorld;
+
+(* add a shape to the world *)
+	PROCEDURE AddShape (w: World; s: Shape);
+
+(* print statistical information in log *)
+	PROCEDURE Statistics (w: World);
+
+(* draw world in picture *)
+	PROCEDURE DrawDirect (w: World; VAR C: Camera; P: Pictures.Picture);
+
+END Dim3Engine.

@@ -1,0 +1,119 @@
+DEFINITION Calculator;	(* portable *)	(* by W. Ibl *)
+
+	IMPORT Texts;
+
+	CONST
+		Done = 0;
+		UnmatchedBrackets = 1;
+		UnknownOperator = 2;
+		MisplacedOperator = 3;
+		MisplacedOperand = 4;
+		NoOperand = 5;
+		InternalError = 6;
+
+	TYPE
+	(* Implementation of unary resp. binary operators *)
+		UnaryFunc = PROCEDURE (x: LONGREAL): LONGREAL;
+		BinaryFunc = PROCEDURE (x: LONGREAL; y: LONGREAL): LONGREAL;
+		Expression = POINTER TO ExpressionDesc;	(* the expression tree *)
+		ExpressionDesc = RECORD
+			res: INTEGER;	(* error flag *)
+		END;
+
+	VAR 
+		test: Expression;	(* FOR DEBUGGING ONLY *)
+
+(* raise base by exponent using e ^ (exponent * ln(base)). This is exportet for Calculator Gadgets *)
+	PROCEDURE Power (base, exponent: LONGREAL): LONGREAL;
+
+(* calculate factorial of this using Stirling's approximation. This is exportet for Calculator Gadgets *)
+	PROCEDURE Fac (this: LONGREAL): LONGREAL;
+
+(* Initialize a new expression tree. *)
+	PROCEDURE InitExpression (VAR exp: Expression);
+
+(* Add an opening '(' or closing ')' bracket to the expression tree. All operations between those brackets
+are resolved first on evaluation. This is exported for CalculatorGadgets. *)
+	PROCEDURE AppendBracket (VAR exp: Expression; bracket: CHAR);
+
+(* Close all open brackets in the expression tree. This is exported for CalculatorGadgets. *)
+	PROCEDURE CloseAllBrackets (VAR exp: Expression);
+
+(* Add a new operator to the expression tree. The operator must be either built-in or been added by
+AddPrefixOperator/AddPostfixOperator resp. AddInfixOperator before. This is exported for CalculatorGadgets. *)
+	PROCEDURE AppendOperator (VAR exp: Expression; op: ARRAY OF CHAR);
+
+(* Add a new operand to the expression tree. This is exported for CalculatorGadgets. *)
+	PROCEDURE AppendOperand (VAR exp: Expression; op: LONGREAL);
+
+(* Scan a text and build an expression tree. No result is calculated. *)
+	PROCEDURE Scan (VAR exp: Expression; VAR S: Texts.Scanner);
+
+(* traverse the expression tree starting from the current node of exp and return the result. *)
+	PROCEDURE EvaluateCurrent (exp: Expression): LONGREAL;
+
+(* traverse the expression tree starting from the topmost node of exp and return the result *)
+	PROCEDURE EvaluateRoot (exp: Expression): LONGREAL;
+
+(* set the fraction value of the output of Calculator.Calculate *)
+	PROCEDURE Fraction;
+
+(* set the exponent value of the output of Calculator.Calculate *)
+	PROCEDURE Exponent;
+
+(* scan a text, traverse the resulting tree and print the result into Oberon.Log *)
+	PROCEDURE Calculate;
+
+(* Add a new unary prefix operator. It must be followed by a value and is calculated first on Evaluation.
+f must be PROCEDURE(x: LONGREAL) returning LONGREAL. For example to define the unary operator log
+
+		PROCEDURE log(x: LONGREAL): LONGREAL;
+		BEGIN
+			RETURN(MathL.ln(x) / MathL.ln(10));
+		END log;
+
+		Calculator.AddPrefixOperator("log",log);
+*)
+	PROCEDURE AddPrefixOperator (name: ARRAY OF CHAR; f: UnaryFunc);
+
+(* Add a new binary infix operator. It must be between two expressions and is calculated depending on w.
+f must be PROCEDURE(x: LONGREAL; y: LONGREAL) returning LONGREAL. For example to define the binary
+operator modulo
+
+		PROCEDURE modulo(x,y: LONGREAL): LONGREAL;
+		BEGIN
+			RETURN(ENTIER(x) MOD ENTIER(y));
+		END modulo;
+
+		Calculator.AddInfixOperator("mod",0,modulo);
+*)
+	PROCEDURE AddInfixOperator (name: ARRAY OF CHAR; w: INTEGER; f: BinaryFunc);
+
+(* Add a new unary postfix operator. It must be preceeded by a value and is calculated last on evaluation.
+f must be PROCEDURE(x: LONGREAL) returning LONGREAL. For example to define a simple unary operator fac
+
+		PROCEDURE fac(x: LONGREAL): LONGREAL;
+		VAR
+			i: LONGINT;
+			y: LONGREAL;
+		BEGIN
+			i:= 0; y:= 1.0;
+			WHILE (i < ENTIER(x)) DO y:= y * i; INC(i); END;
+			RETURN(y);
+		END fac;
+
+		Calculator.AddPostfixOperator("!",fac);
+*)
+	PROCEDURE AddPostfixOperator (name: ARRAY OF CHAR; f: UnaryFunc);
+
+(* predefined Operators are
+Infix:	+ Add, - Subtract, * Multiply, / Divide, ^ Power
+Prefix:	arctan, sin, cos, exp, ln, sqrt
+Postfix: ! Factorial
+
+used operator weights are 0 to 4
+
+Syntax of expression must be according to Texts.Scanner
+*)
+
+END Calculator.

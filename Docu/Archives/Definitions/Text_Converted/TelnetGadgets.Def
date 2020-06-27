@@ -1,0 +1,15 @@
+DEFINITION TelnetGadgets; (* portable *)
+
+	CONST
+		Gap = 2;
+	PROCEDURE Open;
+	PROCEDURE Close;
+	PROCEDURE Reset;
+	PROCEDURE OpenLog;
+	PROCEDURE Send;
+	PROCEDURE NewFrame;
+	PROCEDURE NewLinkScheme;
+	PROCEDURE CloseCon;
+	PROCEDURE NewDoc;
+
+END TelnetGadgets.

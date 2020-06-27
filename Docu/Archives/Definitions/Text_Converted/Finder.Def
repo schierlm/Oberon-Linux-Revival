@@ -1,0 +1,39 @@
+DEFINITION Finder;	(* portable *)
+
+	IMPORT
+		Objects,
+		Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewFrame;
+
+	(* Internal command, used to bring a document to front. *)
+	PROCEDURE BringToFront;
+
+	(*
+		Minimizes a document. In the track system, the document will be moved to the bottom as far
+		as possible. In the desktop, the document is removed and an entry (green color) is added to
+		the desktops finder. *)
+	PROCEDURE Minimize;
+
+	(*
+		Reads the Gadgets.FinderTemplates section *)
+	PROCEDURE UpdateTemplates;
+
+END Finder.
+
+(*A Finder is used to quickly find a document among the many documents piled in a desktop and to place it on top of all others, open and ready. Moving the mouse focus to the finder and pressing the middle mouse key opens the Finder showing a list of document names from which one can be selected by moving the mouse focus up or down. When the mouse key is released, the selected document is brought to the front of the desktop and the finder is closed. Note however, if an open document is only partially visible it can be brought to the front by a simple left mouse click.
+
+An open Finder in principle contains three sections: the top one lists the names of the open documents in blue, the middle one lists the minimized documents in green and the bottom one lists the documents contained in the Gadgets.FinderTemplates section of Oberon.Text. The names of open and minimized documents is taken from their NamePlates. The names include the full path specification and they are are preceded by a ideogram representing the document type. A document having an empty NamePlate appears as "Untitled document".
+
+The names in the three lists have an order. In the list of open documents, the document placed deepest on the desktop appears first, while the document placed right on top appears last. The same order exists for the minimized documents, but that order is not relevant to the user since the documents can only be re-opened with the Finder. In the last list, the names appear in the order of their appearance in the Gadgets.FinderTemplates section, which may be cutomized at will. Each entry in this section must appear in a text line with the following format:
+
+	Name = "documentName" | "documentType"
+
+e.g. 'Gadgets = "Gadgets.Panel"' for the Gadgets.Panel or 'Text="(TextDocs.NewDoc)"' for an untitled text document.
+*)

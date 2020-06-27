@@ -1,0 +1,71 @@
+DEFINITION BTrees;	(* portable *)
+
+	IMPORT Files;
+
+(* BTrees is a utility module that manages b-trees with string (64 characters) or longint keys. Each key is linked to
+		a longint value (org) which normaly is an offset to where the data for that key is stored. *)
+	CONST
+		Done = 0; NotFound = 1; EntryChanged = 2; (* res codes *)
+		StrKeySize = 64; (* The maximum length of a string key. *)
+
+	TYPE
+		Tree = POINTER TO TreeDesc; (* handle to a b-tree index *)
+		EnumLIntProc = PROCEDURE (key, org: LONGINT; VAR cont: BOOLEAN); (* enumerator for longin keys *)
+		EnumStrProc = PROCEDURE (key: ARRAY OF CHAR; org: LONGINT; VAR cont: BOOLEAN); (* enumerator for string keys *)
+
+	VAR 
+		MINStrKey, MAXStrKey: ARRAY StrKeySize OF CHAR; (* first and last string key *)
+
+(* Search for key in T. If the key could be found res = Done else res = NotFound. *)
+	PROCEDURE SearchLInt (T: Tree; key: LONGINT; VAR org: LONGINT; VAR res: INTEGER);
+
+(* Insert a new key into T. If a new key was inserted, res = Done else res = EntryChanged. *)
+	PROCEDURE InsertLInt (T: Tree; key, org: LONGINT; VAR res: INTEGER);
+
+(* Delete key from T. If key was deleted res = Done else res = NotFound. *)
+	PROCEDURE DeleteLInt (T: Tree; key: LONGINT; VAR res: INTEGER);
+
+(* Enumerate all keys in T witch range from min upto max (key >= min) & (key <= max). *)
+	PROCEDURE EnumLInt (T: Tree; min, max: LONGINT; enum: EnumLIntProc);
+
+(* Searches the smallest key used in T. *)
+	PROCEDURE MinLIntKey (T: Tree; VAR key: LONGINT; VAR res: INTEGER);
+
+(* Searches the biggest key used in T. *)
+	PROCEDURE MaxLIntKey (T: Tree; VAR key: LONGINT; VAR res: INTEGER);
+
+(* Create a new b-tree with longint keys. The tree is written to F starting at org.
+		cache gives the minumum number of keys which should fit into the page cache. *)
+	PROCEDURE NewLInt (F: Files.File; org: LONGINT; cache: INTEGER): Tree;
+
+(* Search for key in T. If the key could be found res = Done else res = NotFound. *)
+	PROCEDURE SearchStr (T: Tree; key: ARRAY OF CHAR; VAR org: LONGINT; VAR res: INTEGER);
+
+(* Insert a new key into T. If a new key was inserted, res = Done else res = EntryChanged. *)
+	PROCEDURE InsertStr (T: Tree; key: ARRAY OF CHAR; org: LONGINT; VAR res: INTEGER);
+
+(* Delete key from T. If key was deleted res = Done else res = NotFound. *)
+	PROCEDURE DeleteStr (T: Tree; key: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Enumerate all keys in T witch range from min upto max (key >= min) & (key <= max). *)
+	PROCEDURE EnumStr (T: Tree; min, max: ARRAY OF CHAR; enum: EnumStrProc);
+
+(* Searches the smallest key used in T. *)
+	PROCEDURE MinStrKey (T: Tree; VAR key: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Searches the biggest key used in T. *)
+	PROCEDURE MaxStrKey (T: Tree; VAR key: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Create a new b-tree with string keys. The tree is written to F starting at org.
+		cache gives the minumum number of keys which should fit into the page cache. *)
+	PROCEDURE NewStr (F: Files.File; org: LONGINT; cache: INTEGER): Tree;
+
+(* Reopen the b-tree written to F starting at org. *)
+	PROCEDURE Old (F: Files.File; org: LONGINT): Tree;
+
+(* Flush the page-cache of T to disk. *)
+	PROCEDURE Flush (T: Tree);
+
+(* Return the file used by T. *)
+	PROCEDURE Base (T: Tree): Files.File;
+END BTrees.

@@ -1,0 +1,10 @@
+DEFINITION Dim3Read;	(* portable *)
+(* This module builds polygon worlds for the 3D Engine from a text description *)
+
+	IMPORT
+		Dim3Engine, Texts;
+
+(* start reading of polygon world description *)
+	PROCEDURE Read (w: Dim3Engine.World; T: Texts.Text);
+
+END Dim3Read.

@@ -1,0 +1,144 @@
+DEFINITION FTPDocs; (* portable *)
+
+	IMPORT NetTools, Texts;
+
+(* This module implements an API-interface and a interactive interface to FTP (RFC 959).
+		The FTPDocs-modul supports ftp urls. The following line should be added to the LinkSchemes section of the Registry:
+			ftp = FTPDocs.NewLinkScheme
+		And the following line to the Documents section:
+			ftp = FTPDocs.NewDoc
+		To ensure that anonymous ftp works correctly your e-mail address should be defined in the NetSystem section of
+		the Registry. e.g.: EMail = "me@home"
+		To access FTP within a firewall, add the proxy to the NetSystem section of the Registry:
+			FTPProxy = host [ ":" port ] . *)
+	CONST
+		DefConPort = 21;
+	(* res codes *)
+		Done = NetTools.Done;
+		NotReady = 1;
+		NotConnected = 2;
+		WrongUser = 3;
+		WrongPassword = 4;
+		TimedOut = 5;
+		LocFileNotFound = 6;
+		Interrupted = 7;
+		Disconnected = 8;
+		Failed = NetTools.Failed;
+
+	TYPE
+(* The connection to an ftp server is controlled by a session handle. *)
+		Session = POINTER TO SessionDesc;
+		SessionDesc = RECORD ( NetTools.SessionDesc ) 
+		END;
+
+		EnumProc = PROCEDURE (entry: ARRAY OF CHAR);
+
+(* Close connection for session S.
+	res: allways = Done *)
+	PROCEDURE Close (S: Session);
+
+(* Open a new ftp session S to server using USER=user and PASS=passwd.
+	If user is either ftp or anonymous, passwd defaults to the e-mail address set in the
+	Registry (NetSystem.EMail).
+	port gives the Telnet-port of the FTP server, most FTP servers use FTPDocs.DefConPort.
+	If log # NIL all responses from the server will be appended to log. NetSystem.hostIP
+	must be set correctly.
+	res:
+		Done: all ok
+		WrongPassword: the password given is incorrect
+		WrongUser: the given user is not allowd to use this server
+		NotReady: the server is busy, retry later
+		NotConnected: server not found
+		Failed: NetSystem.hostIP not set *)
+	PROCEDURE Open (server, user, passwd: ARRAY OF CHAR; port: INTEGER; log: Texts.Text; VAR S: Session);
+
+(* Change the current directory.
+		res:
+			Done: all ok
+			Failed: directory not changed *)
+	PROCEDURE ChangeDir (S: Session; newDir: ARRAY OF CHAR);
+
+(* Retrieve a list of the current directory and call enum for each entry in the list.
+		res:
+			Done: all ok
+			TimeOut: server did not answer in time
+			Failed: see S.reply(Line) *)
+	PROCEDURE EnumDir (S: Session; enum: EnumProc);
+
+(* Retrieve the file remName from the server and store it as local file locName.
+		res:
+			Done: all ok
+			TimeOut: server did not answer in time
+			Failed: file not found or no permission, see S.reply(Line) *)
+	PROCEDURE GetFile (S: Session; remName, locName: ARRAY OF CHAR);
+
+(* Retrieve the text file remName from the server and write it to writer W.
+		The text is converted from iso-8859-1 to the Oberon-code.
+		res:
+			Done: all ok
+			TimeOut: server did not answer in time
+			Failed: file not found or no permission, see S.reply(Line) *)
+	PROCEDURE GetText (S: Session; remName: ARRAY OF CHAR; VAR W: Texts.Writer);
+
+(* Store the local file locName as remName on the server.
+		res:
+			Done: all ok
+			TimeOut: server did not answer in time
+			Failed: no permission or bad file name
+			LocFileNotFound: could not open the local file *)
+	PROCEDURE PutFile (S: Session; remName, locName: ARRAY OF CHAR);
+
+(* Store text as remName on the server.
+		The text is converted to iso-8859-1. All none ascii content is ignored (colors, fonts, objects, ...).
+		res:
+			Done: all ok
+			TimeOut: server did not answer in time
+			Failed: no permission or bad file name *)
+	PROCEDURE PutText (S: Session; remName: ARRAY OF CHAR; text: Texts.Text);
+
+(* Delete the file remName from the server.
+		res:
+			Done: all ok
+			Failed: file not found or no permission, see S.reply(Line) *)
+	PROCEDURE DeleteFile (S: Session; remName: ARRAY OF CHAR);
+
+(* Query the current dir (path).
+		res:
+			Done: all ok
+			Failed: see S.reply(Line) *)
+	PROCEDURE GetCurDir (S: Session; VAR curdir: ARRAY OF CHAR);
+
+(* Create a new directory.
+		res:
+			Done: all ok
+			Failed: see S.reply(Line) *)
+	PROCEDURE MakeDir (S: Session; newDir: ARRAY OF CHAR);
+
+(* Remove an existing directory.
+		res:
+			Done: all ok
+			Failed: see S.reply(Line) *)
+	PROCEDURE RmDir (S: Session; dir: ARRAY OF CHAR);
+
+(* Register a ftp URL and get a unique key for it. *)
+	PROCEDURE RegisterFTPAdr (host, path, user, passwd: ARRAY OF CHAR; type: CHAR; port: INTEGER): LONGINT;
+
+(* Parsing of an ftp url. *)
+	PROCEDURE SplitFTPAdr (VAR url, host, path, user, passwd: ARRAY OF CHAR; VAR type: CHAR; VAR port: INTEGER): LONGINT;
+	PROCEDURE NewLinkScheme;
+
+(* Used by the interactive interface to retrieve the selected file and store it under the same name. *)
+	PROCEDURE GetDocFile;
+
+(* Used by the interactive interface to send the selected file and store it under the same name. *)
+	PROCEDURE PutDocFile;
+
+(* Used by the interactive interface to delete the selected file. *)
+	PROCEDURE DeleteDocFile;
+
+(* Used by the interactive interface to change to directory pointed at *)
+	PROCEDURE ChangeDocDir;
+
+(* Extension of TextGadgets used by the interactive FTPDocs. *)
+	PROCEDURE NewDoc;
+END FTPDocs.

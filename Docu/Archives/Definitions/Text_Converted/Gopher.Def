@@ -1,0 +1,18 @@
+DEFINITION Gopher;	(* portable *)
+
+(* This module implements a gopher client (RFC 1436).
+		The following line should be added to the LinkSchemes section of the Registry:
+			gopher = Gopher.NewLinkScheme
+		And the following line to the Documents section:
+			gopher = Gopher.NewDoc
+		To access Gopher within a firewall, add the proxy to the NetSystem section of the Registry:
+			GopherProxy = host [ ":" port ] . *)
+
+(* Command used by the Gopher+ outlines. *)
+	PROCEDURE Info;
+
+(* The gopher protocol object. *)
+	PROCEDURE NewLinkScheme;
+	PROCEDURE NewDoc;
+
+END Gopher.

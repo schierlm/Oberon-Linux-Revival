@@ -1,0 +1,15 @@
+DEFINITION XBM; (* portable *)
+
+	IMPORT Files, Objects, Pictures;
+
+(* Load an xbm-image from rider R. *)
+	PROCEDURE Load (VAR R: Files.Rider; pict: Pictures.Picture);
+	PROCEDURE Handle (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitPicture;
+
+(* Called from Pictures.Open to try and load an XBMP picture. The picture descriptor is pre-allocated by Pictures in
+Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the XBM picture
+when a FileMsg is received (variant load). *)
+	PROCEDURE NewPicture;
+
+END XBM.

@@ -1,0 +1,5 @@
+DEFINITION Browser;	(* portable, except where noted *)
+	PROCEDURE ShowDef;
+	PROCEDURE ShowScope;	(* non-portable *)
+
+END Browser.

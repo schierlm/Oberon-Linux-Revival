@@ -1,0 +1,7 @@
+DEFINITION UDPExample;	(* portable *)
+
+(* UDPExample.DNS name
+	Look up DNS information on name. *)
+	PROCEDURE DNS;
+
+END UDPExample.

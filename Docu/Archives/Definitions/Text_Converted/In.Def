@@ -1,0 +1,64 @@
+DEFINITION In; (* portable *)
+
+(* Stream oriented text input. Module In encapsulates the parameter scanning process of commands. *)
+
+	VAR 
+		Done: BOOLEAN;	(* Has the last scan operation been successful? *)
+
+(* Initializes the parameter scanner. The parameter stream is assumed to be the selection when ^ is scanned, 
+the marked text viewer when * is scanned; otherwise the text that follows the command itself. *)
+	PROCEDURE Open;
+
+(* Scan a single character. The character returned is the character immediately following the last scanned token.*)
+	PROCEDURE Char (VAR ch: CHAR);
+
+(* Scan an integer. *)
+	PROCEDURE Int (VAR i: INTEGER);
+
+(* Scan a long integer. *)
+	PROCEDURE LongInt (VAR i: LONGINT);
+
+(* Scan a real number. *)
+	PROCEDURE Real (VAR x: REAL);
+
+(* Scan a long real number. *)
+	PROCEDURE LongReal (VAR y: LONGREAL);
+
+(* Scan a name. The syntax of a name is the same as that of the module Texts scanner. *)
+	PROCEDURE Name (VAR name: ARRAY OF CHAR);
+
+(* Scan a double quoted string. The quotes are not returned. *)
+	PROCEDURE String (VAR str: ARRAY OF CHAR);
+
+END In.
+
+(* Remarks:
+
+1. Module In provides a primitive interface to parameter scanning. It is mainly used in situations where the 
+command parameters must appear in a predefined sequence, and for Oberon beginners. A more flexible 
+means of scanning parameters is provided in the Texts module.
+
+2. Suppose we need to program a command Example.Calculate. There are three ways of passing parameters 
+to this command:
+
+	Example.Calculate par1 par2 par3 ~	Parameters follow directly after the command.
+	Example.Calculate ^	Parameters are contained in the text selection.
+	Example.Calculate *	Parameters are found in the marked text viewer.
+	
+To hide the three parameter passing styles, we can program Example.Calculate in the following way:
+
+	PROCEDURE Calculate*;
+	VAR s: ARRAY 64 OF CHAR;
+	BEGIN
+		In.Open;	(* Initialize the scanner according to one of the three parameter passing styles. *)
+		WHILE In.Done DO
+			In.Name(s);	(* scan the next name *)
+		END
+	END Calculate;
+
+After each call to an In scan procedure, the In.Done flag is set to true if a parameter of that type was found 
+in the parameters. If an unexpected parameter (say an integer instead of an string) was scanned, In.Done is 
+set to FALSE and scanning is immediately terminated. Calls to In will now have no effect until In.Open is called again.
+
+3. The parameter scanner ignores whitespace (characters SPACE 20X, TAB 9X, and CR 0DX).
+*)

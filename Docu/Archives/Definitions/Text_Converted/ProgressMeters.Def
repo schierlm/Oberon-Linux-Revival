@@ -1,0 +1,14 @@
+DEFINITION ProgressMeters;	(* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE CopyFrame (VAR C: Objects.CopyMsg; F, F1: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame);
+	PROCEDURE NewFrame;
+
+END ProgressMeters.

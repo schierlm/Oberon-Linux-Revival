@@ -1,0 +1,36 @@
+DEFINITION GZReaders;	(* Stefan Walthert  *)
+
+	(*
+		Reading from .gz files
+	*)
+	IMPORT
+		Files, ZlibReaders;
+
+	CONST
+		(* result codes *)
+		Ok = ZlibReaders.Ok; StreamEnd = ZlibReaders.StreamEnd;
+		StreamError = ZlibReaders.StreamError; DataError = ZlibReaders.DataError; BufError = ZlibReaders.BufError; FileError = ZlibReaders.FileError;
+
+	TYPE
+		(* structure for reading from a .gz file *)
+		Reader = RECORD
+			file-: Files.File;	(* underlying Oberon file *)
+			res-: LONGINT;	(* current stream state *)
+		END;
+
+	(* open reader on existing file for input *)
+	PROCEDURE Open (VAR r: Reader; file: Files.File);
+
+	(* close reader *)
+	PROCEDURE Close (VAR r: Reader);
+
+	(* read specified number of bytes into buffer and return number of bytes actually read *)
+	PROCEDURE ReadBytes (VAR r: Reader; VAR buf: ARRAY OF CHAR; offset, len: LONGINT; VAR read: LONGINT);
+
+	(* read decompressed byte *)
+	PROCEDURE Read (VAR r: Reader; VAR ch: CHAR);
+
+	(* get position of reader within uncompressed output stream *)
+	PROCEDURE Pos (VAR r: Reader): LONGINT;
+
+END GZReaders.

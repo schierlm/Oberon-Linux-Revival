@@ -1,0 +1,16 @@
+DEFINITION LayLa2;	(* portable *)
+
+	IMPORT Objects, Texts;
+	PROCEDURE ParseText (text: Texts.Text; pos: LONGINT): Objects.Object;
+	PROCEDURE ParseString (str: ARRAY OF CHAR; pos: LONGINT): Objects.Object;
+	PROCEDURE Insert;
+(*
+		Insert reads the specified layout text and inserts the new gadget at the caret position.
+
+		 Insert ^		read from latest selection
+		 Insert *		read from marked viewer / TextGadget
+		 Insert @ file	read from file
+		 Insert NEW Button END
+*)
+
+END LayLa2.

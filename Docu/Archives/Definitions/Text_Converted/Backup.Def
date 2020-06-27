@@ -1,0 +1,13 @@
+DEFINITION Backup;	(* portable, except where noted *)
+	PROCEDURE Format;	(* non-portable *)
+	PROCEDURE InitOberon;
+	PROCEDURE InitDOS;
+	PROCEDURE Directory;
+	PROCEDURE ReadFiles;
+	PROCEDURE ReadAll;
+	PROCEDURE WriteFiles;
+	PROCEDURE DeleteFiles;
+	PROCEDURE SetDriveA;
+	PROCEDURE SetDriveB;
+
+END Backup.

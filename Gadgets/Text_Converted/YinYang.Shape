@@ -1,0 +1,39 @@
+-- shape definition for a background pattern
+import colors, shapes, rectangles;
+
+shapes.name("Yin-Yang");
+
+define bbox as rectangles.init(0, -1070, 756, 0) end bbox;
+define locate (llx, lly, urx, ury) as false end locate;
+
+define render as
+	define bot(r, i) as `inexact->exact`(floor(`vector-ref`(r, i))) end bot;
+	define top(r, i) as `inexact->exact`(ceiling(`vector-ref`(r, i))) end top;
+	let rect = cliprect(), llx = bot(rect, 0), lly = bot(rect, 1), urx = top(rect, 2), ury = top(rect, 3) in
+		for x = (llx-20) div 50 * 50 to (urx+20) by 50 do
+			for y = (lly-20) div 50 * 50 to (ury+20) by 50 do
+				savectm
+					translate(x, y);
+					with color = colors.black do
+						fill
+							from (0, -20);
+							arc (0, 0), (20, 0) to (0, 20);
+							arc (0, 10), (-10, 10) to (0, 0);
+							arc (0, -10), (10, -10) to (0, -20);
+							close
+						end
+					end;
+					with color = colors.white do
+						fill
+							from (0, 20);
+							arc (0, 0), (-20, 0) to (0, -20);
+							arc (0, -10), (10, -10) to (0, 0);
+							arc (0, 10), (-10, 10) to (0, 20);
+							close
+						end
+					end
+				restore
+			end
+		end
+	end
+end render;

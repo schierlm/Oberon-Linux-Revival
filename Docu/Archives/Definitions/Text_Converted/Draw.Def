@@ -1,0 +1,18 @@
+DEFINITION Draw;	(* portable *)
+	PROCEDURE Open;
+	PROCEDURE Delete;
+	PROCEDURE SetWidth;
+	PROCEDURE ChangeColor;
+	PROCEDURE ChangeWidth;
+	PROCEDURE ChangeFont;
+	PROCEDURE ChangeBackgroundColor;
+	PROCEDURE ToggleTicks;
+	PROCEDURE Store;
+	PROCEDURE Print;
+	PROCEDURE Macro;
+	PROCEDURE OpenMacro;
+	PROCEDURE MakeMacro;
+	PROCEDURE LoadLibrary;
+	PROCEDURE StoreLibrary;
+
+END Draw.

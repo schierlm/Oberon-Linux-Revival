@@ -1,0 +1,23 @@
+PanelDocs.NewDocTEPanels.NewPanelTextFields.NewCaptionBasicGadgets.NewButtonTextFields.NewTextFieldCUSM.NewHostNameCUSM.NewConfIDCUSM.NewReflAdrStrTextGadgets.NewCUSM.NewConnLog	Texts.New
+CUSM.NewVideosLog=
+TCQ	
+
+zHC:#Oberon10.Scn.Fnt
+
+CE#Oberon10.Scn.FntConnect to:
+C
+CHConnect<>CCmdCUSM.ConnectFieldYesValE#Oberon10.Scn.Fnt	Your name:
+N
+CG#Oberon10.Scn.FntConference ID:I
+C:#Oberon10.Scn.Fnt
+
+CKDisconnect All<>CCmdCUSM.EndFieldYesValCOberon UserPj
+CCmdCUSM.SetHostNameFieldOberon UserC=0PjCCmdCUSM.SetConferenceIDFieldCEulinf0.unil.chPjCCmdCUSM.SetReflAdrFieldulinf0.unil.chC:#Oberon10.Scn.Fnt
+
+CVShow Lurckers:<>CCmdCUSM.OutLurckersListFieldYesValmCCmdCUSM.HandleReflectorLogClick #PointPoint"130.235.128.100"ghx:CCmdCUSM.SetReflAdrFromList #PointPoint"132.236.91.204"#Oberon10.Scn.Fnt"132.236.91.204"			Cornell University			USA
+"merkurius.lu.se"		 	Lund University		 	  Sweden
+"130.235.128.100"	  	NASA select					Sweden
+"ulinf0.unil.ch"				University of Lausanne	SwitzerlandP#Oberon10.Scn.FntLIST OF SOME REFLECTORSt
+CI#Oberon10.Scn.FntCONNECTIONS LISTT`
+CK#Oberon10.Scn.FntVIDEO STREAMS LISTTg
+CbCCmdCUSM.StartStopVideo #PointPoint"128.146.80.54"	

@@ -1,0 +1,43 @@
+DEFINITION TextFields; (* portable *)
+
+(*Module TextFields implements text captions and textfields.
+*)
+	IMPORT
+		Objects, Gadgets, Texts;
+
+	TYPE
+	(* Captions  for displaying a text. *)
+		Caption = POINTER TO CaptionDesc;
+		CaptionDesc = RECORD ( Gadgets.FrameDesc ) 
+			focused,	(* Has the keyboard focus or not ? *)
+			underlined: BOOLEAN;	(* Is text underlined ? *)
+			text: Texts.Text;	(* Displayed Text. *)
+		END;
+
+		TextField = POINTER TO TextFieldDesc;
+		TextFieldDesc = RECORD ( Gadgets.FrameDesc ) 
+			selbeg, selend: INTEGER;	(* Starting and ending position of selected characters [selbeg, selend). *)
+			time: LONGINT;	(* Selection time. *)
+			carpos, carx, cary: INTEGER;	(* Caret position and relative coordinates. *)
+			val: ARRAY  64 OF CHAR;	(* Current value. *)
+			consistent: BOOLEAN;	(* Is the textfield consistent with its model value ? *)
+			col: INTEGER;	(* Background color. *)
+		END;
+
+(* Calculate the size and # of lines of caption. If displayspace then the size on the display is returned (adjusted according to the size on the printer) and if not, the size in printer pixels is returned. *)
+	PROCEDURE CalcSize (F: Caption; VAR W, H, nolines: INTEGER; displayspace: BOOLEAN);
+	PROCEDURE CopyCaption (VAR M: Objects.CopyMsg; from, to: Caption);
+	PROCEDURE CaptionHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* initialize caption F with text T. *)
+	PROCEDURE InitCaption (F: Caption; T: Texts.Text);
+
+(* Makes a caption out of the text object found in Objects.NewObj, returning the result in Objects.NewObj.. *)
+	PROCEDURE MakeCaption;
+	PROCEDURE NewCaption;
+	PROCEDURE CopyTextField (VAR M: Objects.CopyMsg; from, to: TextField);
+	PROCEDURE TextFieldHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitTextField (F: TextField);
+	PROCEDURE NewTextField;
+
+END TextFields.

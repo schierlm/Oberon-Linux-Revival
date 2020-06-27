@@ -1,0 +1,73 @@
+PanelDocs.NewDocjBIER(L)nOLE:/
+			Y
+
+
+%h.p0
+p
+
+
+0paN8.n.tpF+KQ KZG4Yf)  !!"}""d###'$h$$$#%u%%U&&&('h''(k(2	
+
+ !"#$%&'()*+,-./0Cm
+jCwJrCCmdMixerPanel.SetVolume 0  0  #Value  &MasterBoth.YesValFieldNameMasterLeftxJrCCmdMixerPanel.SetVolume 0  1  #Value  &MasterBoth.YesValFieldNameMasterRighty7JrCCmdMixerPanel.SetVolume 7  0  #Value  &TrebbleBoth.YesValFieldNameTrebbleLeftzCJr
+CCmdMixerPanel.SetVolume 7  1  #Value  &TrebbleBoth.YesValFieldNameTrebbleRights]JrCCmdMixerPanel.SetVolume 8  0  #Value  &BassBoth.YesValFieldNameBassLefttiJrCCmdMixerPanel.SetVolume 8  1  #Value  &BassBoth.YesValFieldNameBassRightuJrCCmdMixerPanel.SetVolume 3  0  #Value  &VoiceBoth.YesValFieldNameVoiceLeftvJrCCmdMixerPanel.SetVolume 3  1  #Value  &VoiceBoth.YesValFieldNameVoiceRightsJrCCmdMixerPanel.SetVolume 1  0  #Value  &MIDIBoth.YesValFieldNameMIDILefttJrCCmdMixerPanel.SetVolume 1  1  #Value  &MIDIBoth.YesValFieldNameMIDIRightoJrCCmdMixerPanel.SetVolume 2  0  #Value  &CDBoth.YesValFieldNameCDLeftpJrCCmdMixerPanel.SetVolume 2  1  #Value  &CDBoth.YesValFieldNameCDRightsJrCCmdMixerPanel.SetVolume 4  0  #Value  &LineBoth.YesValFieldNameLineLefttJr	CCmdMixerPanel.SetVolume 4  1  #Value  &LineBoth.YesValFieldNameLineRight`Jr
+CCmdMixerPanel.SetVolume 5  0  #ValueFieldNameMicMonofAJrCCmdMixerPanel.SetVolume 6  0  #ValueFieldNamePCSpeakerMono?#Oberon10.Scn.FntMaster
+"
+C=#Oberon10.Scn.FntBass]
+C>#Oberon10.Scn.FntVoice
+C=#Oberon10.Scn.FntMIDI
+C;#Oberon10.Scn.FntCD
+C=#Oberon10.Scn.FntLine
+C<#Oberon10.Scn.FntMic
+C<#Oberon10.Scn.FntPC ?
+C:#Oberon10.Scn.FntL;<
+C:#Oberon10.Scn.FntRF<
+C:#Oberon10.Scn.FntLa<
+C:#Oberon10.Scn.FntRl<
+C:#Oberon10.Scn.FntL<
+C:#Oberon10.Scn.FntR<
+C:#Oberon10.Scn.FntL<
+C:#Oberon10.Scn.FntR <
+CrLR&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameMasterBothsLR7&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameTrebbleBothpLR]&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameBassBothqLR&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameVoiceBothpLR&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameMIDIBothnLR&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameCDBothpLR&CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameLineBoth:#Oberon10.Scn.FntL<
+C:#Oberon10.Scn.FntR<
+C:#Oberon10.Scn.FntL<
+C:#Oberon10.Scn.FntR<
+C:#Oberon10.Scn.FntL<
+C:#Oberon10.Scn.FntR<
+C@#Oberon10.Scn.FntSpeaker4'
+CH$Oberon16i.Scn.FntMixer for SB16qC,13jZ 1C%2
+Z CK#Oberon10.Scn.FntOutput MixerC
+CCmd]456789:;<=>?@AB
+^Cm!CCmdMixerPanel.SetBox 11  4  #YesValFieldNameOutSourceLineLeftYesValtruek!CCmdMixerPanel.SetBox 11  2  #YesValFieldNameOutSourceCDLeftYesValtruen0CCmdMixerPanel.SetBox 11  3  #YesValFieldNameOutSourceLineRightYesValtruel0CCmdMixerPanel.SetBox 11  1  #YesValFieldNameOutSourceCDRightYesValtrueh)CCmdMixerPanel.SetBox 11  0  #YesValFieldNameOutSourceMicYesValtrue:#Oberon10.Scn.FntL&
+C:#Oberon10.Scn.FntR4
+C=#Oberon10.Scn.FntLine
+C;#Oberon10.Scn.FntCD
+C<#Oberon10.Scn.FntMic
+CB#Oberon10.Scn.Fnt		AmplifierN-
+C:#Oberon10.Scn.FntLY
+C:#Oberon10.Scn.FntRj
+CdR2CCmdMixerPanel.SetVolume 10  0  #ValueFieldNameOutAmpLefted2CCmdMixerPanel.SetVolume 10  1  #ValueFieldNameOutAmpRight,DFZ DC%E
+Z CJ#Oberon10.Scn.FntInput Mixer:
+CCmd&GHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijkl
+|CqMCCmdMixerPanel.SetBox 12  5  #YesValFieldYesValtrueNameInSourceLeftMIDIRightp=CCmdMixerPanel.SetBox 12  6  #YesValFieldNameInSourceLeftMIDILeftYesValtrueqMCCmdMixerPanel.SetBox 12  3  #YesValFieldYesValtrueNameInSourceLeftLineRightp=CCmdMixerPanel.SetBox 12  4  #YesValFieldNameInSourceLeftLineLeftYesValtruen=CCmdMixerPanel.SetBox 12  2  #YesValFieldNameInSourceLeftCDLeftYesValtruekECCmdMixerPanel.SetBox 12  0  #YesValFieldNameInSourceLeftMicYesValtrue:#Oberon10.Scn.FntLB
+C:#Oberon10.Scn.FntRQ
+C=#Oberon10.Scn.FntMIDI
+C;#Oberon10.Scn.FntCD
+CC#Oberon10.Scn.FntLine
+CCmd<#Oberon10.Scn.FntMic
+C*RUWUCK#Oberon10.Scn.FntLeft Channel=
+CCmdr%CCmdMixerPanel.SetBox 13  5  #YesValFieldNameInSourceRightMIDIRightYesValtrueq&CCmdMixerPanel.SetBox 13  6  #YesValFieldYesValtrueNameInSourceRightMIDILeftr#CCmdMixerPanel.SetBox 13  3  #YesValFieldNameInSourceRightLineRightYesValtrueq$CCmdMixerPanel.SetBox 13  4  #YesValFieldYesValtrueNameInSourceRightLineLeftp!CCmdMixerPanel.SetBox 13  1  #YesValFieldNameInSourceRightCDRightYesValtrueo"CCmdMixerPanel.SetBox 13  2  #YesValFieldYesValtrueNameInSourceRightCDLeftl CCmdMixerPanel.SetBox 13  0  #YesValFieldNameInSourceRightMicYesValtrue:#Oberon10.Scn.FntL
+C:#Oberon10.Scn.FntR
+C=#Oberon10.Scn.FntMIDIs
+C;#Oberon10.Scn.FntCDs
+CC#Oberon10.Scn.FntLines
+CCmd<#Oberon10.Scn.FntMics
+C*RTlWUCL#Oberon10.Scn.Fnt
+
+Right ChannellE
+CCmdoMCCmdMixerPanel.SetBox 12  1  #YesValFieldYesValtrueNameInSourceLeftCDRighte('CCmdMixerPanel.SetBox 14  0  #YesValFieldNameAGCoff/onYesValtrue<#Oberon10.Scn.FntAGC
+CK#Oberon10.Scn.FntPreamplifier;
+CCmd:#Oberon10.Scn.FntL
+C:#Oberon10.Scn.FntR
+C*R9<UCc2CCmdMixerPanel.SetVolume  9  0  #ValueFieldNameInAmpLeftd2CCmdMixerPanel.SetVolume  9  1  #ValueFieldNameInAmpRightE#Oberon10.Scn.FntTreble2
+CCmdPanels.NewPanelBasicGadgets.NewSliderTextFields.NewCaptionBasicGadgets.NewButtonIcons.NewIconizerBasicGadgets.NewCheckBoxBasicFigures.NewRectMixerSB16.Lib

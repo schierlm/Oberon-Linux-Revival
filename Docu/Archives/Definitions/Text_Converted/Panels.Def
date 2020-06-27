@@ -1,0 +1,226 @@
+DEFINITION Panels; (* portable *)
+
+(*Implementation of a panel container.
+*)
+	IMPORT
+		Objects, Display, Display3, Gadgets, Oberon, Pictures;
+
+	CONST
+		DefBorderWidth = 2;	(* Default border clipping width. *)
+
+	(* Panel State0 flags *)
+		noselect = 0;	(* Panel will not attempt to select children. *)
+		noinsert = 1;	(* Panel will refuse to accept additional children. *)
+		frozen = 3;	(* Panel is frozen. no further editing is allowed. *)
+		flatlook = 4;	(* Panel is drawn without its 3D look. *)
+		texture = 5;	(* Panel has a picture replicated as a textured background. *)
+
+	TYPE
+		Panel = POINTER TO PanelDesc;
+		Methods = POINTER TO MethodsDesc;
+		PanelDesc = RECORD ( Gadgets.FrameDesc ) 
+			focused: BOOLEAN;	(* Has the caret ? *)
+			focusx, focusy: INTEGER;	(* Relative coordinates of caret. *)
+			time: LONGINT;	(* Time of selection. *)
+			back: Display3.Mask;	(* Background mask of the panel, in relative coordinates. *)
+			rx, ry, rr, rt: INTEGER;	(* Current hull to be redrawn (damage region). *)
+			borderW: INTEGER;	(* Size in pixels of the border area to which children are clipped. *)
+			do: Methods;	(* Method block. *)
+			state0: SET;
+			grid: INTEGER;	(* Grid snap size. *)
+			col: INTEGER;	(* Panel background color. *)
+			pict: Pictures.Picture;	(* Background picture, NIL if none is used. *)
+		END;
+
+	(* In the following methods x, y is the absolute position of the panel on the display. *)
+		MethodsDesc = RECORD
+		(* Draw panel background. *)
+			RestoreBackGround: PROCEDURE (F: Panel; x, y: INTEGER; R: Display3.Mask);
+
+		(* Directly draw caret shape. *)
+			RestoreCaret: PROCEDURE (F: Panel; x, y: INTEGER; R: Display3.Mask);
+
+		(* Directly display an area of a panel. *)
+			RestoreArea: PROCEDURE (F: Panel; x, y, u, v, w, h: INTEGER; R: Display3.Mask; dlink: Objects.Object);
+
+		(* Update the caret. Calls GrowHull followed by DrawHull for the caret area. *)
+			UpdateCaret: PROCEDURE (F: Panel);
+
+		(* Default caret tracking. Calls Effects.TrackCross, UpdateCaret, CopyObjList, InsertFrames *)
+			TrackCaret: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg);
+
+		(* Default selection tracking. Calls Effects.SizeRect, GetPanelSelection, KillChildren,
+		GetPanelSelection, CopyObjList, Gadgets.Integrate *)
+			TrackSelection: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg);
+
+		(* Selection tracking started directly on a child. Sends a Display.SelectMsg. Calls GetPanelSelection,
+		ResetHull, GrowHull, Effects.TrackMouse, TrackSelection, GetPanelSelection, KillChildren, GetPanelSelection,
+		CopyObjList, Gadgets.Integrate *)
+			TrackSelectChild: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg; child: Gadgets.Frame);
+
+		(* Standard selection dragging. Calls GetPanelSelection, BoundingBox, Effects.MoveRect, Gadgets.ThisFrame,
+		CopyObjList, ResetHull, GrowHull, TranslateChildren. Sends a ConsumeMsg. *)
+			DragSelection: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg);
+
+		(* Standard mouse tracking. Calls Effects.SetSnap, ToChild, TrackCaret, Gadgets.SizeFrame, DragSelection,
+		TrackSelection, TrackSelectChild. *)
+			TrackMouse: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg);
+
+		(* Standard keyboard handling. Calls BoundingBox, ResetHull, GrowHull, TranslateChildren, InsertFrames. *)
+			ConsumeChar: PROCEDURE (F: Panel; VAR M: Oberon.InputMsg);
+
+		(* Convert object into a frame for ConsumeMsg. *)
+			TranslateToGadget: PROCEDURE (F: Panel; VAR obj: Objects.Object);
+
+		(* Does panel accept this child? *)
+			AcceptChild: PROCEDURE (F: Panel; VAR obj: Objects.Object): BOOLEAN;
+
+		(* Insert child into panel. Calls GrowHull. Directly sends a Display.ModifyMsg. *)
+			InsertChild: PROCEDURE (F: Panel; f: Display.Frame; u, v: INTEGER);
+
+		(* Insert several frames into the panel at u, v. Calls BoundingBox, ResetHull, InsertChild, InvalidateMasks,
+		UpdateMasks, DrawHull. *)
+			InsertFrames: PROCEDURE (F: Panel; u, v: INTEGER; list: Objects.Object);
+
+		(* Removes a child from a panel. Calls GrowHull. *)
+			RemoveChild: PROCEDURE (F: Panel; f: Display.Frame);
+
+		(* Removes a list of children. Calls ResetHull, RemoveChild, UpdateMasks, DrawHull. *)
+			RemoveFrames: PROCEDURE (F: Panel; list: Display.Frame);
+		END;
+
+	VAR 
+		methods: Methods;	(* Default method block. *)
+		defaultgrid: INTEGER;	(* Default grid snap for new panels. *)
+		newfocusX, newfocusY: INTEGER;	(* Set by InsertFrames to indicate the caret position after child consumption. *)
+		recall: Objects.Object;	(* Last deleted children *)
+
+(* Calculate the bounding box and count of a list of frames. *)
+	PROCEDURE BoundingBox (list: Display.Frame; VAR x, y, w, h, count: INTEGER);
+
+(* Is f in the dsc-next list of F ? *)
+	PROCEDURE IsChild (F: Display.Frame; f: Display.Frame): BOOLEAN;
+
+(* Forward a message M from F to child f. x, y is the display coordinates of F. *)
+	PROCEDURE ToChild (F: Panel; f: Display.Frame; x, y: INTEGER; VAR M: Display.FrameMsg);
+
+(* Forward message to all children of F. *)
+	PROCEDURE ToChildren (F: Panel; VAR M: Objects.ObjMsg);
+
+(* What child is located at absolute X, Y? x, y is the absolute position of F. *)
+	PROCEDURE ThisChild (F: Panel; x, y, X, Y: INTEGER): Display.Frame;
+
+(* Return all frames selected inside of F. Link is by slink field. *)
+	PROCEDURE GetPanelSelection (F: Panel; VAR list: Display.Frame);
+
+(* Default store mechanism. *)
+	PROCEDURE StorePanel (F: Panel; VAR M: Objects.FileMsg);
+
+(* Default load mechanism. *)
+	PROCEDURE LoadPanel (F: Panel; VAR M: Objects.FileMsg);
+
+(* Default copy behavior. *)
+	PROCEDURE CopyPanel (VAR M: Objects.CopyMsg; from, to: Panel);
+
+(* Default method implementation. x, y is the panel coordinates. u, v, w, h the relative coordinates of the area to be restored. *)
+	PROCEDURE RestoreArea (F: Panel; x, y, u, v, w, h: INTEGER; M: Display3.Mask; dlink: Objects.Object);
+
+(* The hull contains the panel area to be updated in rel coordinates. *)
+	PROCEDURE ResetHull (F: Panel);
+	PROCEDURE GetHull (F: Panel; VAR u, v, w, h: INTEGER);
+
+(* Increase the size of the hull with the area u, v, w, h.. *)
+	PROCEDURE GrowHull (F: Panel; u, v, w, h: INTEGER);
+
+(* Draw the hull area. Hull is reset. *)
+	PROCEDURE DrawHull (F: Panel);
+
+(* Recalculate and update all invalid (NIL) masks of children. partialupdate modifies the existing backgound mask to reflect the current situation. buildback recreates the whole background mask from scratch. Both options are normally used mutual exclusive. Partial update is faster if few masks were invalidated, otherwise use buildback.  Partial update requires the use of InvalidateMasks to keep the background mask valid. When in doubt simply use buildback. *)
+	PROCEDURE UpdateMasks (F: Panel; partialupdate, buildback: BOOLEAN);
+
+(* Invalidate all masks of the children in the specified rectangle except the exception. Background is updated so that the rectangle becomes part of the panel background. *)
+	PROCEDURE InvalidateMasks (F: Panel; except: Display.Frame; x, y, w, h: INTEGER);
+
+(* Set the selection state of children to Display.reset or Display.set. *)
+	PROCEDURE SetChildren (F: Panel; x, y, state: INTEGER);
+
+(* Method implementations. *)
+	PROCEDURE TrackMouse (F: Panel; VAR M: Oberon.InputMsg);
+
+(* Default handling of the LocateMsg. *)
+	PROCEDURE Locate (F: Display.Frame; VAR M: Display.LocateMsg);
+
+(* Redraw region M of panel. Mask M is in relative coordinates.*)
+	PROCEDURE RestoreRegion (F: Panel; x, y: INTEGER; dlink: Objects.Object; M: Display3.Mask);
+
+(* Get the latest object selection. *)
+	PROCEDURE GetSelection (VAR obj: Objects.Object; VAR parent: Display.Frame; VAR time: LONGINT);
+
+(* Bring f to the top in F. *)
+	PROCEDURE PromoteChild (F: Display.Frame; f: Display.Frame);
+
+(* Method implementation. *)
+	PROCEDURE RemoveChild (F: Panel; f: Display.Frame);
+
+(* Put f at the back in F. *)
+	PROCEDURE DemoteChild (F: Panel; f: Display.Frame);
+	PROCEDURE PanelHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitPanel (P: Panel);
+	PROCEDURE NewPanel;
+
+(* Generator for a panel with a picture as background. Default picture is Default.Pict. *)
+	PROCEDURE NewPictPanel;
+
+(* Command to bring the selection of a panel to the front. *)
+	PROCEDURE ToFront;
+
+(*  Command to take the selection of a panel to the back. *)
+	PROCEDURE ToBack;
+
+(* Used in the form:
+
+	Panels.ChangeBackdrop <picturename>
+	
+Changes the background of the selected panels. Use a non-existing filename to reset the backdrop of a panel.
+*)
+	PROCEDURE ChangeBackdrop;
+
+(* Aligns the selected children of a panel. Used in the form:
+
+	Panels.Align < bottom | top | left | right | width | height | size | verticalcenter | horizontalcenter | horizontal | vertical >
+*)
+	PROCEDURE Align;
+
+(* Determine if possible to have list as children of F. *)
+	PROCEDURE NewChildrenOK (F: Panel; VAR list: Objects.Object): BOOLEAN;
+
+(* Copy a list of objects Objects.deep or Objects.shallow. *)
+	PROCEDURE CopyObjList (id: INTEGER; from: Objects.Object; VAR to: Objects.Object);
+
+(* Recalls last deleted children to the caret. *)
+	PROCEDURE Recall;
+	PROCEDURE RestoreBackGround (F: Panel; x, y: INTEGER; R: Display3.Mask);
+	PROCEDURE RestoreCaret (F: Panel; x, y: INTEGER; R: Display3.Mask);
+	PROCEDURE UpdateCaret (F: Panel);
+	PROCEDURE TrackCaret (F: Panel; VAR M: Oberon.InputMsg);
+
+(* Select the gadgets in the area u, v, w, h of the panel. *)
+	PROCEDURE SelectArea (F: Panel; x, y, u, v, w, h: INTEGER);
+
+(* Delete children from the panel. recall is updated. *)
+	PROCEDURE KillChildren (F: Panel; objlist: Objects.Object);
+	PROCEDURE TrackSelection (F: Panel; VAR M: Oberon.InputMsg);
+	PROCEDURE TrackSelectChild (F: Panel; VAR M: Oberon.InputMsg; child: Gadgets.Frame);
+
+(* Accepts and returns a single gadget. *)
+	PROCEDURE TranslateToGadget (F: Panel; VAR obj: Objects.Object);
+	PROCEDURE AcceptChild (F: Panel; VAR obj: Objects.Object): BOOLEAN;
+	PROCEDURE InsertChild (F: Panel; f: Display.Frame; u, v: INTEGER);
+	PROCEDURE InsertFrames (F: Panel; u, v: INTEGER; list: Objects.Object);
+	PROCEDURE RemoveFrames (F: Panel; list: Display.Frame);
+	PROCEDURE NewHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE TranslateChildren (F: Panel; list: Display.Frame; count, dx, dy: INTEGER);
+	PROCEDURE DragSelection (F: Panel; VAR M: Oberon.InputMsg);
+	PROCEDURE ConsumeChar (F: Panel; VAR M: Oberon.InputMsg);
+
+END Panels.

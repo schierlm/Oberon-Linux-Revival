@@ -1,0 +1,13 @@
+DEFINITION Shanghai;	(* portable *)
+
+	IMPORT
+		Objects;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE Handler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Init (F: Frame);
+	PROCEDURE New;
+	PROCEDURE NewDoc;
+	PROCEDURE Start;
+	PROCEDURE Undo;
+
+END Shanghai.

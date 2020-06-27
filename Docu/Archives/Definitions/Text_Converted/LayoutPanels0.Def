@@ -1,0 +1,112 @@
+DEFINITION LayoutPanels0;	(* portable *)
+
+	IMPORT
+		Objects, Gadgets, Display, Texts;
+
+	TYPE
+		Element = POINTER TO ElementDesc;
+		ElementDesc = RECORD ( Gadgets.FrameDesc ) 
+			format: SET;
+			hfactor, vfactor, row, col, minx, miny, minw, minh: INTEGER;
+			size: PROCEDURE (e: Element);
+			make: PROCEDURE (e: Element; x, y, w, h: INTEGER)
+		END;
+
+		Container = POINTER TO ContainerDesc;
+		ContainerDesc = RECORD ( ElementDesc ) 
+			hborder, vborder: INTEGER
+		END;
+
+		Table = POINTER TO TableDesc;
+		TableDesc = RECORD ( ContainerDesc ) 
+			cols, rows, hdist, vdist, hfill, vfill: INTEGER;
+			gmaxw, gmaxh, hexpand, vexpand, hoffset, voffset: IntArray
+		END;
+
+		PanelMsg = RECORD ( Display.FrameMsg ) 
+			panel: Gadgets.Frame END;
+
+		ContainerMsg = RECORD ( Display.FrameMsg ) 
+			container: Gadgets.Frame END;
+
+		CalcMsg = RECORD ( Objects.ObjMsg )  END;
+
+		ConsumeMsg = RECORD ( Display.ConsumeMsg ) 
+			e: Element END;
+
+	(* get the container of Element sender, will return NIL if sender is top Element of panel *)
+	PROCEDURE GetContainer (sender: Element): Container;
+
+	(* returns the panel which holds this element *)
+	PROCEDURE GetPanel (sender: Element): Gadgets.Frame;
+	PROCEDURE Drop (obj: Objects.Object; dest: Display.Frame; u, v: INTEGER);
+
+	(* similar to Gadgets.Integrate *)
+	PROCEDURE Integrate (obj: Objects.Object);
+
+	(* returns the element which has obj as model, e is the tree to search in, obj # NIL *)
+	PROCEDURE GetElementOf (obj: Objects.Object; e: Element): Element;
+	PROCEDURE CopyElements (f: Display.Frame): Display.Frame;
+	PROCEDURE LinkGadgets (e: Element; link: Display.Frame): Display.Frame;
+
+	(* inserts e after e0, e0 # NIL, e # NIL *)
+	PROCEDURE InsertElementAfter (e0, e: Element);
+
+	(* inserts a row at position y in Table tab *)
+	PROCEDURE InsertRow (tab: Table; y: INTEGER; recalc: BOOLEAN);
+
+	(* inserts col at position x in Table tab *)
+	PROCEDURE InsertCol (tab: Table; x: INTEGER; recalc: BOOLEAN);
+
+	(* removes row at position y in Table tab *)
+	PROCEDURE RemoveRow (tab: Table; y: INTEGER; recalc: BOOLEAN);
+
+	(* removes col at position x in Table tab *)
+	PROCEDURE RemoveCol (tab: Table; x: INTEGER; recalc: BOOLEAN);
+
+	(* links obj as model for Element e *)
+	PROCEDURE InsertGadget (e: Element; obj: Gadgets.Frame);
+
+	(* inserts Element e into Place Container c *)
+	PROCEDURE InsertPlaceElement (c: Container; e: Element);
+
+	(* replaces e0 in c with e1. c, e0, e1 # NIL *)
+	PROCEDURE ReplaceElement (c: Container; e0, e1: Element; recalc: BOOLEAN);
+
+	(*
+		container of e IS Table: replaces Element by a virtual Element
+		container of e IS Place: removes Element from Container
+		e # NIL
+	*)
+	PROCEDURE ClearElement (e: Element; VAR objlist: Display.Frame): BOOLEAN;
+
+	(* get top most selection (if any) or leaf Element, following u, v
+	border check if border IS TRUE
+	*)
+	PROCEDURE Select (e: Element; u, v: INTEGER; border: BOOLEAN): Display.Frame;
+
+	(* returns closest Element in Table t for coordinates x, y *)
+	PROCEDURE ClosestTableElement (t: Table; x, y: INTEGER): Element;
+	PROCEDURE NewElement (): Element;
+	PROCEDURE NewContainer (): Container;
+	PROCEDURE NewTable (): Table;
+
+	(* creates an empty Table with rows*cols Elements *)
+	PROCEDURE EmptyTable (rows, cols: INTEGER): Table;
+
+	(* parses Text T and creates datastructure in obj,
+	T, lib # NIL
+	*)
+	PROCEDURE Parse (T: Texts.Text; VAR obj: Element; lib: Objects.Library);
+
+	(* traverses datastructure in e and produces Text T *)
+	PROCEDURE Produce (e: Element; T: Texts.Text);
+
+	(* get top most selection *)
+	PROCEDURE GetSelection (e: Element): Display.Frame;
+	PROCEDURE Info (e: Display.Frame);
+
+	(* call with depth = 0 *)
+	PROCEDURE DebugElements (e: Element; depth: INTEGER);
+
+END LayoutPanels0.

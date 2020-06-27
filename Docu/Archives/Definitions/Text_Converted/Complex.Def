@@ -1,0 +1,16 @@
+DEFINITION Complex;	(* portable *)
+
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		Complex = POINTER TO ComplexDesc;
+		ComplexDesc = RECORD ( Gadgets.ObjDesc ) 
+			real, imag: REAL
+		END;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Complex);
+	PROCEDURE Handler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Init (obj: Complex);
+	PROCEDURE New;
+
+END Complex.

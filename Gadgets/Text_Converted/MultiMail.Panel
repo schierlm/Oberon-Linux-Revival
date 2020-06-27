@@ -1,0 +1,22 @@
+PanelDocs.NewDocBIERj+d`m-V
+9i=
+C[OwCConstraints4 24 4 99CmdPointNamebody3#Oberon10.Scn.FntTo: 
+Subject: 
+
+>dGCConstraints100 -75 4 4NamefileslSend"]CColor
+CmdMultiMail.SendFieldYesValConstraints4 -75 -96 54x#Oberon10.Scn.Fnt$$Recipients, Subject and Message Text
+CConstraints4 8 x xCmdY#Oberon10.Scn.Fnt		Send Mail91
+CConstraints4 -90 x xc#Oberon10.Scn.FntAttachmentsd9=
+CCmdConstraints100 -90 x xF	O]	CConstraints4 -125 -96 4%
+
+]CA#Oberon10.Scn.FntSettings'
+CI
+
+
+`CF#Oberon10.Scn.Fnt
+
+EMail AddressF
+C$RrCNameEMailD#Oberon10.Scn.FntSMTP Server<
+C#RrCNameSMTP@#Oberon10.Scn.FntAuto Cc&
+C	%RCNameAutoCc$AutoDC
+CNameContType&OberonDC*ISO-8859-1DC%ASCIIDCOrganizers.NewPanelTextGadgets.NewTexts.NewLists.NewListBasicGadgets.NewButtonTextFields.NewCaptionIcons.NewIconizerPanels.NewPanelTextFields.NewTextFieldBasicGadgets.NewCheckBoxBasicGadgets.NewInteger

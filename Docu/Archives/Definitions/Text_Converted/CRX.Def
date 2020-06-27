@@ -1,0 +1,7 @@
+DEFINITION CRX;	(* portable *)
+	PROCEDURE Length (s: ARRAY OF CHAR): INTEGER;
+	PROCEDURE GenCompiler;
+	PROCEDURE WriteStatistics;
+	PROCEDURE Init;
+
+END CRX.

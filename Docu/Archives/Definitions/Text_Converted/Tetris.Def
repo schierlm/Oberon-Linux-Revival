@@ -1,0 +1,44 @@
+DEFINITION Tetris;	(* portable *)
+
+	IMPORT Objects;
+
+(** Field Handler *)
+	PROCEDURE FieldHandler (F: Object; VAR M: Objects.ObjMsg);
+
+(** Pot Handler *)
+	PROCEDURE PotHandler (R: Object; VAR M: Objects.ObjMsg);
+
+(** Preview Handler *)
+	PROCEDURE PreviewHandler (P: Object; VAR M: Objects.ObjMsg);
+
+(** Scorefield Handler *)
+	PROCEDURE ScoreHandler (S: Object; VAR M: Objects.ObjMsg);
+
+(** Preview Button Handler *)
+	PROCEDURE PreviewButtonHandler (B: Object; VAR M: Objects.ObjMsg);
+
+(** Pause Button Handler *)
+	PROCEDURE PauseButtonHandler (B: Object; VAR M: Objects.ObjMsg);
+
+(** Main Handler *)
+	PROCEDURE MainHandler (D: Object; VAR M: Objects.ObjMsg);
+
+(** Document Handler *)
+	PROCEDURE DocHandler (D: Object; VAR M: Objects.ObjMsg);
+
+(** Document Creation *)
+
+(** Generators *)
+	PROCEDURE NewField;
+	PROCEDURE NewView;
+	PROCEDURE NewScoreField;
+	PROCEDURE NewPreviewButton;
+	PROCEDURE NewPauseButton;
+	PROCEDURE NewPreview;
+	PROCEDURE NewDoc;
+
+(** Commands *)
+	PROCEDURE NewGame;
+	PROCEDURE Backdrop;
+	PROCEDURE Delay;
+END Tetris.

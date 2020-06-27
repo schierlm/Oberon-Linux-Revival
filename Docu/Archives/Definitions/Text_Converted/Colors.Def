@@ -1,0 +1,105 @@
+DEFINITION Colors; (* portable *)
+
+	(*
+		Color conversions and abstract color objects
+	*)
+	IMPORT
+		Objects, Display;
+
+	CONST
+		undefined = -1; red = 0; yellow = 1/6; green = 2/6; cyan = 3/6; blue = 4/6; magenta = 5/6;	(* hues *)
+
+	TYPE
+		(* color objects *)
+		Color = POINTER TO ColorDesc;
+		ColorDesc = RECORD ( Objects.ObjDesc ) 
+		END;
+
+		(* inverse color lookup table *)
+		Index = RECORD
+		END;
+
+	VAR 
+		DisplayIndex: Index;	(* inverse color lookup table for display palette *)
+		DisplayBits: INTEGER;	(* number of bits used for DisplayIndex *)
+		Red, Green, Blue: ARRAY 256 OF INTEGER;	(* copy of display palette (faster lookup) *)
+
+	(*--- Inverse Color Lookup ---*)
+
+	(* return index of best match in inverse color lookup table *)
+	PROCEDURE Match (index: Index; bits, red, green, blue: INTEGER): INTEGER;
+
+	(* initialize inverse color lookup table *)
+	PROCEDURE MakeIndex (VAR index: Index; bits, colors: INTEGER; VAR red, green, blue: ARRAY OF INTEGER);
+		(* precondition (100):	colors <= 256 *)
+
+	(* update the inverse color lookup table for the display palette *)
+	PROCEDURE Update;
+
+	(*--- Conversion Routines ---*)
+
+	(* Oberon display model *)
+	PROCEDURE DisplayToRGB (dcol: Display.Color; VAR r, g, b: REAL);
+	PROCEDURE RGBToDisplay (r, g, b: REAL; VAR dcol: Display.Color);
+
+	(* HSV (Hue Saturation Value) model *)
+	PROCEDURE RGBToHSV (r, g, b: REAL; VAR h, s, v: REAL);
+	PROCEDURE HSVToRGB (h, s, v: REAL; VAR r, g, b: REAL);
+
+	(* CMY (Cyan Magenta Yellow) model *)
+	PROCEDURE RGBToCMY (r, g, b: REAL; VAR c, m, y: REAL);
+	PROCEDURE CMYToRGB (c, m, y: REAL; VAR r, g, b: REAL);
+
+	(* CMYK (Cyan Magenta Yellow blacK) model *)
+	PROCEDURE RGBToCMYK (r, g, b: REAL; VAR c, m, y, k: REAL);
+	PROCEDURE CMYKToRGB (c, m, y, k: REAL; VAR r, g, b: REAL);
+
+	(*--- Colors ---*)
+
+	(* copy color contents *)
+	PROCEDURE Copy (VAR msg: Objects.CopyMsg; from, to: Color);
+
+	(* message handler *)
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+	(* generator command *)
+	PROCEDURE New;
+
+	(* initialization *)
+	PROCEDURE InitRGB (col: Color; r, g, b: REAL);
+	PROCEDURE InitDisplay (col: Color; dcol: Display.Color);
+	PROCEDURE InitHSV (col: Color; h, s, v: REAL);
+	PROCEDURE InitCMY (col: Color; c, m, y: REAL);
+	PROCEDURE InitCMYK (col: Color; c, m, y, k: REAL);
+
+	(* get color values *)
+	PROCEDURE GetRGB (col: Color; VAR r, g, b: REAL);
+	PROCEDURE GetDisplay (col: Color; VAR dcol: Display.Color);
+	PROCEDURE GetHSV (col: Color; VAR h, s, v: REAL);
+	PROCEDURE GetCMY (col: Color; VAR c, m, y: REAL);
+	PROCEDURE GetCMYK (col: Color; VAR c, m, y, k: REAL);
+
+	(* set color values *)
+	PROCEDURE SetRGB (col: Color; r, g, b: REAL);
+	PROCEDURE SetDisplay (col: Color; dcol: Display.Color);
+	PROCEDURE SetHSV (col: Color; h, s, v: REAL);
+	PROCEDURE SetCMY (col: Color; c, m, y: REAL);
+	PROCEDURE SetCMYK (col: Color; c, m, y, k: REAL);
+
+END Colors.
+
+(*
+Notes
+
+1. Color Conversions
+In order to support RGB, HSV, CMY(K) and the Oberon display color model, several procedures convert from RGB to another model or vice versa. The range of all components is usually [0..1], except for display colors which are integers ranging from 0 to 255 (palette color) or from MIN(LONGINT) to -1 (true color).
+
+2. Color Objects
+Color objects are extensions of Objects.Object and can thus be used as models for visual gadgets which deal with color. Their internal representation is kept private, but components for all color models are accessible as object attributes.
+
+3. Inverse Color Lookup
+To speed up the conversion from an RGB triple to a palette index, an inverse color mapping can be computed with MakeIndex. The more bits are used for the index structure, the more memory is consumed. A reasonable value for bits is 4, allocating 4096 bytes on the heap.
+
+4. Display Colors
+The colors in the Oberon default palette are mirrored in global variables Red, Green and Blue. An inverse color lookup table using DisplayBits is available in DisplayIndex. When the display palette is modified, Update should be called to adapt all of these to the new palette.
+*)

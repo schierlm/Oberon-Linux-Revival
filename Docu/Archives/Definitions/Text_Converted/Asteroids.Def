@@ -1,0 +1,35 @@
+DEFINITION Asteroids;	(* portable *)
+
+	IMPORT
+		Objects;
+
+(** Game object shapes *)
+
+(** Object initialization *)
+
+(** Game Object loading/storing *)
+
+(** end of loading/storing *)
+
+(** Field Handler *)
+	PROCEDURE FieldHandler (F: Object; VAR M: Objects.ObjMsg);
+
+(** Starfield Handler *)
+	PROCEDURE StarfieldHandler (F: Object; VAR M: Objects.ObjMsg);
+
+(** Document Handler *)
+	PROCEDURE DocHandler (D: Object; VAR M: Objects.ObjMsg);
+
+(** Document Creation *)
+
+(** Generators *)
+	PROCEDURE NewField;
+	PROCEDURE NewStarfield;
+	PROCEDURE NewDoc;
+
+(** Commands *)
+	PROCEDURE NewGame;
+	PROCEDURE PauseGame;
+	PROCEDURE ResumeGame;
+
+END Asteroids.

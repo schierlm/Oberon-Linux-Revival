@@ -1,0 +1,10 @@
+DEFINITION Conversions;	(* portable *)	(* PRK / 20.01.97*)
+
+(* IntToStr -- convert a longint to a representation in a given base (2..16) *)
+	PROCEDURE IntToStr (val: LONGINT; VAR str: ARRAY OF CHAR; base: LONGINT);
+
+(* RealToStr -- convert a longreal to a representation in a given base (2..16) *)
+	PROCEDURE RealToStr (x: LONGREAL; VAR s: ARRAY OF CHAR; base: LONGINT);
+	PROCEDURE StrToInt (s: ARRAY OF CHAR; VAR val: LONGINT; base: LONGINT);
+
+END Conversions.

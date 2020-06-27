@@ -1,0 +1,25 @@
+DEFINITION AudioGadgets;	(* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		LCDFrame = POINTER TO LCDFrameDesc;
+		LCDFrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		TrackFrame = POINTER TO TrackFrameDesc;
+		TrackFrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE CopyLCD (VAR M: Objects.CopyMsg; from, to: LCDFrame);
+	PROCEDURE LCDHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitLCD (F: LCDFrame);
+	PROCEDURE NewLCD;
+	PROCEDURE CopyTrack (VAR C: Objects.CopyMsg; VAR F, F1: TrackFrame);
+	PROCEDURE TrackHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitTrack (F: TrackFrame);
+	PROCEDURE NewTrack;
+	PROCEDURE InsertTrack;
+	PROCEDURE SeekButtonHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewSeekButton;
+
+END AudioGadgets.

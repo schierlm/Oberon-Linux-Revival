@@ -1,0 +1,47 @@
+PanelDocs.NewDocMOBIERQo-Vr.c7i 	I	q			,
+M
+h
+
+
+(=wF
+
+h
+
+
+9M)K{9k)\ It-C	
+
+ !"#$&'(*+,-./023456789:;<=>@ABCDEFGHIJKLMNOP
+MOC#Log(CC$Code((C%StackP(C#CVTx(C%Store(C6Open ^&,CCmdOTSim.Open ^O*.TTFV,CCmdDirectories.Directory "*.TTF" FileListZShow:,CCmdDirectories.Directory '&FileMask.Value ' FileList10&r,C
+CNamePointSize=#Syntax10.Scn.FntSizes
+C40
+TrCc*.TTF6CCmdDirectories.Directory '&FileMask.Value ' FileListNameFileMask)
+&TCCC}TCConstraints0 0 18 0CmdOTSim.Open #Point
+
+Syntax10.Scn.Fnt	CNameFileListMTCConstraints-18 0 0 0?72&X,CCmdGadgets.Set YDPI.Value #ValueHCNameXDPIF91[rXCCmdGadgets.Set YDPI.Value #SetValF72HTXCCmdGadgets.Set YDPI.Value #SetValG200XCCmdGadgets.Set YDPI.Value #SetValG300,XCCmdGadgets.Set YDPI.Value #SetValG600XXCCmdGadgets.Set YDPI.Value #SetVal#600XBCHCNameYDPI#300,BC#200BC"72HTBC"91[rBC72&B,CkInstantiate&*LCCmdOTSim.Instantiate &PointSize.Value  &XDPI.Value  &YDPI.Value0&,%CCNameGlyphNoDTx%CNameNumGlyphsALoadCCmdOTSim.Load &GlyphNo.Value)A&,)CFieldString	CNameCharA4 ATx)CBLoadCCmdOTSim.Load '&Char.String '=#Syntax10.Scn.FntChar
+C>#Syntax10.Scn.Fnty DPI
+C
+C>#Syntax10.Scn.Fntx DPI
+Y
+C>#Syntax10.Scn.FntGlyph
+C
+/r1CFieldDebugFontProgCNameModelK#Syntax10.Scn.FntDebug Font Programtd
+C
+(r1CFieldHintedF#Syntax10.Scn.Fnt
+
+Execute HintstB
+C@TC1
+.X1CFieldDebugCVTProgJ#Syntax10.Scn.FntDebug CVT ProgramZd
+C
+0X1CFieldDebugGlyphProgL#Syntax10.Scn.FntDebug Glyph ProgramZj
+C6Cont,(CCmdOTSim.Continue2Next*,(CCmdOTSim.Next2StepT,(CCmdOTSim.Step6Finish~,(CCmdOTSim.Finish&?C1C
+@@1C
+*@CFieldShowGrid=#Syntax10.Scn.FntGrid
+C
+.@CFieldShowTwilightA#Syntax10.Scn.FntTwilight'
+C
+,@CFieldShowPoints?#Syntax10.Scn.FntPoints
+C
+-~@CFieldShowOutline@#Syntax10.Scn.FntOutline%
+C
+-<@CFieldShowPattern@#Syntax10.Scn.FntPatternR$
+C#Log& ?C$CodeF ?C%Stackf ?C#CVT ?C%Store"?C&Points"?CPanels.NewPanelBasicGadgets.NewButtonBasicGadgets.NewIntegerTextFields.NewTextFieldTextFields.NewCaptionScrollbars.NewOrganizers.NewPanelListGadgets.NewFrameListModels.NewListOTSim.NewCharBasicGadgets.NewCheckBoxOTSim.NewModelOTSim.NewMultiviewOTSim.NewGlyphView

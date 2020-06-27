@@ -1,0 +1,14 @@
+DEFINITION Freecell;	(* portable *)	(* written by Patrick Saladin  *)
+
+	IMPORT
+		Objects;
+	PROCEDURE NewTemp;
+	PROCEDURE NewDepot;
+	PROCEDURE ColumnHandler (C: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewColumn;
+	PROCEDURE NewPanel;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDoc;
+	PROCEDURE New;
+
+END Freecell.

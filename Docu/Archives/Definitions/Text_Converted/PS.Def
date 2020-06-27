@@ -1,0 +1,4 @@
+DEFINITION PS;	(* portable *)
+	PROCEDURE PictToPost;
+
+END PS.

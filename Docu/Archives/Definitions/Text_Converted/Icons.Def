@@ -1,0 +1,78 @@
+DEFINITION Icons;	(* portable *) (* jm 19.1.95 *)
+
+(*Implementation of Icons and the Iconizer. Also contains an implementation of a very simple camera-view with fixed viewpoint where no editing of the viewed model is allowed.
+*)
+	IMPORT
+		Objects, Gadgets, Display;
+
+	TYPE
+	(* Simple camera-view. *)
+		View = POINTER TO ViewDesc;
+		ViewDesc = RECORD ( Gadgets.ViewDesc ) 
+		END;
+
+		Icon = POINTER TO IconDesc;
+		IconDesc = RECORD ( Gadgets.FrameDesc ) 
+			caption: ARRAY 64 OF CHAR;	(* Caption text. *)
+		END;
+
+		Iconizer = POINTER TO IconizerDesc;
+		IconizerDesc = RECORD ( Gadgets.FrameDesc ) 
+			closedF, openF: Display.Frame;	(* Frames of the closed and open sides of the iconizer. *)
+			closed: BOOLEAN;	(* is it closed or not ? *)
+			popup: BOOLEAN;	(* Does it pop up on a middle-click ? *)
+			pin: BOOLEAN;	(* Display switch pin in top left corner? *)
+			sel: BOOLEAN;	(* Does it allow you to select an item when popping open ? *)
+			pos: BOOLEAN;	(* Do the open and close positions differ ? *)
+		END;
+	PROCEDURE CopyView (VAR M: Objects.CopyMsg; from, to: View);
+	PROCEDURE ViewHandle (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Make a simple camera-view of f. *)
+	PROCEDURE ViewOf (f: Gadgets.Frame): View;
+	PROCEDURE InitView (F: View);
+	PROCEDURE NewView;
+	PROCEDURE CopyIcon (VAR M: Objects.CopyMsg; from, to: Icon);
+	PROCEDURE IconHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Manufacture an icon with caption name and icon as content. Icon must be of type frame. Icons is typically a simple camera-view created by ViewOf. *)
+	PROCEDURE MakeIcon (F: Icon; name: ARRAY OF CHAR; icon: Objects.Object);
+	PROCEDURE NewIcon;
+
+(* Executed from within an iconizer causes it to flip open/close. *)
+	PROCEDURE Flip;
+	PROCEDURE CopyIconizer (VAR M: Objects.CopyMsg; from, to: Iconizer);
+	PROCEDURE IconizerHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Initialize an iconizer from the frames open and close. *)
+	PROCEDURE MakeIconizer (F: Iconizer; close, open: Display.Frame);
+	PROCEDURE NewIconizer;
+
+(* Takes the selected iconizer/icon apart and insert the constituents at the caret. *)
+	PROCEDURE Break;
+
+(* Initialize a new icon for a document. Icon should be in "Library.ObjName" format. The Cmd attribute is initialized to "Desktops.OpenDoc '#Caption '". *)
+	PROCEDURE CreateIcon (F: Icon; caption, icon: ARRAY OF CHAR);
+
+(* Inserts an Icon for the marked document at the caret. *)
+	PROCEDURE InsertIcon;
+
+END Icons.
+
+(* Remarks:
+
+1. Simple Camera-view
+The simple camera view is often used for displaying the icon pictures in Icons.Lib. To create a simple camera-view from the icon picture called "Icons.Panel" (i.e. the object called Panel in public library Icons), the following is required:
+
+	obj := Gadgets.FindPublicObj("Icons.Panel");
+	Gadgets.Integrate(Icons.ViewOf(obj(Gadgets.Frame)));
+
+The camera-view gadget can be provided with caption by combining it with an icon gadget:
+
+	VAR F: Icons.Icon;
+	
+	obj := Gadgets.FindPublicObj("Icons.Panel");
+	NEW(F);
+	Icons.MakeIcon(F, "My caption", Icons.ViewOf(obj(Gadgets.Frame)));
+	Gadgets.Integrate(F);
+*)

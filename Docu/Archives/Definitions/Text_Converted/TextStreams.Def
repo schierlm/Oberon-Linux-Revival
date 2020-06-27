@@ -1,0 +1,29 @@
+DEFINITION TextStreams;	(* portable *)
+
+	IMPORT Streams, Texts;
+	PROCEDURE Read (S: Streams.Stream; VAR ch: CHAR);
+
+(* Reads a line of text, terminated by [CR] LF (mode = Streams.iso8859) or CR (mode # Streams.iso8859). *)
+	PROCEDURE ReadString (S: Streams.Stream; VAR s: ARRAY OF CHAR);
+	PROCEDURE Write (S: Streams.Stream; ch: CHAR);
+
+(* Routines for formatted output, similar to module Texts. *)
+	PROCEDURE WriteDate (S: Streams.Stream; t, d: LONGINT);
+	PROCEDURE WriteHex (S: Streams.Stream; x: LONGINT);
+	PROCEDURE WriteString (S: Streams.Stream; s: ARRAY OF CHAR);
+	PROCEDURE WriteInt (S: Streams.Stream; x, n: LONGINT);
+	PROCEDURE WriteLn (S: Streams.Stream);
+	PROCEDURE WriteLongReal (S: Streams.Stream; x: LONGREAL; n: LONGINT);
+	PROCEDURE WriteLongRealFix (S: Streams.Stream; x: LONGREAL; n, f, D: LONGINT);
+	PROCEDURE WriteLongRealHex (S: Streams.Stream; x: LONGREAL);
+	PROCEDURE WriteReal (S: Streams.Stream; x: REAL; n: LONGINT);
+	PROCEDURE WriteRealFix (S: Streams.Stream; x: REAL; n, f, E: LONGINT);
+	PROCEDURE WriteRealHex (S: Streams.Stream; x: REAL);
+
+(* Opens a read-only stream on text T starting at position pos. *)
+	PROCEDURE OpenReader (T: Texts.Text; pos: LONGINT): Streams.Stream;
+
+(* Opens a write-only stream: Flush will append the text written to Log. *)
+	PROCEDURE OpenWriter (Log: Texts.Text): Streams.Stream;
+
+END TextStreams.

@@ -1,0 +1,35 @@
+DEFINITION CalculatorGadgets;	(* portable *)	(* by W.Ibl *)
+
+	IMPORT BasicGadgets, Calculator,
+		Gadgets, Objects;
+
+	TYPE
+		Button = POINTER TO ButtonDesc;
+		ButtonDesc = RECORD ( BasicGadgets.ButtonDesc ) 
+			tag: ARRAY 32 OF CHAR;
+		END;
+
+		Engine = POINTER TO EngineDesc;	(* the model gadget *)
+		EngineDesc = RECORD ( Gadgets.ObjDesc ) 
+			expr: Calculator.Expression;
+		END;
+	PROCEDURE EngineHandler (E: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE CopyButton (VAR M: Objects.CopyMsg; from, to: Button);
+	PROCEDURE ButtonHandler (B: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Initialize a calculator model *)
+	PROCEDURE InitEngine (E: Engine);
+
+(* create a new calculator model *)
+	PROCEDURE NewEngine;
+
+(* initialize a calculator button gadget *)
+	PROCEDURE InitButton (B: Button);
+
+(* create a new calculator button gadget
+To pass a value to the model gadget prefix it with Calculator. (p.e. Calculator.1 or Calculator.+).
+the model itself tries to determine if it is a value, an operator or a special.
+*)
+	PROCEDURE NewButton;
+
+END CalculatorGadgets.

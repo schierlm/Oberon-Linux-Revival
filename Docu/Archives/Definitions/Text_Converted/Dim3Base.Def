@@ -1,0 +1,23 @@
+DEFINITION Dim3Base;	(* portable *)
+
+	IMPORT Pictures;
+
+	CONST
+		Black = 15; White = 0;	(* black and white of the windows color table *)
+
+(* correct color table for Native version *)
+	PROCEDURE CheckColorTab (VAR R, G, B: ARRAY OF INTEGER);
+
+(* convert color number to Dim3 color palette *)
+	PROCEDURE GetRealColor (color: INTEGER): INTEGER;
+
+(* calculate picture addresses *)
+	PROCEDURE SetPicture (P: Pictures.Picture);
+
+(* get address of position X in current scanline Y of actual picture *)
+	PROCEDURE GetAddress (X, Y: INTEGER): LONGINT;
+
+(* ReplConst in previosly set picture with mode replace, H = 1 *)
+	PROCEDURE ReplConst (col, X, Y, W: INTEGER);
+
+END Dim3Base.

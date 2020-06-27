@@ -1,0 +1,62 @@
+DEFINITION FTP; (* portable *)
+
+(* A simple single session FTP Tool using commands. Useful for transfering many files to or from the
+		same server. *)
+
+(* FTP.Open (server | "^")
+		Open an ftp connection to server using username and password set with FTP.SetUser. *)
+	PROCEDURE Open;
+
+(* FTP.Close
+		Close an previously opened FTP connection. *)
+	PROCEDURE Close;
+
+(* FTP.ChangeDir (newdir | "^")
+		Change the current directory on the FTP server to newdir. *)
+	PROCEDURE ChangeDir;
+
+(* FTP.Dir
+		List the contents of the current directory on the FTP server. *)
+	PROCEDURE Dir;
+
+(* FTP.CompactDir
+		List the contents of the current directory on the FTP server in a more
+		compact form. *)
+	PROCEDURE CompactDir;
+
+(* FTP.CurDir
+		Display the current path on the FTP server *)
+	PROCEDURE CurDir;
+
+(* FTP.MakeDir (server | "^")
+		Create a new directory. *)
+	PROCEDURE MakeDir;
+
+(* FTP.RmDir (server | "^")
+		Remove an existing directory. *)
+	PROCEDURE RmDir;
+
+(* FTP.DeleteFiles ({remname} | "^")
+		Delete the files remname on the FTP server. *)
+	PROCEDURE DeleteFiles;
+
+(* FTP.GetFiles ({remname "=>" locname} | "^")
+		Get files remname from the FTP server and store them as locname. *)
+	PROCEDURE GetFiles;
+
+(* FTP.GetTexts ({remname "=>" locname} | "^")
+		Get text-files remname from the FTP server and store them as locname. *)
+	PROCEDURE GetTexts;
+
+(* FTP.PutFiles ({locname "=>" remname} | "^")
+		Put files locname as remname on the FTP server. *)
+	PROCEDURE PutFiles;
+
+(* FTP.PutTexts ({locname "=>" remname} | "^")
+		Put text-files locname as remname on the FTP server. *)
+	PROCEDURE PutTexts;
+
+(* Open a separate log text for FTP. *)
+	PROCEDURE OpenLog;
+
+END FTP.

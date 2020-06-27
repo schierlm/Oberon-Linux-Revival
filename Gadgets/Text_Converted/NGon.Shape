@@ -1,0 +1,34 @@
+-- shape definition for a regular polygon
+import colors, pens, shapes;
+
+shapes.name("N-Gon");
+
+const frame = shapes.frame(200, 200);
+shapes.component("frame");
+
+const corners = 6;
+shapes.integer("corners", "Corners", 3, 100);
+
+const p = pens.stroker("color", colors.rgb(1, 1, 0), "width", 2);
+shapes.pen("p", "Pen");
+
+define matrix() as
+	shapes.matrix(frame)
+end matrix;
+
+define render() as
+	translate(100, 100);
+	let phi = rad(360.0/corners) in
+		with pen=p do
+			draw
+				enter (1-cos(phi), sin(phi)) at (80, 0);
+				repeat corners times
+					rotate(phi);
+					to (80, 0)
+				end;
+				exit (cos(phi)-1, sin(phi))
+			end
+		end
+	end
+end render;
+

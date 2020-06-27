@@ -1,0 +1,68 @@
+Oberon - A Quick Introduction
+
+Copyright (C) 1990-1999 by the Institut fr Computersysteme, ETH Zrich
+
+Welcome to the Oberon World!
+
+This is a very quick introduction to the interactive use of Oberon. More details and other chapters of the full Oberon / Linux Tutorial can be found by clicking the middle mouse button on Script.Open UserGuide.Text .  For the latest news on Oberon / Linux, use the Script.Open News.Text command. 
+
+Oberon / Linux is a port of Native Oberon to the Linux kernel. Currently ARM, MIPS and X86 compiles and runtimes are supported. To run ARM version, execute "./ola" for MIPS, "./olm" and for X86 "./olx". If the specific processor is not available, you can use qemu-arm and qemu-mipsel to ru ARM/MIPS version on X86 respectively. New versions of Ubuntu automagically invoke qemu for foreign binaries.
+
+Current version is very experimental and only compiles itself. X86 version also compiles ARM and MIPS versions. Use at your own risk!
+
+The File System
+
+Oberon / Linux uses a near flat files system. All data files are in olr directory, object code and symbol files are in processor specific arm/ mips/ x86 directories.
+
+The Mouse
+
+Oberon uses a three-button mouse. The basic meaning of the individual buttons is:
+
+Left button ==> Point at an object, set caret (= insertion point)
+Middle button ==> Execute an Oberon command
+Right button ==> Select an object or a group of objects
+
+<-- When clicked within the scroll bar, the left/ right button means scroll up/ down respectively.
+
+Oberon Commands
+
+Oberon commands can be implicit or explicit. Implicit commands are typically editing-oriented or short cuts of explicit commands. For example, a part of text can be deleted by selecting it, holding the right mouse button down, and "interclick" with the left button. The full set of editing commands can be obtained from UserGuide.Text.
+
+Explicit commands are represented by strings of the form Module.Procedure, typically colored blue in this text.
+For example, System.Time and Script.Open UserGuide.Text are Oberon commands. Just check them out! Before, however note that you can close any viewer (= window) that you don't need any longer by simply clicking the middle button at System.Close in the viewer's command bar at the top.
+
+Send possible error reports via e-mail to Pieter Muller, muller@inf.ethz.ch, Tel. 01 63 27325
+
+The basic, textual Oberon System
+
+After first startup, the Oberon system presents itself to the user in the original two-track Oberon look, showing a user track on the left and a system track on the right, the latter containing two text viewers: System.Log and System.Tool. System.Log is used to chronologically report activities and errors. System.Tool is the root of Oberon's powerful textual user interface (TUI). It contains a set of frequently used commands.
+
+In particular, the System.Tool includes commands to open other basic tools such a those listed in the following table:
+
+Tool	Function
+Edit.Tool	Program editor tool
+Script.Tool 	Formatted text editor tool
+Compiler.Tool	Programming tool
+Miscellaneous.Tool	Format conversions etc.
+
+It is noteworthy that Oberon tools are ordinary texts that are freely editable or, in other words, that Oberon's textual interface is highly customizable to a particular user's needs.
+
+On the user track this text is opened automatically at startup time. It can be used as a quick reference guide or closed immediately.
+ 
+The Gadgets GUI Component System
+
+In addition to Oberon's original textual user interface framework, Oberon has a richly-featured document oriented component system and interface framework (DOI) called Gadgets. Gadgets tools are represented as textual or graphical documents that are laid out on the tiling screen or, alternatively, on a desktop. Two generic opening commands exist: Desktops.OpenDoc and Desktops.Open. For example, Desktops.OpenDoc ColorSystem.Panel opens a graphical color tool document and Desktops.Open Oberon.Desk opens an entire desktop.
+
+User Forum
+
+Oberon mailing list at:
+https://lists.inf.ethz.ch/mailman/listinfo/oberon 
+
+Disclaimer
+
+Permission to use, copy, modify and distribute this software and its documentation for any purpose is hereby granted without fee, provided that the above copyright notice appear in all copies and that both that copyright notice and this permission notice appear in supporting documentation, and that the name of ETH not be used in advertising or publicity pertaining to distribution of the software without specific, written prior permission. ETH makes no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty.
+
+ETH disclaims all warranties with regard to this software, including all implied warranties of merchantability and fitness. In no event shall ETH be liable for any special, indirect or consequential damages or any damages whatsoever resulting from loss of use, data or profits, whether in an action of contract, negligence or other tortious action, arising out of or in connection with the use or performance of this software.
+
+Jrg Gutknecht and Pieter Muller, October 1999
+Peter Matthias, February 2015

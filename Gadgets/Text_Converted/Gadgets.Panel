@@ -1,0 +1,28 @@
+PanelDocs.NewDocPBIERm%"p)TCC+WU)6
+
+,9T]"$
+PCH#Oberon12.Scn.FntGadgets ToolkitZC=#Oberon10.Scn.FntView
+C>#Oberon10.Scn.FntModel 
+C,PC%
+PC>#Oberon10.Scn.FntAlign
+CQ	
+
+
+CN#Oberon10.Scn.FntAlignment operations:5l
+C7Top,CCmdPanels.Align top9Left,CCmdPanels.Align left;Right2,CCmdPanels.Align right=Bottom,CCmdPanels.Align bottomAVerticalf8 CCmdPanels.Align verticalPCentered Vertical8 CCmdPanels.Align verticalcenterEHorizontalf8 CCmdPanels.Align horizontalTCentered Horizontal8 CCmdPanels.Align horizontalcenterBSame Height~0 CCmdPanels.Align height@Same Width6~0 CCmdPanels.Align width>Same Sizef~0 CCmdPanels.Align size5Back(CCmdPanels.ToBack7Front.(CCmdPanels.ToFrontAChange ViewPCCmdGadgets.Change ^ ~9Deep CopyPCCmdGadgets.Copy@Set RefrPCCmdRefGadgets.Create ^ ~>Columbus\PCCmdColumbus.Inspect ~7RecallFPCCmdPanels.RecallC.CCZFdCCmdGadgets.Insert #Point ~
+
+Oberon10.Scn.Fnt-4	
+	,
+
+2.3
+0 !"#$%1& '!(")#*$+%,&-'.(^5Button-CDTracksCalendarCaptionCheckBoxCircleClockColorPicker4ColorWellColumbus	DigitalClock,DirectoryView
+Finder2IconIconizer.LCDLine3List
+ListGadgetLogDocNamePlateNavigatorNoteBookOrganizerOutlinePanelPanelDocProgressMeterRectangleRectangle3DRefFrame0RembrandtFrameScopeScrollViewScrollbarSetFrameSisiphus1Slider Spline!TextDoc"TextField#TextGadget$TextHyperlink%TextNote&TextStyle'TimeStamp(ViewC6.FCCCFd#CCmdGadgets.Link #Point ~
+
+Oberon10.Scn.Fnt
+	
+
+	
+ !7
+BooleanComplexCurrentDirectoryCurrentLoadDagDirectoryEventTimerIntegerListModelMemoryUsedPictureRealReference	Set
+StringTextTreeC6!8F CPanels.NewPanelTextFields.NewCaptionIcons.NewIconizerBasicGadgets.NewButtonBasicGadgets.NewIntegerListGadgets.NewFrameListModels.NewListScrollbars.New

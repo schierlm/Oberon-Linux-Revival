@@ -1,0 +1,35 @@
+DEFINITION HyperDocTools;	(* portable *)
+
+	IMPORT Objects;
+
+(* Module HyperDocTools provides some tools to manipulate links.
+	See also HyperDocs.Tool & HyperLinks.Panel . *)
+
+(* HyperDocTools.History *
+		Display the history for the marked document. *)
+	PROCEDURE History;
+	PROCEDURE ReadControls (VAR label, link: Objects.Object);
+
+(* HyperDocTools.Fetch ( locdoc | { link "=>" locdoc } ) "~"
+		Download the document behind the selected link or the given link to locdoc. *)
+	PROCEDURE Fetch;
+
+(* HyperDocTools.LinkInfo (selection)
+		Queries information about the document behind the selected link.
+		Output is written to Oberon.Log or to the HyperLinks.Panel if called from it. *)
+	PROCEDURE LinkInfo;
+
+(* HyperDocTools.Inspect (selection)
+		Display the link behind the selected link. :-)
+		Output is written to Oberon.Log or to the HyperLinks.Panel if called from it. *)
+	PROCEDURE Inspect;
+
+(* HyperDocTools.Apply
+		used by HyperLinks.Panel *)
+	PROCEDURE Apply;
+
+(* HyperDocTools.LinkIndex * (marked text)
+		Display a sorted list of all links in the marked textdoc. *)
+	PROCEDURE LinkIndex;
+
+END HyperDocTools.

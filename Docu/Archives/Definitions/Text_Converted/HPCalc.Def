@@ -1,0 +1,19 @@
+DEFINITION HPCalc;	(* portable *)	(* prk  *)
+	PROCEDURE NewModel;
+
+(* Remove the functions buttons from the main panel *)
+	PROCEDURE RemoveFunctions;
+
+(* Append the functions buttons to the main panel *)
+	PROCEDURE ShowFunctions;
+	PROCEDURE NewLockedTF;
+
+(* HPCalc Panel generation *)
+	PROCEDURE New;
+
+(* HPCalc Document generation *)
+	PROCEDURE Open;
+
+(* Process some operations. !! Must be called by the panel, because it uses context informations !! *)
+	PROCEDURE Do;
+END HPCalc.

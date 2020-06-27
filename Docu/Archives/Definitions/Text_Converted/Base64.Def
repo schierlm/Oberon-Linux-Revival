@@ -1,0 +1,9 @@
+DEFINITION Base64;	(* portable *)
+(* Base 64 encodeing according to RFC1421 *)
+
+	IMPORT Files, Texts;
+	PROCEDURE DecodeText (T: Texts.Text; beg: LONGINT; F: Files.File): BOOLEAN;
+	PROCEDURE Decode;
+	PROCEDURE EncodeFile (F: Files.File; T: Texts.Text);
+	PROCEDURE Encode;
+END Base64.

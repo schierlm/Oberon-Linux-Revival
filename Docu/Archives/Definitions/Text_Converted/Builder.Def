@@ -1,0 +1,52 @@
+DEFINITION Builder;	(* portable, except where noted *)
+
+	IMPORT
+		Gadgets, Objects,
+		FileDir;
+
+	TYPE
+		ErrorGadget = POINTER TO ErrorGadgetDesc;
+		ErrorGadgetDesc = RECORD ( Gadgets.FrameDesc ) 
+			errno: INTEGER;
+			msg: POINTER TO ARRAY 128 OF CHAR
+		END;
+
+		Mod = POINTER TO ModDesc;
+		Ref = POINTER TO RefDesc;
+		RefDesc = RECORD
+			mod: Mod;
+			next: Ref
+		END;
+
+		ModDesc = RECORD
+			name, fname: FileDir.FileName;
+			opts: ARRAY 64 OF CHAR;
+			ref, layer: INTEGER;
+			impl: Ref;
+			next: Mod
+		END;
+
+		Tree = RECORD
+			maxlayer: INTEGER;
+			list: Mod
+		END;
+
+(* Get the marked text *)
+	PROCEDURE CopyErrorGadget (VAR M: Objects.CopyMsg; from, to: ErrorGadget);
+	PROCEDURE ErrorGadgetHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewErrorGadget;
+	PROCEDURE MarkErrors;
+	PROCEDURE ClearErrors;
+	PROCEDURE NextError;
+
+(* Builder.Preprocess {\Flag} Source [Target] ~
+		The file Source is preprocessed with the symbols Flag and the file Target contains
+		the result of the operation. If Target is missing, Source.Pre is generated
+*)
+	PROCEDURE Preprocess;	(* non-portable *)
+	PROCEDURE AddModule (VAR T: Tree; s: ARRAY OF CHAR; opts: ARRAY OF CHAR);
+	PROCEDURE Hierarchy (VAR T: Tree);
+	PROCEDURE InsertHierarchy;
+	PROCEDURE Compile;
+	PROCEDURE Free;
+END Builder.

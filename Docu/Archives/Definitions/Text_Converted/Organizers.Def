@@ -1,0 +1,12 @@
+DEFINITION Organizers;	(* portable *)
+
+	IMPORT Objects, Display, Panels;
+	PROCEDURE HasConstraints (f: Display.Frame; VAR l, t, r, b: LONGINT): BOOLEAN;
+	PROCEDURE SolveGadget (PW, PH: INTEGER; f: Display.Frame; l, t, r, b: LONGINT; VAR X, Y, W, H: INTEGER);
+	PROCEDURE Solve (F: Panels.Panel; dX, dY, W, H: INTEGER; mode: INTEGER);
+	PROCEDURE Handler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitPanel (F: Panels.Panel);
+	PROCEDURE NewPanel;
+	PROCEDURE Exchange;
+
+END Organizers.

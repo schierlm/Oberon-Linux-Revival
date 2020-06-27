@@ -1,0 +1,12 @@
+DEFINITION EditKeys;	(* portable *)
+
+	IMPORT
+		Objects;
+	PROCEDURE Handle (F: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE Reset;
+	PROCEDURE Read;
+	PROCEDURE Definitions;
+	PROCEDURE GetKeyCode;
+	PROCEDURE Install;
+
+END EditKeys.

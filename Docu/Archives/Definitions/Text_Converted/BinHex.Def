@@ -1,0 +1,7 @@
+DEFINITION BinHex;	(* portable *)
+(* BinHex decodeing, sit not yet supported *)
+
+	IMPORT Files, Texts;
+	PROCEDURE DecodeText (T: Texts.Text; beg: LONGINT; F: Files.File): BOOLEAN;
+	PROCEDURE Decode;
+END BinHex.

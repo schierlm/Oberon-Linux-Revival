@@ -1,0 +1,36 @@
+DEFINITION LayLa;	(* portable *)
+
+	IMPORT Objects, Texts;
+	PROCEDURE ParseText (text: Texts.Text; pos: LONGINT): Objects.Object;
+	PROCEDURE ParseString (str: ARRAY OF CHAR; pos: LONGINT): Objects.Object;
+	PROCEDURE Insert;
+(*
+		Insert reads the specified layout text and inserts the new gadget at the caret position.
+
+		 Insert ^		read from latest selection
+		 Insert *		read from marked viewer / TextGadget
+		 Insert @ file	read from file
+		 Insert (NEW object)
+*)
+	PROCEDURE OpenAsDoc;
+(*
+		OpenAsDoc reads the specified layout text and opens the new gadget as a document. If the top most
+		gadget is not a Panel, the created gadget(s) are inserted in a new PanelDoc. 
+
+		 OpenAsDoc ^		read from latest selection
+		 OpenAsDoc *		read from marked viewer / TextGadget
+		 OpenAsDoc @ file	read from file
+		 OpenAsDoc (NEW object)
+*)
+	PROCEDURE AddToLibrary;
+(*
+		AddToLibrary reads the specified layout text and inserts the gadget in the library L with name O. If the
+		top most container is VIRTUAL, only the first gadget returned is inserted.
+
+		 AddToLibrary L.O ^		read from latest selection
+		 AddToLibrary L.O *		read from marked viewer / TextGadget
+		 AddToLibrary L.O @ file	read from file
+		 AddToLibrary L.O (NEW object)
+*)
+
+END LayLa.

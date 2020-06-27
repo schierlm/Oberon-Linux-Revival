@@ -1,0 +1,16 @@
+DEFINITION DiffGadgets;	(* portable *) (* PS  *)
+
+	IMPORT Objects, Texts;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+	PROCEDURE S;
+	PROCEDURE NewSlider;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Init (F: Frame; t1, t2: Texts.Text; n1, n2: ARRAY OF CHAR);
+	PROCEDURE New;
+	PROCEDURE NewDoc;
+	PROCEDURE OpenDoc (t1, t2: Texts.Text; n1, n2: ARRAY OF CHAR);
+
+END DiffGadgets.

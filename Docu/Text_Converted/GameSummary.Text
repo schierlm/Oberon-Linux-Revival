@@ -1,0 +1,53 @@
+Summary of games
+
+Marble solitaire game - Marble.Mod
+	Source code includes three board layouts: 
+		1 - parameterized
+		2 - plain and straightforward
+		3 - french board layout - works with the same module
+	Comments appear at the beginning of the code
+
+Master Mind in two versions (the colors can easily be changed)
+	MasterMind.Mod : user plays against the computer which sets a color combination
+		Source code includes the board layout
+	MasterMindG.Mod : Guesser, i.e. the computer guesses a random combination
+		in an optimal manner showing the reasoning
+		Source code includes the board layout
+
+Lights game - AfiAllLights.Mod
+	Source code includes board layout
+	Comments appear at the beginning of the code
+
+Five to one - Afi521.Mod
+	Uses Button gadget as tiles.
+	The Caption's font size cannot be controlled easily: when clicked, returns immediately to default font
+		Syntax10, considered small. The next module Afi521Big.Mod does it differently.
+	Source code includes board layout (parameterized)
+	Comments appear at the beginning of the code
+
+Five to one - Afi521Big.Mod
+	Uses ButtonField.Mod gadget as tiles for large font captions.
+	Source code includes board layout (parameterized)
+	Comments appear at the beginning of the code
+
+Puzzle 15 (4 x 4) generalized to (X x Y) and with numbers on 1 side, images on the other side
+	PuzzleLayLaP.Mod - creates a PuzzleXY constructor with wich the user specifies
+	the puzzle dimensions in number of tiles in width and height.
+	Uses the LayLa description PuzzleLayLaP.Desc
+	PuzzleXY.Mod - drives the puzzle
+	l038102.jpg - an example JPEG image
+	
+	Usage:
+		1 - Execute PuzzleLayLaP.GUI to open a puzzle creation form.
+		2 - Enter the puzzle dimensions in tiles (width and height) and no. of pixels for a side.
+		3 - Create board
+		4 - Scramble the tiles
+		5 - Arrange them back in order.
+
+Slide, a variant of Connect4 (Vier gewinnt)
+	Slide5.Mod - Uses Arrow gadgets found in Connect4.Lib
+	Source code includes board layout (parameterized)
+	Person against person
+	Person against computer
+	Computer against person
+	Computer against computer

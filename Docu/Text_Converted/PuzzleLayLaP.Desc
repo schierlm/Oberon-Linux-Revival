@@ -1,0 +1,63 @@
+	(TABLE Panel (border=8 dist=4 cols=3) (ATTR Locked=TRUE)
+		(SPAN 1 3
+		(NEW Caption (w=[]) (ATTR Value="      PuzzleXY constructor" Font="Oberon14b.Scn.Fnt"))
+		)
+		(NEW TextField (ATTR Name="PictName" Value="Egypt.Pict" Cmd="PuzzleLayLaP.LoadPict"))
+		(NEW Caption (ATTR Value="   Filename"))
+		VIRTUAL
+		VIRTUAL
+		(NEW Caption (ATTR Value="  Width"))
+		(NEW Caption (ATTR Value="  Height"))
+		(NEW Caption (h=12) (ATTR Value="Picture pixels"))
+		(NEW Caption (ATTR Name="ow" Value="0"))
+		(NEW Caption (ATTR Name="oh" Value="0"))
+		(NEW Caption (ATTR Value="Scale picture to board"))
+		(NEW CheckBox (LINKS Model = (NEW Boolean (ATTR Name="scale"))))
+		VIRTUAL
+		(NEW Caption (ATTR Value="Board pixels"))
+		(NEW Caption (ATTR Name="pw" Value="300"))
+		(NEW Caption (ATTR Name="ph" Value="300"))
+		(NEW Caption (ATTR Value="Board tiles"))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="bw" Value=5))))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="bh" Value=5))))
+		(NEW Caption (ATTR Value="Tile pixels"))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="side" Value=60))))
+		(NEW Caption (ATTR Name="sw" Value="60"))
+		(NEW Button (h= 20 w=[]) (ATTR Caption="Board description" Cmd="PuzzleLayLaP.BoardDesc"))
+		(SPAN 1 2
+		(NEW Button (h= 20 w=[]) (ATTR Caption="Create board" Cmd="PuzzleLayLaP.CreateBoard"))
+		)
+	)
+~
+LayLa.OpenAsDoc
+	(TABLE Panel (border=8 dist=4 cols=3) (ATTR Locked=TRUE)
+		(SPAN 1 3
+		(NEW Caption (w=[]) (ATTR Value="      PuzzleXY constructor" Font="Oberon14b.Scn.Fnt"))
+		)
+		(NEW TextField (ATTR Name="PictName" Value="Egypt.Pict" Cmd="PuzzleLayLaP.LoadPict"))
+		(NEW Caption (ATTR Value="   Filename"))
+		VIRTUAL
+		VIRTUAL
+		(NEW Caption (ATTR Value="  Width"))
+		(NEW Caption (ATTR Value="  Height"))
+		(NEW Caption (h=12) (ATTR Value="Picture pixels"))
+		(NEW Caption (ATTR Name="ow" Value="0"))
+		(NEW Caption (ATTR Name="oh" Value="0"))
+		(NEW Caption (ATTR Value="Scale picture to board"))
+		(NEW CheckBox (LINKS Model = (NEW Boolean (ATTR Name="scale"))))
+		VIRTUAL
+		(NEW Caption (ATTR Value="Board pixels"))
+		(NEW Caption (ATTR Name="pw" Value="300"))
+		(NEW Caption (ATTR Name="ph" Value="300"))
+		(NEW Caption (ATTR Value="Board tiles"))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="bw" Value=5))))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="bh" Value=5))))
+		(NEW Caption (ATTR Value="Tile pixels"))
+		(NEW TextField (w=40) (ATTR Cmd="PuzzleLayLaP.SetParams") (LINKS Model = (NEW Integer (ATTR Name="side" Value=60))))
+		(NEW Caption (ATTR Name="sw" Value="60"))
+		(NEW Button (h= 20 w=[]) (ATTR Caption="Board description" Cmd="PuzzleLayLaP.BoardDesc"))
+		(SPAN 1 2
+		(NEW Button (h= 20 w=[]) (ATTR Caption="Create board" Cmd="PuzzleLayLaP.CreateBoard"))
+		)
+	)
+~

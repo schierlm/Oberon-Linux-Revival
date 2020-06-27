@@ -1,0 +1,4 @@
+DEFINITION WTSPict;	(* portable *)
+	PROCEDURE New;
+
+END WTSPict.

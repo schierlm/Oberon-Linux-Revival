@@ -1,0 +1,9 @@
+DEFINITION Tar;	(* portable *)
+
+	IMPORT Objects;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);	(* Handle  D: Document *)
+	PROCEDURE NewDoc;
+	PROCEDURE Extract;
+	PROCEDURE ExtractAll;
+
+END Tar.

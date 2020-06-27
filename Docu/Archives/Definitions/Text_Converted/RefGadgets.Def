@@ -1,0 +1,55 @@
+DEFINITION RefGadgets;	(* portable *)  (* PS  *)
+
+(* Gadget providing drag and drop facilities. *)
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Reference = POINTER TO ReferenceDesc;
+		ReferenceDesc = RECORD ( Gadgets.ObjDesc ) 
+			val: Objects.Object
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			val: Objects.Object;
+			locked: BOOLEAN;	(* refuse drops & copy over nor allow delete *)
+			canDrag: BOOLEAN	(* allow dragging *)
+		END;
+	PROCEDURE CopyReference (VAR M: Objects.CopyMsg; from, to: Reference);
+	PROCEDURE ReferenceHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitReference (obj: Reference);
+	PROCEDURE NewReference;
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame);
+	PROCEDURE NewFrame;
+
+(* Used in the form: RefGadgets.Create <Generator>
+
+	Creates a new object and set the value link of the specified RefGadget. A destination
+	RefGadget is either the executor, selected or marked gadget. *)
+	PROCEDURE Create;
+
+END RefGadgets.
+
+(*
+Reference
+	Create with:	Gadgets.Link RefGadgets.NewReference
+	Alias:	-
+	Function:	Stores a reference to any object. It may be used in combination with reference frames.
+	Attributes:	-
+	Links:
+		Value	Reference the model is representing
+
+Frame
+	Create with:	Gadgets.Insert RefGadgets.NewFrame
+	Alias:	-
+	Function:	This frame stores a reference to any object of type Objects.Object. A refrence frame has the ability to execute a command when clicked on. The frame distinguish three kinds of representation;  -> no object,  -> object is a visual gadget or  -> object is a model. When the reference is changed by user interaction (dropping or copy over), it also has the ability to execute a command. References can be changed either by dropping a reference from an otherreference frame, dropping a visual gadget into a frame or copy over a selected gadget. Dragging follows the standard oberon rules. If the dragged reference represents a visual gadget, a drop messgae is sent to the receiving frame. If the dragged reference represents a model, a link message with name set to 'Model' is sent to the receiving frame. The mouse cursor changes its look;  -> drop the referenced object or  -> drop a copy of the referenced object
+	Attributes:	
+		Cmd	Command executed when clicking on the frame.
+		ConsumeCmd	Command executed when an object is dropped or copied over.
+		Locked	When set, frame refuse action 'drop', 'copy over' and 'delete'.
+		Drag	Allow dragging of value.
+	Links:
+		Value	Reference the frame is representing
+*)

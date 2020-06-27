@@ -1,0 +1,50 @@
+DEFINITION GraphicFrames;	(* portable *)
+
+	IMPORT Objects, Display, Graphics, Oberon;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		Location = POINTER TO LocDesc;
+		LocDesc = RECORD
+			x, y: INTEGER;
+			next: Location
+		END;
+
+		FrameDesc = RECORD ( Display.FrameDesc ) 
+			graph: Graphics.Graph;
+			Xg, Yg: INTEGER;
+			X1, Y1: INTEGER;
+			x, y, col: INTEGER;
+			marked, ticked, focused: BOOLEAN;
+			mark: LocDesc
+		END;
+
+		DrawMsg = RECORD ( Graphics.Msg ) 
+			f: Frame;
+			x, y, col, mode: INTEGER
+		END;
+
+		CtrlMsg = RECORD ( Graphics.Msg ) 
+			f: Frame;
+			res: INTEGER
+		END;
+
+	VAR 
+		Crosshair: Oberon.Marker;
+	PROCEDURE Restore (F: Frame);
+	PROCEDURE Focus (): Frame;
+	PROCEDURE Selected (): Frame;
+	PROCEDURE This (x, y: INTEGER): Frame;
+	PROCEDURE Draw (F: Frame);
+	PROCEDURE Erase (F: Frame);
+	PROCEDURE DrawObj (F: Frame; obj: Graphics.Object);
+	PROCEDURE EraseObj (F: Frame; obj: Graphics.Object);
+	PROCEDURE Change (F: Frame; VAR msg: Graphics.Msg);
+	PROCEDURE Unmark (F: Frame);
+	PROCEDURE Defocus (F: Frame);
+	PROCEDURE Deselect (F: Frame);
+	PROCEDURE Macro (VAR Lname, Mname: ARRAY OF CHAR);
+	PROCEDURE Handle (G: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Open (G: Frame; graph: Graphics.Graph; X, Y, col: INTEGER; ticked: BOOLEAN);
+
+END GraphicFrames.

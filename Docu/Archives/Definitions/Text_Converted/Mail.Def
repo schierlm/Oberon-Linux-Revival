@@ -1,0 +1,71 @@
+DEFINITION Mail; (* portable *)
+
+	IMPORT Texts, NetTools, MIME,
+		HyperDocs;
+
+	CONST
+		OberonStart = "--- start of oberon mail ---";
+		DefSMTPPort = 25;
+
+	TYPE
+		ServerName = ARRAY HyperDocs.ServerStrLen OF CHAR;
+		AdrString = ARRAY HyperDocs.PathStrLen OF CHAR;
+		SMTPSession = POINTER TO SMTPSessionDesc;
+		SMTPSessionDesc = RECORD ( NetTools.SessionDesc ) 
+			from: AdrString
+		END;
+	PROCEDURE ParseContent (h: MIME.Header; VAR cont: MIME.Content);
+	PROCEDURE GetSetting (name: ARRAY OF CHAR; VAR value: ARRAY OF CHAR; local: BOOLEAN);
+	PROCEDURE Synchronize;
+	PROCEDURE POPCollect;
+	PROCEDURE DecodeMessage (VAR T: Texts.Text; h: MIME.Header; cont: MIME.Content; no: LONGINT);
+	PROCEDURE Show;
+	PROCEDURE Collect;
+	PROCEDURE Re (VAR W: Texts.Writer; VAR t: ARRAY OF CHAR);
+	PROCEDURE CiteText (VAR W: Texts.Writer; T: Texts.Text; beg, end: LONGINT);
+	PROCEDURE Reply;
+	PROCEDURE SetTopic;
+	PROCEDURE ClearTopic;
+	PROCEDURE MoveTopic;
+	PROCEDURE QueryTopic;
+	PROCEDURE NewModel;
+	PROCEDURE NewFrame;
+	PROCEDURE NewTopicModel;
+	PROCEDURE QueryContType (T: Texts.Text; beg: LONGINT; cont: MIME.Content);
+	PROCEDURE CloseSMTP (S: SMTPSession);
+	PROCEDURE OpenSMTP (VAR S: SMTPSession; host, from: ARRAY OF CHAR; port: INTEGER);
+	PROCEDURE SendReplyLine (S: NetTools.Session; cont: MIME.Content);
+	PROCEDURE MakeAscii (body: Texts.Text; beg, end: LONGINT; compress: BOOLEAN; VAR ascii: Texts.Text);
+	PROCEDURE SendText (S: SMTPSession; head, body: Texts.Text; beg, end: LONGINT; cont: MIME.Content);
+	PROCEDURE SendMail (S: SMTPSession; T: Texts.Text; cont: MIME.Content; autoCc: BOOLEAN);
+
+	(* (es), Mail.Send ( @ | ^ | {mailfile} ~ ) *)
+	PROCEDURE Send;
+
+(* Mail.Cite (selection & caret)
+		Copy the selection to the caret with an left indent "> ". *)
+	PROCEDURE Cite;
+
+(* Mail.Mono (marked text)
+		Change the font of the marked viewer into Courier10. *)
+	PROCEDURE Mono;
+
+(* Mail.CutLines [width] (marked text)
+		Break all lines in the marked viewer after a maximum of width characters.
+		The default width is 80. *)
+	PROCEDURE CutLines;
+
+(* Parsing of a mailto url. *)
+	PROCEDURE SplitMailTo (VAR url, mailadr: ARRAY OF CHAR): LONGINT;
+	PROCEDURE NewMailToLinkScheme;
+
+(* Parsing of a mailserver url. *)
+	PROCEDURE SplitMailServer (VAR url, mailadr, subject, body: ARRAY OF CHAR): LONGINT;
+	PROCEDURE NewMailServerLinkScheme;
+
+(* Mail.NewDoc
+		Document new-procedure for "mailto:" & "mailserver:" documents.
+		E.g. Use Desktops.OpenDoc "mailto:zeller@inf.ethz.ch" to send me a mail. *)
+	PROCEDURE NewDoc;
+
+END Mail.

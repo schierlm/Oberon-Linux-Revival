@@ -1,0 +1,59 @@
+DEFINITION ZlibInflate;	(* eos  *)
+(* AUTHOR "swalthert"; PURPOSE "Zlib decompression"; *)
+
+	(*
+		Decompression of deflated byte streams
+	*)
+	IMPORT
+		Zlib, ZlibBuffers;
+
+	CONST
+		(* result codes *)
+		Ok = Zlib.Ok; StreamEnd = Zlib.StreamEnd; NeedDict = Zlib.NeedDict;
+		StreamError = Zlib.StreamError; DataError = Zlib.DataError; MemError = Zlib.MemError; BufError = Zlib.BufError;
+
+		(* inflate operation codes *)
+		NoFlush = Zlib.NoFlush; SyncFlush = Zlib.SyncFlush; FullFlush = Zlib.FullFlush; Finish = Zlib.Finish;
+		DeflateMethod = 8;	(* only supported compression method *)
+
+	TYPE
+
+		(* result codes *)
+		Result = RECORD
+			code-: LONGINT;	(* result code including special conditions and errors *)
+			msg-: POINTER TO ARRAY OF CHAR;	(* detailed error description if available *)
+		END;
+
+		(* inflate stream *)
+		Stream = RECORD
+			in, out: ZlibBuffers.Buffer;	(* input and output buffers (initialized by client) *)
+			res-: Result;	(* result of last operation *)
+			wrapper-: BOOLEAN;	(* if set, the stream has a zlib header and a checksum *)
+			open-: BOOLEAN;	(* if set, stream is initialized *)
+		END;
+
+	(* reset an opened inflate stream (equivalent to closing and reopening) *)
+	PROCEDURE Reset (VAR stream: Stream);
+
+	(* initialize inflate stream; if 'wrapper' is not set, the stream has no zlib header and no checksum *)
+	PROCEDURE Open (VAR stream: Stream; wrapper: BOOLEAN);
+
+	(* close inflate stream *)
+	PROCEDURE Close (VAR stream: Stream);
+
+	(* inflate until either input or output buffer runs out; if op is 'Finish', Inflate returns with either 'StreamEnd' or an error *)
+	PROCEDURE Inflate (VAR stream: Stream; flush: SHORTINT);
+
+	(* set dictionary if inflate returned 'NeedDict' *)
+	PROCEDURE SetDictionary (VAR stream: Stream; VAR dict: ARRAY OF CHAR; dictLen: LONGINT);
+
+	(* try to synchronize stream to end of block generated with 'SyncFlush' or 'FullFlush' *)
+	PROCEDURE Sync (VAR stream: Stream);
+
+	(* return if inflate is currently at end of block generated with 'SyncFlush' or 'FullFlush' *)
+	PROCEDURE SyncPoint (VAR stream: Stream): BOOLEAN;
+
+	(* uncompress complete stream and return output length in len *)
+	PROCEDURE Uncompress (VAR src, dst: ARRAY OF CHAR; srcoffset, srclen, dstoffset, dstlen: LONGINT; VAR len: LONGINT; VAR res: Result);
+
+END ZlibInflate.

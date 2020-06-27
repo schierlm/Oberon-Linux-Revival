@@ -1,0 +1,369 @@
+The Leonardo Guide
+
+(draft 10.05.2000 eos)
+
+
+1  Introduction
+
+1.1  What is Leonardo?
+Leonardo is a graphics editor for ETH Oberon. It is useful for creating technical diagrams and figures, which you can either print or integrate within other documents.
+
+1.2  Where to Download Leonardo?
+If Leonardo is not already part of your Oberon system, the current release can be found at
+	ftp://ftp.inf.ethz.ch/pub/ETHOberon/Contrib/Leonardo/
+
+At the same time, you should probably also download the newest versions of the following packages
+	ftp://ftp.inf.ethz.ch/pub/ETHOberon/Contrib/Images/
+	ftp://ftp.inf.ethz.ch/pub/ETHOberon/Contrib/Gfx/
+
+1.3  How to Install Leonardo?
+Leonardo comes with a file Leonardo.Tool that contains instructions for compiling and installing Leonardo. It also describes the changes that have been incorporated since previous releases.
+
+1.4  Support for Previous Versions
+If you once had older Leonardo releases installed, there is a good chance that your old files can still be used with the current release. However, you will need to install the Leonardo legacy archive (available via FTP) to import them. The legacy archive also allows you to view and edit documents that were created with Draw (the graphics editor from the "Project Oberon" book).
+
+1.5  Comments and Bug Reports
+..should be sent to oswald@inf.ethz.ch
+
+
+2  Leonardo Panel
+You can access all functionality that Leonardo offers from Leonardo.Panel. The Leonardo panel is divided into three sections:
+1. The top section contains buttons for opening document-related panels in the first row. The second row lets you open a new empty document, undo the most recent operation, or redo an undone operation.
+2. The middle section contains buttons for inspecting the current frame and the current tool in the top row. The lower part contains buttons for activating various tools.
+3. The bottom section contains buttons for inspecting and editing various aspects of the current selection.
+Each instance of the Leonardo panel contains an invisible link to a frame that displays a figure. This links usually refers to the figure that was most recently opened from this panel. To attach it to a different figure, mark the frame that displays the figure with the star marker (F1) before activating a command in the panel.
+
+
+3  Leonardo Frames
+Leonardo frames are your windows into a graphical scene. They are either active or passive. Active frames allow you to manipulate their contents. They display rulers and other special areas in their top and left margins and a status line in their bottom margin. Passive frames only display a figure; their purpose is to integrate graphics as components within text and panel documents. The properties of the current frame can be inspected with the frame inspector, accessible from the Frame.. button in the middle section of the Leonardo panel.
+
+You get an active frame when
+1. You open a new Leonardo document with the New button
+2. You open an existing figure from the Open.. panel
+3. You activate a passive frame in the frame inspector
+
+You get a passive frame when
+1. You export a figure with the Export.. panel
+2. You passivate an active frame in the frame inspector
+
+In an active frame
+1. Click with ML or MR in the top ruler to shift the current view left and right
+2. Click with ML or MR in the left ruler to shift the current view up and down
+3. Click with ML/MR in the bottom left corner to zoom in/zoom out; click with MM to reset the zoom factor to 100%
+4. Click with MM in the top left corner to adjust the top left corner of the page with the top left corner of the view
+5. Click with ML/MR in the top left corner to shift/reset the ruler origin
+
+
+4  Tools
+All active frames have a current tool that determines what action is taken when you click in the frame's contents area. You can see in the status line which tool is currently active and activate a new tool by clicking the corresponding button in the tool area in the middle section of the Leonardo panel.
+
+4.1  Selecting Shapes
+Most tools allow you to select shapes with the right mouse button (MR)
+1. Click with MR to select a shape
+2. Drag the mouse while keeping MR pressed to select all shapes within the a rectangle
+3. Hold the SHIFT key before pressing MR to keep previously selected shapes selected
+4. Interclick with ML while MR is being pressed to delete selected shapes
+Selection in Leonardo is hierarchical. When a shape consists of several components (e.g. a line contains two control points at its ends), the first click selects the whole shape. You can refine the selection by clicking inside an already selected shape to select individual components.
+
+4.2  Moving Shapes
+1. Drag selected shapes around by pressing MM on a selected shape and moving the mouse with MM still pressed.
+2. Pressing MM over the background also moves the current selection
+3. Pressing MM over an unselected shape selects that shape before moving it
+4. Interclick with MR while moving a shape to integrate a copy of the original selection at the target location
+5. Interclick with ML while moving a shape to consume it within the shape at the target location
+6. Press all three mouse buttons together to cancel the current drag operation
+
+4.3  Inserting Shapes
+1. Activate the corresponding tool
+2. Press ML and start dragging the mouse. With most tools, a new shape will start to appear. When you are satisfied with the resulting shape, release ML
+3. Some tools allow you to interclick other mouse button during construction to insert additional control points
+
+4.4  Alignment
+1. Leonardo by default aligns mouse coordinates to regularly spaced grid points. With the Frame inspector panel, you can deactivate the grid or modify its parameters.
+2. By pressing the CTRL key, mouse coordinates are horizontally and vertically aligned to the nearest shapes. Two dashed lines, one horizontal and one vertical, help you to find out to which point Leonardo is aligning mouse coordinates.
+3. By pressing the SHIFT key, mouse movements are restricted to a horizontal, vertical, or diagonal axis through the starting point of the current operation.
+
+4.5  Tool Inspector
+Many tools allow you to inspect and modify their properties when you activate the corresponding tool inspector with the Tool.. button. These properties affect new shapes that are subsequently integrated into a figure with that tool. Changes within an inspector panel must be committed with Apply or Ok to become active.
+
+4.6  Focus Tool
+The focus tool (which is active by default) is special since it does not integrate new shapes in a figure.
+1. When you press ML, you place a scale focus point in an active frame (indicated by a X-like cross). If you now attempt to drag a shape, you will scale it relative to that focus point.
+2. If you click with ML somewhere else, you place a new scale origin.
+3. If you press ML somewhere else and move the mouse, you define a scale axis. Dragging a shape with MM now only scales in that direction.
+4. Click ML twice on the same spot to turn the scale focus into a rotate focus (a circle with a dot in the center). Click twice and drag the mouse to get a shear focus (a small rotated square).
+5. Click ML three times to get a mirror focus (a square with an inscribed X). Drag to get a directional mirror.
+6. Click ML four times to go back to a translation focus. Unless you also give it direction, the translation focus has no special marker since it needs no origin. A directional translation focus is symbolized by a small cross.
+
+4.7  Sticky Lines
+As described above, interclicking with ML while moving a shape with MM asks the shape at the target location to consume the dragged shape. Many shapes, including rectangles, ellipses, and path segments, can consume points. To connect two rectangles with a line, use the following procedure:
+1. Activate the polyline tool (or any other path segment tool)
+2. Insert a line by pressing ML and dragging the mouse to the line's end point before releasing ML
+3. Press MM on one end, drag it over one edge of the first rectangle, interclick ML, and release MM. If you were successful, a small dashed circle around the dragged point indicates that the rectangle has consumed it.
+4. Do the same with the second point and the second rectangle
+5. If you now move either rectangle, the corresponding end point of the line should move along
+If you inspect the polygon tool and activate the auto-connect option, Leonardo tries to automatically attach new lines to existing shapes.
+
+
+5  Selection
+
+5.1  Inspector
+By clicking on the Inspect.. button you open a new shape inspector panel for the currently selected shape. Depending on the kind of shape that is selected, a series of different shape properties are displayed for you to edit. Some gadgets in this inspector may open further inspector panels to give you a more detailed view of a property value.
+
+Shape inspectors contain the following buttons in their menu bar
+1. Close dismisses the panel without committing any changes
+2. Revert undoes any changes you've made and restores the shape's current property values
+3. Apply commits the changes you've made. In a nested inspector panel, these only affect the inspector panel from which the current panel was opened.
+4. Ok commits your changes and dismisses the inspector frame. It is equivalent to first clicking Apply and then Close
+5. Get replaces the whole panel with a new inspector panel for the current selection. This lets you inspect a different shape without first having to close the inspector panel
+
+5.2  Arrange
+The Arrange.. panel gives you many options for aligning, distributing, and resizing the shapes in the current selection. All options are available for horizontal and vertical arrangement. Arrangement is based on the bounding box of individual shapes and thus works best for unrotated rectangles, ellipses, and captions.
+1. Size.  Instead of leaving the dimensions of affected shapes as they are, you can set them to the smallest or largest width or height of those shapes or to a specific value
+2. Align.  Choose Left/Center/Right or Bottom/Center/Top to align the corresponding edges of all shape bounding boxes
+3. Distribute.  Choose Space/Left/Center/Right or Space/Bottom/Center/Top to distribute shapes horizontally or vertically. With Space, the distance between shapes is made the same, otherwise the distance between the corresponding edges.
+4. Space.  When distributing inter-shape space, the exact amount of space can be set to the current minimum or maximum, to the average distance, or to a specific value. A distance of zero stacks boxes on top of or next to each other.
+
+5.3  Order
+Move selected shapes closer to the viewer or further away, but only within the shape that contains them. Reverse reverts the order of selected shapes.
+
+5.4  Transform
+The transformation panel can either be opened from the main Leonardo panel (Transform..) to transform the current selection or from a shape inspector panel to transform that individual shape. Its purpose is to transform shapes more precisely than interactive manipulation would allow. Transformations are expressed as 3x2 matrices. The current transformation matrix is displayed in the uppermost part of the panel. All coordinate values are in ruler units of the current frame.
+1. Prepend/Append adds a single transformation to the current matrix. A prepended transformation is executed before all others, an appended transformation is executed after all others.
+2. Origin denotes the point of a scale/rotate/shear/mirror transformation that does not move
+3. Direction affects scale, shear, and mirror transformations. It can be specified as a vector or as an angle in degrees, with angle zero being equal to the positive x-axis and advancing counter-clockwise from there. Direction None is equal to an angle of zero.
+
+
+6  Layers
+Leonardo figures may consist of several layers. When you create complex drawings, you might consider grouping different parts in different layers.
+1. Only one layer is active, and only shapes in the active layer can be located, moved around, etc. When you have trouble with locating and selecting individual shapes in crowded figures, consider adding a new layer to avoid accidentally locating existing shapes.
+2. You can hide layers while editing, making redraw operations faster.
+3. You can add layers containing auxiliary lines that help you with alignment. These layers will not appear within passive frames and when printing.
+
+The Layers.. panel displays the layer structure of the current figure. The list gadget that occupies the largest part of the panel displays the shape hierarchy of that figure, with the layers being at the top of the hierarchy.
+1. Click with MM on the small triangles beside a container shape to expand or hide its contents
+2. Select and delete shapes with MR, as within active frames
+3. Activate a shape by clicking on its name with MM. Activating a layer displays its properties in the fields below the list gadget. Activating any other shape opens a matching inspector panel
+
+The following actions have an effect on the active layer:
+1. Add a new layer (called "New") and activate it
+2. Delete the active layer and all its shapes from the figure
+3. Move the active layer Up or Down in the layer order
+4. Select all shapes in the active layer
+5. Consume the selection in the active layer
+
+
+7  Pens
+Unlike other graphics editors, Leonardo does not assign a fixed set of attribute values (e.g. color, width, and dash pattern) to its shapes. Instead, most shapes render themselves using a pen. As in the real world, a pen leaves a trail when it is moved along a path. Depending on the kind of pen used, this trail may have arbitrary thickness and color. In addition, Leonardo's pens can also fill the interior of their path.
+
+Some pens do not draw anything themselves. They merely transform the path they traverse and forward this transformed path to another pen. For example, dasher pens cut their input paths into short pieces (dashes) according to their dash pattern attribute and draw these pieces with their base pen. Thus, you can build arbitrarily complex chains of pens. E.g. a dasher may drive an outliner, which in turn may drive a stroker, resulting in a series of outlined dashes.
+
+A shape that relies on a pen will display a gadget with a preview gadget in its inspector. The preview gadget draws a triangle with the shape's current pen. The three buttons beside the preview open further panels:
+1. Edit.. opens an inspector panel where the properties of the current pen can be edited. When committed, the current pen is replaced by a duplicate pen with these new properties
+2. New.. opens a panel where a new pen can be instantiated. You can either create a specific pen from one of the generator buttons in the top row or choose a set of attributes in the main part of the panel and ask Leonardo to create a matching pen hierarchy by clicking Make.
+3. Select.. opens the Pens panel, which allows you to select the pen of a selected shape or from a list of named pens
+4. Clicking on the preview opens a pen inspector, similar to Edit.. However, changes that you make in that inspector affect all shapes that currently use this pen, not only the inspected one.
+
+7.1  Stroker
+Draw solid lines and curves.
+
+Properties
+	Color	stroke color
+	Width	line thickness in pixels
+	Cap Style	how to render line caps
+	Join Style	how to render line joins
+	Style Limit	maximum ratio of style extent to line thickness
+
+7.2  Filler
+Fill interior of paths.
+
+Properties
+	Color	fill color
+	Even/Odd	fill rule for self-intersecting paths
+
+7.3  Dasher
+Convert path to dashes.
+
+Properties
+	Length	number of on/off pairs
+	On/Off	dash length and distance to following dash
+	Phase	offset into pattern for starting point of path
+	Continuous	whether to treat resulting dashes as pieces of a single path or as separate paths
+	Base	pen for rendering dashes
+
+7.4  Forker
+Duplicate path.
+
+Properties
+	Lower	first pen to draw visited path
+	Upper	second pen to draw visited path
+
+7.5  Outliner
+Outline path.
+
+Properties
+	Width	line thickness in pixels
+	Cap Style	how to render line caps
+	Join Style	how to render line joins
+	Style Limit	maximum ratio of style extent to line thickness
+	Mode	which half of the outline to draw in which direction
+	Base	pen for drawing outline of visited path
+
+7.6  Arrow
+Outline path with arrow heads.
+
+Properties
+	Width	line thickness in pixels
+	Cap Style	how to render line caps
+	Join Style	how to render line joins
+	Style Limit	maximum ratio of style extent to line thickness
+	Mode	which half of the outline to draw in which direction
+	Direction	where to add arrow head(s)
+	Length	distance from end where normal outline starts
+	Max Width	maximal width of arrow head
+	Offset	distance from end where maximal width is achieved
+	Base	pen for drawing outline of visited path
+
+
+8  Shape Reference
+
+8.1  Rectangles and Ellipses
+Basic area shapes.
+
+Construction
+1. Press ML on corner of bounding box
+2. Drag mouse to opposite corner
+3. Release ML
+
+Shape Properties
+	Pen	graphical appearance
+	Links	links of connected shapes
+
+Tool Properties
+	Pen	graphical appearance
+
+
+8.2  Captions
+Short text labels.
+
+Construction
+1. Place a caret with ML
+2. Start typing
+3. Place caret with ML and interclick with MM to integrate current text selection
+
+Shape Properties
+	Text	caption text
+	Font	font name, e.g. "Oberon", "Oberon-Bold", "Syntax-Italic"
+	Size	font size in points
+	Color	caption color
+
+Tool Properties
+	Font	font name, e.g. "Oberon", "Oberon-Bold", "Syntax-Italic"
+	Size	font size in points
+	Color	caption color
+
+
+8.3  Images
+Raster images.
+
+Construction
+1. Choose an image file in the tool inspector and click "Apply"
+2. Click in a figure with ML to integrate a new instance of the image.
+
+Shape Properties
+	Filter	choose linear filtering for smoother appearance
+	Quick	display image as pattern
+	Color	pattern color
+
+Tool Properties
+	Name	file name of current image
+
+
+8.4  Polylines, Beziers and Splines
+Path segments.
+
+Construction
+1. Press ML and drag mouse to insert new shape
+2. Interclick MM to add control points
+3. Release ML at location of last point
+4. Click ML on existing segment to insert point
+5. Click ML on existing inner point to split segment in two connected segments
+6. Click ML on existing end point to disconnect segments
+7. Consume end points of neighboring segments on end points to connect them
+
+Shape Properties
+	Closed	check to make segment closed
+	Link Prev/Next	continuity constraint with predecessor/successor (if connected)
+	Pen	graphical appearance
+	Points	control points
+
+Tool Properties
+	Closed	check to automatically close new shapes
+	Auto Connect	check to automatically connect end points of new shape with existing shapes
+	Pen	pen to use for new shapes
+
+
+8.5  Arcs
+Elliptical arcs, wedges, and segments.
+
+Construction
+1. Press ML on corner of bounding box
+2. Drag mouse to shape ellipse
+3. Release ML on opposite corner
+4. Move end points on ellipse
+5. Optional: consume end points of neighboring segments on arc end points to connect them
+
+Shape Properties
+	Closed	check to make segment closed
+	Mode	close with two lines from end points to ellipse center (wedge)
+		or with straight line between end points (segment)
+	Link Prev/Next	continuity constraint with predecessor/successor (if connected)
+	Pen	graphical appearance
+	Points	control points
+
+Tool Properties
+	Closed	check to automatically close new shapes
+	Mode	close with two lines from end points to ellipse center (wedge)
+		or with straight line between end points (segment)
+	Pen	pen to use for new shapes
+
+
+8.6  Vinci
+Vinci is a graphical description language. By conforming to a few simple rules, Vinci descriptions can be used as shapes in Leonardo. Refer to the documentation in the Vinci package for more information.
+
+Construction
+1. Choose a shape description from the tool inspector and click "Apply"
+2. Click with ML in a Leonardo frame to integrate a new Vinci shape
+
+Shape Properties
+	depend on the description
+
+Tool Properties
+	Name	name of the current description
+
+
+8.7  Groups
+Groups combine several shapes into a single virtual shape. Group components can no longer be individually selected.
+
+Construction
+1. Select shapes that you wish to group
+2. Activate => Group
+
+Shape Properties
+	Shapes	list of components
+	Ungroup	replace group by its components
+
+
+8.8  Paths
+Paths combine several shapes and draw them all with a single pen. A path consumes segments (polylines, beziers, arcs, splines) and areas (rectangles, ellipses), but also captions. By realizing a path, it is reduced to a combination of lines, arcs, and cubic beziers, which can then be individually edited.
+
+Construction
+1. Select shapes that you wish to turn into a path
+2. Activate "=> Path"
+3. Consume further shapes over path
+
+Shape Properties
+	Pen	graphical appearance shared by all components
+	Contours	path components
+	Realize	replace all components with basic segments
+	Dissolve	replace path by its components

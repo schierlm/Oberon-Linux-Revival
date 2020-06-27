@@ -1,0 +1,28 @@
+DEFINITION ListModels;	(* portable *)
+(* List and Tree are models designed for the access mechanism defined in module Riders. *)
+
+	IMPORT Objects, Gadgets, ListRiders;
+
+	TYPE
+		List = POINTER TO ListDesc;
+		ListDesc = RECORD ( Gadgets.ObjDesc ) 
+		END;
+
+		Rider = POINTER TO RiderDesc;
+		RiderDesc = RECORD ( ListRiders.RiderDesc ) 
+		END;
+	PROCEDURE CopyList (VAR M: Objects.CopyMsg; from, to: List);
+
+(* Standard handler for list models *)
+	PROCEDURE ListHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Initialize a list model *)
+	PROCEDURE InitList (obj: List; linearList: BOOLEAN);
+
+(* Generator for a linear list *)
+	PROCEDURE NewList;
+
+(* Generator for a tree *)
+	PROCEDURE NewTree;
+
+END ListModels.

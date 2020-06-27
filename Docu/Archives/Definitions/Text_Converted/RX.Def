@@ -1,0 +1,12 @@
+DEFINITION RX;	(* portable *)
+	PROCEDURE Grep;
+	PROCEDURE SetSearch;
+	PROCEDURE SetReplace;
+	PROCEDURE Search;
+	PROCEDURE Replace;
+
+(* Replace in marked text or files patterns set by RX.SetSearch and RX.SetReplace.
+* marked text, ^ selected filename, 1{<filename>} ~ list of filenames *)
+	PROCEDURE ReplaceAll;
+
+END RX.

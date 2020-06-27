@@ -1,0 +1,27 @@
+PanelDocs.NewDoc})Panels.NewPanelTextFields.NewTextFieldTextFields.NewCaptionBasicGadgets.NewButtonTextGadgets.NewTexts.New'	
+
+ !"#$%&'
+}CS230(#CCmdTetris.Delay 2 &Delay2.Value~FieldNameDelay2S200(#CCmdTetris.Delay 3 &Delay3.Value~FieldNameDelay3R160(#CCmdTetris.Delay 4 &Delay4.ValueFieldNameDelay4S100(#CCmdTetris.Delay 5 &Delay5.Value~FieldNameDelay5R70(p#CCmdTetris.Delay 6 &Delay6.Value~FieldNameDelay6R30(\#CCmdTetris.Delay 7 &Delay7.Value~FieldNameDelay7R20(H#CCmdTetris.Delay 8 &Delay8.Value~FieldNameDelay8Q8(4#CCmdTetris.Delay 9 &Delay9.Value~FieldNameDelay9T0( #CCmdTetris.Delay 10 &Delay10.Value~FieldNameDelay10S250(#CCmdTetris.Delay 1 &Delay1.Value~FieldNameDelay1dBricks.PictLPCCmdTetris.Backdrop 2 &Backdrop2.Value~FieldNameBackdrop2cCells.PictLPCCmdTetris.Backdrop 3 &Backdrop3.Value~FieldNameBackdrop3dClouds.PictLPCCmdTetris.Backdrop 4 &Backdrop4.Value~FieldNameBackdrop4cCoins.PictLPCCmdTetris.Backdrop 5 &Backdrop5.Value~FieldNameBackdrop5eTextils.PictLpPCCmdTetris.Backdrop 6 &Backdrop6.Value~FieldNameBackdrop6eFractal.PictL\PCCmdTetris.Backdrop 7 &Backdrop7.Value~FieldNameBackdrop7dMarble.PictLHPCCmdTetris.Backdrop 8 &Backdrop8.Value~FieldNameBackdrop8gMolecules.PictL4PCCmdTetris.Backdrop 9 &Backdrop9.Value~FieldNameBackdrop9jSpirals.PictL PCCmdTetris.Backdrop10 10 &Backdrop10.Value~FieldNameBackdrop10A#Oberon10.Scn.FntBackdropW/
+C>#Oberon10.Scn.FntDelay+
+C>#Oberon10.Scn.FntLevel
+CbBows.PictLPCCmdTetris.Backdrop 1 &Backdrop1.Value~FieldNameBackdrop1aStart TetrisbCCmdDesktops.OpenDoc (Tetris.NewDoc)FieldYesVal[New HighbCCmdSystem.DeleteFiles Tetris.Doc~FieldYesVal:#Oberon10.Scn.Fnt1
+C:#Oberon10.Scn.Fnt2
+C:#Oberon10.Scn.Fnt3
+C:#Oberon10.Scn.Fnt4
+C:#Oberon10.Scn.Fnt5
+C:#Oberon10.Scn.Fnt6t
+C:#Oberon10.Scn.Fnt7`
+C:#Oberon10.Scn.Fnt8L
+C:#Oberon10.Scn.Fnt98
+C;#Oberon10.Scn.Fnt10$
+CT$Oberon16i.Scn.FntTetris for Oberon System3 9C[#Oberon10.Scn.Fnt""Original concept by Alexy Pajitnov*
+C[#Oberon10.Scn.Fnt""Original design by Vadim Gerasimov
+C1(QCCmd#Oberon10.Scn.FntControl:
+
+Down  Arrow	Turn Clockwise
+Up	   Arrow	Turn Counter-clockwise
+Left	 Arrow	 Shift Left
+Right  Arrow	 Shift Right
+Space			    Drop
+'V' or 'v'			 Toggle Figure Preview
+'P' or 'p'			 Toggle Game Pause	

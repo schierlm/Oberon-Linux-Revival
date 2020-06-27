@@ -1,0 +1,341 @@
+PanelDocs.NewDocs#'Panels.NewPanelBasicGadgets.NewButtonBasicGadgets.NewSliderBasicGadgets.NewIntegerTextFields.NewTextFieldTextFields.NewCaptionBasicFigures.NewRectBooksHelp.NewIconColorTools.NewColorPicker	Icons.NewIconizer
+Icons.NewIconPictures.NewPictureRembrandt.New	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+BasicGadgets.NewReal
+
+
+	
+	
+3
+ !"#$%&'()*+,-./CU_y	
+sCdClear Backdrop8CCmdBackdrops.EmptyPictureFieldYesValTutorial}$<CCmdBackdrops.SetVal 0 &fr.ValueFieldNamefrColorTutorialBackdrops.Book   Cp$<CCmdBackdrops.SetVal 1 &fg.ValueFieldNamefgTutorialBackdrops.Book Cr0$<CCmdBackdrops.SetVal 2 &fb.ValueFieldNamefbTutorialBackdrops.Book   CrQ&<	CCmdBackdrops.SetVal 3 &tr.ValueFieldNametrTutorialBackdrops.Book   Cpd&<CCmdBackdrops.SetVal 4 &tg.ValueFieldNametgTutorialBackdrops.Book Crv&<
+CCmdBackdrops.SetVal 5 &tb.ValueFieldNametbTutorialBackdrops.Book   C}@
+yCCmdBackdrops.SetNoColor &nbrofcol.ValueFieldNamenbrofcolTutorialBackdrops.BookC45nCTutorialCmdFieldInstall Backdrop8CCmdDesktops.ChangeBackdrop &filename.ValueFieldYesValNameTutorial  ?#Oberon10.Scn.FntColor:
+8e(
+C*CYPreview8CCmdBackdrops.PreviewFieldYesValTutorial <BD.Pict`CCmdFieldNamefilenameCompute Colors8047CCmdBackdrops.Reduce &sliderh.Value  &sliderv.ValueFieldYesValTutorialBackdrops.Book  XdXtCCmdFieldNamesliderhTutorialBackdrops.BookdCYdd2tCCmdFieldNameslidervTutorialBackdrops.Book dCD1002CTutorialBackdrops.BookCmdField9#Oberon10.Scn.Fnt%&X	
+CD100XCTutorialBackdrops.BookCmdFieldU#Oberon10.Scn.FntNumber of ColorsX
+CTutorial  XHelp8CCmdDesktops.OpenDoc Backdrops.BookFieldYesVal6
+  CTutorialTutorials.Book DragHelp9#Oberon10.Scn.Fnt%%2	
+C<#Oberon10.Scn.FntFrom`
+C:#Oberon10.Scn.FntTof`
+C<#Oberon10.Scn.FntDarkh
+C=#Oberon10.Scn.FntLighth
+C<#Oberon10.Scn.FntGreyB
+C=#Oberon10.Scn.FntColorB
+C9#Oberon10.Scn.FntRU
+C9#Oberon10.Scn.FntGh
+C9#Oberon10.Scn.FntBx
+CCBackdrops.SetBackground #Col ~	
+
+ !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~H$$CNameSetColor9#Oberon10.Scn.FntR
+C9#Oberon10.Scn.FntG#
+C9#Oberon10.Scn.FntB3
+CT03ll0<0CNameTutorialBackdrops.Book Marble  @Marble0<2CConsumeCmdCmdIconName00wmIm%%I%mI
+Immm%I%mI%I%%nmnm%I
+$
+mnI
+In%%%mn$%I$mIn%$I$mInI
+Im
+m%m$
+mInI%ImnmnI%
+Im
+nmmn%
+$%%
+I%%m$%H%m%
+nmImI%nI%I%$%mIm%%I%m
+%m
+mJmnmm%I%I
+mI
+nmm%m%m
+ImnI%II%m
+%
+InmnI
+%%I	%m
+Imm%m%In
+nmImII%m
+J
+InmJmI
+nmImI
+n
+I%
+I%m
+nmI
+ImJm
+
+m%
+%I
+I%I
+m%mI
+$m%m
+m
+m%I$m
+n
+I
+m%mJm
+%I%m%I%mInmnIH%I%$mI%%%mI%mII%m%I$I%ImIn
+nmnnm$m%m
+%I%mm%m%Im%InmnII
+%I%mm$%$nmm%
+I%$m
+$I
+nmIm	mIn
+$%m%
+%
+m%ImI
+%Hn
+mn%m%%m
+
+%$I%
+nm%m%$mnmIn	mI
+%m%mJI%$mIn
+$%mI
+
+Im%m
+%$
+	mn$%mHII%
+mJmIm%%%m
+m%mIm
+%$%%mJmnmnI$m%IIm
+%%%JmnInImI
+%%m%
+ImmmIm
+I%%Im%H	%m%
+nmImnImn
+$n
+mJ$m%I$I$I%I%m
+$%$%I
+%H%
+
+nI%%mmI%HImJ
+Jm%I$mI%%Hm
+m%mmI%
+mnmIn%
+m%%%$In%mmJmI
+IH%I%$%%H
+$
+$%mI
+
+
+JI%
+m%Im%
+II%%
+$
+Inm
+Inmm%IIn%%m%
+I%m%m$
+%
+ImJ
+IH%mnIm%HI	%%m
+$
+mHIn%%
+Imnm%
+$mnm%I%
+Im%m%%%mnmJmImI
+In%
+%mIn$I
+nn
+%mJI%H%H%
+$
+In
+$Im
+%m
+In%$%
+
+m%m%I%m
+%I%I
+%I
+mI$I
+mn$%nI%m
+%
+mJmJm%I%H%I%%HmJmI%%Im
+$m
+m
+Jmnm%I%m%ImJm%II
+%
+InInInImImJmIm%HnmJmJ%H%mI
+ImInmnm	
+%%H%mnmJH%I$nmIImJmImn
+mnmIm%
+I%$%I$I%mn$%H%$
+
+m%	$I%I%Hn%%%m
+
+%ImI%$%%$I%
+mI
+%$%%I$%$I
+
+
+	$I$mI
+%%m
+%H
+nm%m
+
+%
+Im%$%$II%Hmm%%H%mImImImmImmnmnm%%m
+%nnm%$
+
+m%%
+%mImnmI%%m
+$In%mn%m%I	m%$m
+n
+I$m%%
+$mII
+%%m%
+I
+%m
+nm%I%m6KB0,C0,000,1Q4679:<=>?@AB
+~jCX123< 5CCmdFieldNamefactTutorialBackdrops.Book Marble  {C<{P
+5CCmdFieldNamefactX178CCmdFieldNamescaleTutorialBackdrops.Book Marble  CNamescale=
+2P
+8CCmdFieldNamescaleW33;CCmdFieldNameprimTutorialBackdrops.Book Marble  !C<d!LP
+;CCmdFieldNameprimMarble0CCmdBackdrops.Marble &prim.Value  &scale.Value  &fact.ValueFieldYesValTutorialBackdrops.Book Marble  uMarble0CCmdBackdrops.SetMarbleColorFieldYesValTutorialBackdrops.Book Marble  =#Oberon10.Scn.FntColor
+CA#Oberon10.Scn.Fnt		StructureN-
+CA#Oberon10.Scn.Fnt		Granular.-
+C@#Oberon10.Scn.FntComplex.
+.
+CUDG880<DCNameTutorialBackdrops.Book Surface  ASurface0<FCConsumeCmdCmdIconName00w`@   @`@`@`@`   ` @      @`@`@`@`@ @ `@    @`@`@`@`   `@  @`@`@`@`@`@`@   @`@` @`@`@`@`@`@`@    @`@@`@  `@` @   `@`@` @ 
+@`@`@`  @`  @` @`@ @ `@`@   @`@`@` @ `@  @`@ `@`@ @ @`   
+@`@`@`  @`@  `@`@`   @`@    @@`@`@    @`@`@     `@`@`  @     @`@`@`@`@` @     @`@`@`@`@  @    `@`@`@`@`@ @  @`@`@`@` @`@ @`@`@`@@`@`@`@`@`@@`@`@ `@`@`@`@`@`@``@`@`@`@``@`@`@ @`@`@`@`@`@@`@`@`@`@` @`@`@``@`@`@`@`@`@	`@` @@`@`@`@`@`@`@`@`@`@@`@`@`@  @`@`@@`@`@`@`@`@`@`@   @`@`@``@`@`@`@`@@`@`@   `@`@`@`@  `@`@``@`    @`@`@`@`@`@ @`@`@`@@    `@`@`@`@`@`      @ `@`@`@  @`    `@`@@  @`@`@    @`@@  @`@`@`@      @`@``@@`@`@`@`     @`@` `@`@`@`@ @`@`@ @`@`@`@`@`@``@@`@`@`@ @`@`@`@`@`@`@`@`@`@`@` @`@`@`@`@`@ @`@`@`@`@`@`@  `@`@`@`@`@`@ @`@`@`@`@   @`@`@`@`@`@`@`@`@`@`@`@`@`@    @`@`@`@`@`@`@`@`@`  @`@`@`@`@`@`@`@`@`@`@`@`@@  `@`@`@`@`@`@`@`@`@`@`@@  @ @`@`@`@`@`@`@`@`@`@`@`@    `@`@`@`@`@`@`@`@`@`@`@   @`@`@`@`@`@`@`@`@`      `@`@ @`@`@`@`@`@`@     @`@ `@`@ `@`@`@     @  @` @`@`@`   `  @`@@   @ @  @`@6KB0,C0,000,EI
+HIKMNOQRST
+jC>#Oberon10.Scn.FntRandom)
+C=@JCCmdFieldNamesurgrC=dPLCCmdFieldNamesurradCL1@JCTutorialBackdrops.Book Surface  CmdFieldN100 LCTutorialBackdrops.Book Surface  CmdFieldN400$PCTutorialBackdrops.Book Surface  CmdFieldC=2:\PPCCmdFieldNamesuranSurface4CCmdBackdrops.Surface &suran.Value  &surra.Value  &surgr.ValueFieldYesValTutorialBackdrops.Book Surface  >#Oberon10.Scn.FntNumber\)
+C<#Oberon10.Scn.FntSize
+CSVY0<VCNameTutorialBackdrops.Book TextilsATextils0<XCConsumeCmdCmdIconNameR
+00w,,(,(,(,,,,,,(,(,((,,((,,,(,,
+,,,,,,,,(,(,,(,,(,,,,,,,,,,,,(,,,,,,,,,,,(,,,,,,,,(,,,,,((,(,,,,,,,,,,(,,(,,(,,((((,,,,,,(,,,,,,,,(,,,(,,,,,(,(,(,,(,(,,(,(,(,(,,(,,,(,(,,,,,(,,,(,,,,,,,,,,,,(,(,,,,,(,,,,,,,,,,,(,,,,,,,,,,,,,,,,,(,,(,,,,,,,,(,,,,(,,,,(,(,(,(,(,,((,(,(6KB0,C0,000,W1Z\]^
+hCX50[CNamenumbTutorialBackdrops.Book Textils  CmdField2C<22lL[CCmdFieldNamenumb|Textils0CCmdBackdrops.Textils &numb.ValueFieldYesValTutorialBackdrops.Book Textils  A#Oberon10.Scn.Fnt		Granular.l-
+CU`c0<`CNameTutorialBackdrops.Book Spirals  ASpirals0<bCConsumeCmdCmdIconName200wabaaaaaba
+ababababaaaab
+babaaabaabaaabababababaaabbaaabbbbabaabaabbaabbaabbabaabbbaaabaaabaabaabababbbbbaabbaaabbababbababbaababbbabbaababa	babbaaaaabaaababbabbababbbaabbbabaabaabaabaaaabaababaabaabaabaaa
+bbabbaabbbaaaaba
+abbaabbababbbbaaabababaabbbababbabbaaabbaaaaa	abbaaabababbabbbababbababaabaabbabaaabbbbaaaabaaabab
+aabaabbbabababaaaababaabbaababaaaaababaabbaabaaabbbaa	ababbbababaaaabaaabababbaaaab	babababaaaaaabbab	abbbababbaabbabaabaaaabaaabaabaaabbaaaaaababa	aaaabbbababbbbaaaabbabb6KBR0,C0,000,aadeghjkmnpqstuvwx
+jC>#Oberon10.Scn.FntRadius!
+CL1fCTutorialBackdrops.Book Spirals  CmdFieldCNamespifa8(fCCmdFieldName82NDiCCmdFieldNameCNamespiliL1ziCTutorialBackdrops.Book Spirals  CmdField8DlCCmdFieldNameCNamespiumM202lCTutorialBackdrops.Book Spirals  CmdFieldM30oCTutorialBackdrops.Book Spirals  CmdFieldCNamespira8DoCCmdFieldNameN200zrCTutorialBackdrops.Book Spirals  CmdFieldCNamespian8NDrCCmdFieldNameSpirals
+2CCmdBackdrops.Spirals &spian.Value  &spira.Value  &spium.ValueFieldYesValTutorialBackdrops.Book Spirals  >#Oberon10.Scn.FntNumberN)
+C>#Oberon10.Scn.FntLines
+N$
+C>#Oberon10.Scn.FntColors 
+CA#Oberon10.Scn.Fnt		Rotations/
+CRz}0<zCNameTutorialBackdrops.Book Bows  >Bows0<|CConsumeCmdCmdIconName?00w($$,$(($$(,($$($($(($((,$$$(,,,($$,	$$$$($(,$$(,,($,$($($$($((,($($,($$,($$$((,$(,($(($(,$$($($$(
+($(($,($($((,($($,,($($$,,,,$,,,(,,($,($($$(,(,(,(,(,(,(,,($(,($$$($($($(,(($(,($$$$(,$,(,,$($$$,$,(,(($$$(($($((,($$,,($($($($,($$,($$($,,($$(($	$$$$(,($(($$($(,$$$(,,,,($$$$$$(($(,,,(,,,($$($$,$$,(,,$$$($$$($$$$($($($,$$($$($$$,$$($$,(,$,,,,,$$$,$($($(
+,$,$(,,($($,$$$$($,,,($$$($$($,(,($($($$$$$(,($($($($($($$$,$$,$($($($$$($(($($,(,(,($($$$($$$,(($($$$$$$$$$$$,,($($$$$$$$$,($($,$,($($$$$,($$($,($$,$$$$,,	$,$,,($($$$$($(,(,(,($$$$$(($($((,($(,($($$$
+($$($$(,$$,($($$$$($$$$$($(,$(,($($$$,($$$
+$$$$($(,$$$($$$($$$$($$$$$$($$$$(($$$($$(($$,($$$$$(,($$($($($(,($$$$($($$($$($$,$($$$($$$($$($$$$($(($$6KB`0,C0,000,{I
+~
+~jC@#Oberon10.Scn.FntRadius!
+CPC=2
+L
+CCmdFieldNamehildi
+C=PL
+CCmdFieldNamehilraJ100CTutorialBackdrops.Book Bows  CmdFieldJ80CTutorialBackdrops.Book Bows  CmdFieldK200xCTutorialBackdrops.Book Bows  CmdFieldC=
+LL
+CCmdFieldNamehilanBows0CCmdBackdrops.Bows &hilan.Value  &hilra.Value  &hildi.ValueFieldYesValTutorialBackdrops.Book Bows  >#Oberon10.Scn.FntNumberL)
+CA#Oberon10.Scn.Fnt		Thickness/
+CNll|0<CTutorialBackdrops.Book Threads  AThreads0<CConsumeCmdCmdIconName00w@``@ @@`  `  @@`@@@` @ @` `@ @
+@`   @@`@@@  @    @``@`  @   @@`     @` `     @ @`  @  @	@ @` @` `  ` @` @@   
+`@```  ``  @@   @@`      `  ``@` `@@   `@``@ @`@` @`@@`@ @` @`@  @`@ @``@@@ ``@ @`  `@` @`@`@`	@`@`@`	  @@ @``@`@`@@`@ ``   ` `
+@`@@``@`@`  @    @`	@@ `  @``    ``@` @`@`        ``@`@`   @`  `@      @ 
+ @`@@      @`  	 @` 	   `   @`        `@        `@@   	              @                     @        	`     @         @ @ `  @`` @ @    `  `@    @    @` @`@@`@   ` @` ``   @`@``@`@`  @`@``@` @  @  `@@`@ `@`` 
+  ` @ @ ``  @@ @@ `@``@@  `  @ @ @@`@`@ @ @`
+`  @          6KBD0,C0,000,=
+jCN400 CTutorialBackdrops.Book Threads  CmdFieldC=
+L
+CCmdFieldNamethrleN126CTutorialBackdrops.Book Threads  CmdField~C=~RL
+CCmdFieldNamethranThreads0CCmdBackdrops.Threads &thran.Value  &thrle.ValueFieldYesValTutorialBackdrops.Book Threads  >#Oberon10.Scn.FntNumberR)
+C>#Oberon10.Scn.FntLength!
+CP|6<CTutorialBackdrops.Book Molecules  CMolecules6<CConsumeCmdCmdIconName_
+00w(,,(,($($((,,,((,((,,$,(,($($$,(,$$$$$(,($$(,,$$($($($((,$($($($($(,,$$($($,($((,$(,(,(,(,($($($,((,(,,($(,(,(,(,($($,($$(,((,(,,(((,$($,(,(,,((,($$(($,($(,(,($$($(,,($$(,(,(,($$(,,($$(,($(,(,($$(,,,(,($,,($(,,($($,,($(,(,($,,($(,(,($,,($,(,(,$,($(,,($,($(,,($,($(,(,($(,($(,,($,($(,($,,($(,($,,($$(,,($,,($,$((,($,,($,$,$$$,($(,(($,($$$$$,$(,(,,((,($$($($($($$((,(,,,,,($($((($($(($($(,(,,($($$$$($$($(,(,(,(,(,($($((,(,(,($($(
+$$$(($($($(,(,($$($($($($($($($$$($($((,(,($$$($($($$$,($$$$(,(,($($$$,(,($(,(($($$$,,(,($($(($,($$($$$$,(($$($($$$,($$$(,(,(($($,(,($$(,,,(,($($($,($$(,($($($$,($$(($($($,(,($$(,,(6KBx0,C0,000,I
+
+lCMolecules<CCmdBackdrops.Molecules &pebgr.Value  &pebdi.Value  &pebge.ValueFieldYesValTutorialBackdrops.Book Molecules  =2XLCCmdFieldNamepebgrCZ30CCmdFieldNameprimTutorialBackdrops.Book Molecules  =2(LCCmdFieldNamepebdi(C[40CCmdFieldNamescaleTutorialBackdrops.Book Molecules  =dLCCmdFieldNamepebgeCY1<CCmdFieldNamefactTutorialBackdrops.Book Molecules  <#Oberon10.Scn.FntSizeX
+C@#Oberon10.Scn.FntDistance+
+CA#Oberon10.Scn.Fnt		Precision,
+CL		|0<CTutorialBackdrops.Book Coins  ?Coins0<CConsumeCmdCmdIconName
+00w.).-.-%(.-..-.)%-*.-.-.-.-%$%$	.-.-.-.-.%*-).-..-.---..-.*.
+.-.	*.-.		--.*-..	)	-.*-.-.
+-).)-.-.--)-*-..)-*-
+..)-.)-)-*-)-).	-)-).).)	)-*-*-)-)-.-)-).).)-)-).)*-.)).).)-)-*-.)-).-.)
+-)-).-*-)-).)*-)-*-*-)-).).)-.-.)-)	)-)-*-)-)-)*-.)*)		).)-).).)-)-)
+)-*-)-)-*).).-*-.)-)-))$%$)%))$%))$$%)%%()%)%
+.)().)%).)%))-))%$%$%$
+$%%.).)-)
+$%$%$-)-).-*%$%$	.-*).)-)-)%$%.-)-).).).)$6KBl0,C0,000,=
+jCJ10CTutorialBackdrops.Book Coin  CmdField
+C=2
+L
+CCmdFieldNamephagrL800 CTutorialBackdrops.Book Coins  CmdField C=
+ VL
+CCmdFieldNamephaanCoins4CCmdBackdrops.Coins &phaan.Value  &phagr.ValueFieldYesValTutorialBackdrops.Book Coins  >#Oberon10.Scn.FntRadius!
+C>#Oberon10.Scn.FntNumberV)
+CM<<|0<CTutorialBackdrops.Book Plasma  @Plasma0<CConsumeCmdCmdIconName@
+00w``@@`@`@```@`@`@```@`@`@@`@`@`@@@`@`@```@@@@`@`@@`@`@@`@`@@`@`@`@@`@`@`@`@`@@@@@`@`@@@``@`@`@@@@`@``@```@@@``@```@@@```@``@@@`@	````@@`@@@@@@@``@`@@@`@@`@@@@@`@`@@@`@`@@@@@	@@@@@@@@@  @@ @@@@6KBH0,C0,000,=
+jCPlasma0CCmdBackdrops.Plasma &plaan.Value  &plagr.ValueFieldYesValTutorialBackdrops.Book Plasma  =@\D
+CCmdFieldNameplaanCL31CTutorialBackdrops.Book Plasma  CmdField=20uD
+CCmdFieldNameplagrCN5000$CTutorialBackdrops.Book Plasma  CmdField>#Oberon10.Scn.FntNumber\)
+C<#Oberon10.Scn.FntSize
+CS<<0<CNameTutorialBackdrops.Book Trees  ?Trees0<CConsumeCmdCmdIconName	00w
+
+6KB(0,C0,000,I
+
+jC=	D
+CCmdFieldNametrereC=PD
+CCmdFieldNametregrPCJ6*CTutorialBackdrops.Book Trees  CmdFieldK80CTutorialBackdrops.Book Trees  CmdFieldJ1rCTutorialBackdrops.Book Trees  CmdFieldC=LD
+CCmdFieldNametreanTrees0CCmdBackdrops.Trees &trean.Value  &tregr.Value  &trere.ValueFieldYesValTutorialBackdrops.Book Trees  >#Oberon10.Scn.FntNumberH)
+C<#Oberon10.Scn.FntSize
+CA#Oberon10.Scn.Fnt		Recursion1
+CM88|0<CTutorialBackdrops.Book Bricks  @Bricks0<CConsumeCmdCmdIconNameO00w*%J&J%OJoJKJOJKJNKJKNKJKNKJ*F*J&*	KJOJKJNKJKJKJK&J*F*%oJKJKJKJKJOJKNK*F*F*&KJKNKJNKJKJ*J&*F%	JOKOKOJOJOKOKJKJKJOK*F*J*&KJ*JF+J*JKJ*J*FJ*J&J&J&%!!!!KJK*JKJKJKJ+J*kF*J&J&ososososo*J%*F)oKoOoKoOoKoKoOkokOoO*F*F*&okOoOoOoOoOoOoOo&J&J*%oOoOoOoKoOoOoOokoOoOJ*F*F&oOoOoKoOoOoOoOo*F*J*%OK
+OKJsoOkOoOkOokoOoOkoOoKsoOokoOoOF*F*&J*JKoOoOokOoOkoOokoK&*F*&%J+JKJKoOoOoOoOoOoKOokoOoOkOoOoKoJK*FJ&J*sokokoKOKOoOoOoOoKsK*F+*&KJ+KoOoOkOoOoOoOokOkoOoKoOoOoKososoOoOoOoOoOkoOoKo
+ososososoOoOoKoOoOoKoOoOokOoOoosooosssoOoKoKoKoOoOokooosoosooOoKoOoOkOoOkOoOoKoOoOoO
+sosooossokOokOoOoOkOokoooosoooOoOoOoOoOoOoOoOoOoOoOo
+ososssooOoOoOoooosossoskOkOkOKOkOkOkOkKOkOnKoKOoKoKoKOkoKsoo	ooososossoOF+J*J&*K
+*&*F*F*&*F*&*&ssossosososssososoOosoooosossoososoKoJoJoJOjOoKNoKOkOoososoosooosooOoKOKoKOkOkNKoKNoJOososssoossosooosooKoJoJOjOjOKoJOkOkOososossoosososossoKOKoKoOKOkNKoJOjOjosossoossoo	soooosoOoJKOJkOjOkOkOkOKOsoososososoooososooOJKoJOokOKnOJoJoJooosssssoooooooKJOJOoJOnKOKoOKOkOsososososososososososososoKoKoOKoKoJoJoJoNKooKJoOkJoKnKnKoKOKoKOksosJF*F*&J&J*J*&%&*&*F*F*J&oKJOoKOkOKNKnKnKNkNoK*F*J&J*F*&%&*%&JK*F*J&JoJKJOJoKNkOkOoKoKoK*J*J&J&J*F*&J&%&J&J&*J&J&*oOJo
+KJOoKnKnKNKNkNJ&J*F*%&J&J*J&J&J*J&J*&JoKJoOoK	nKOKOkOkOKJ*KJ&J*&)J*F*F*J&JK%J&J&J*oKoJoKJoOKojOjOnKn*FJ*K*J&J	&KJ*F*&%J*J&*J&J&oNkOkOjOoKoJOkOKOkJ*FJ&J&%J	*%*%&J*F*%J&*F*oKOKNOkOjOkOkNKnkN*J&JK*J&*&J& J*&%&*&%*F*J&JoKnKoKnOKoJoJOkOKOKJ
+*KJ&*J&%&JKJ&%&J&J&J*okOkNkOKnKOKoKnKnKnJ&J&%&J&%JKJK*&J+&%&oOJOKoJoKoJoJOoKOkO*J+JK*JK*KJ&*J*J&J%&%OKoKnKOKnKoOKoJOnKnJ*F*&J*K&J*FJKJ&J*F*K&*JoJoOKnkOKoJoJOkOKO6KB0,C0,000,U
+
+~jC82H
+CCmdFieldName2CNamebrihoL50CTutorialBackdrops.Book Bricks  CmdField8F^H
+CCmdFieldNameFCNamebribrL70CTutorialBackdrops.Book Bricks  CmdFieldL30CTutorialBackdrops.Book Bricks  CmdFieldCNamebride8dH
+CCmdFieldNameM100CTutorialBackdrops.Book Bricks  CmdFielddCNamebrian8
+d^H
+CCmdFieldNameBricks3CCmdBackdrops.Bricks &brian.Value  &bride.Value  &bribr.ValueFieldYesValTutorialBackdrops.Book Bricks  >#Oberon10.Scn.FntNumber^)
+C>#Oberon10.Scn.FntDefect 
+C=#Oberon10.Scn.FntWidth^
+C>#Oberon10.Scn.FntHeight 
+CL0<CTutorialBackdrops.Book FractalAFractal0<CConsumeCmdCmdIconNameS
+00wHHlHll
+lHllDhHll$DlhhphlDlHhlDlhHlhlHhlllhlp	pllll
+lllllllll
+llplllhDlllHhlllHlllllHhHhlllhHhhDhlhlhHhlDhlHDHlH$HDHllHDH6KB(0,C0,000,]
+~lCP10000(CTutorialBackdrops.Book Fractal  CmdField'C=d0u'^CCmdFieldNamefigti=@X^CCmdFieldNamefigan@CM64 CTutorialBackdrops.Book Fractal  CmdFieldN0.9,CCmdFieldTutorialBackdrops.Book Fractal  ?CNamefractali1O-0.8,CCmdFieldTutorialBackdrops.Book Fractal  CNamefractalr1M0.1,CCmdFieldTutorialBackdrops.Book Fractal ?CNamefractali0O-1.2X,CCmdFieldTutorialBackdrops.Book Fractal  333333CNamefractalr0Fractal0CCmdBackdrops.Fractal &figan.Value  &figti.ValueFieldYesValTutorialBackdrops.Book Fractal  >#Oberon10.Scn.Fntbeg.r.\
+C>#Oberon10.Scn.Fntbeg.i.
+C>#Oberon10.Scn.Fntend.r.
+C>#Oberon10.Scn.Fntend.i.
+C>#Oberon10.Scn.FntNumberX)
+C=#Oberon10.Scn.FntDepth
+CM
+
+|0<
+CTutorialBackdrops.Book Clouds  @Clouds0<CConsumeCmdCmdIconName:00wK''KKo''''KKKoKK'Ko'''oKKoKKoooKKooK'Koo'K'oKoooK'	K'ooooo'oK'KooooKooooooooKo'oooo'KoooK'KKooo''oK'Koo''oo'o'oKoKoooooooK'''ooooKK'K'oKKoooK'oKoKoK''	KoKo'Ko
+KoKoKKoKoo'o'K'oKo'oo'oKK''o'ooKooKKoKooKoK'KKKoo'KKKKoK'oKooK'KooooKo'KoKKooo'	Koooo'ooK''oooKK'Ko'o''oKo'KooKo'o
+oo	KKoKoo'oK'KoKooKKoooKKoK'oooKoo''KoKK'K'KoKKK'KoooKoKKooK''oooK'Kooo'''KoKKoK'K'oo'KK'oK'o'''KKoKoooK'K'Ko'ooK6KBP0,C0,000,E	
+jCO10000(CTutorialBackdrops.Book Clouds  CmdField'C<0u'LCCmdFieldNamesizeL15|CTutorialBackdrops.Book Clouds  CmdFieldC;2HLCCmdFieldNamenbrClouds0CCmdBackdrops.Clouds &nbr.Value  &size.ValueFieldYesValTutorialBackdrops.Book Clouds  tStandard4CCmdBackdrops.SetSkyColorFieldYesValTutorialBackdrops.Book Clouds  =#Oberon10.Scn.FntColor
+C>#Oberon10.Scn.FntNumberH)
+C<#Oberon10.Scn.FntSize
+CL|0<CTutorialBackdrops.Book Cells  ?Cells0<CConsumeCmdCmdIconNameU00w
+baabbbbbbbbbbb	
+
+6KB@0,C0,000,=!"$%&
+jC>#Oberon10.Scn.FntRadius!
+CK30  CTutorialBackdrops.Book Cells  CmdFieldC=D CCmdFieldNamecolraK70#CTutorialBackdrops.Book Cells  CmdFieldFC=FVD#CCmdFieldNamecolanCells4CCmdBackdrops.Cells &colan.Value  &colra.ValueFieldYesValTutorialBackdrops.Book Cells  >#Oberon10.Scn.FntNumberV)
+C	

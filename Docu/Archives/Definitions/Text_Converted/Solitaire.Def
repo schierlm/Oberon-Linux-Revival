@@ -1,0 +1,14 @@
+DEFINITION Solitaire;	(* portable *)	(* written by Patrick Saladin  *)
+
+	IMPORT
+		Objects;
+	PROCEDURE NewTalon;
+	PROCEDURE NewDepot;
+	PROCEDURE ColumnHandler (C: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewColumn;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDoc;
+	PROCEDURE New;
+	PROCEDURE SetDraw;
+
+END Solitaire.

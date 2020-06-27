@@ -1,0 +1,16 @@
+import colors;
+
+define square(x, y, w, h, col) as
+	with strokecol=col do
+		stroke rect(x, y, x+w, y+h) end;
+		label `number->string`(x) ++ ", " ++ `number->string`(y) over (x + w/2, y + h/2)
+	end
+end square;
+
+with font="Oberon", size=8, fillcol=colors.black do
+	for y = 1 to 4 do
+		for x = 1 to 4 do
+			square(60*x, 60*y, 50, 50, if((x + y) modulo 2 = 1, colors.red, colors.blue))
+		end
+	end
+end

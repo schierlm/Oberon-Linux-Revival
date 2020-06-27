@@ -1,0 +1,20 @@
+PanelDocs.NewDoc&(Panels.NewPanelBasicFigures.NewLineLists.NewListTextFields.NewCaptionBasicGadgets.NewButtonBasicGadgets.NewCheckBoxBasicGadgets.NewIntegerTextFields.NewTextFieldIcons.NewIconizer	
+
+&CNameTutorialTutorials.Book DevPanelQ=FJCTutorial Tutorials.Book ListTut tBookCompiler.InsertCmd &BookName.Value .#PointdCNameLabelsTutorialTutorials.Book LabelsrBookCompiler.InsertCmd &BookName.Value .#Point	dCNameNotesTutorialTutorials.Book Notes\#Oberon10.Scn.FntNotes	
+CTutorialTutorials.Book Notesd#Oberon10.Scn.Fnt
+
+Tutorial Name	E
+CTutorialTutorials.Book Notes$Oberon16i.Scn.Fnt''Tutorials for Gadgets-Developer's Panel	1CTutorialTutorials.Book DevPanel|Compile *	DICCmdBookCompiler.Compile *FieldYesValNameTutorialTutorials.Book CompileBrowse ^	+ICCmdBookCompiler.Browse  ^  &Verbose.YesVal  &Text.YesVal FieldYesValNameTutorialTutorials.Book Browsei+
+CCmdFieldYesVal/VerboseNameVerboseTutorial Tutorials.Book Browse CQ3FsJCTutorial Tutorials.Book Compile c+
+CCmdFieldYesVal/TextNameTextTutorial Tutorials.Book Browse ^#Oberon10.Scn.FntLabels
+CTutorialTutorials.Book Labelsw#Oberon10.Scn.Fntno tutorial\4
+CCmdNameBookNameTutorialTutorials.Book NotesmDesktops.OpenDoc #Point  &Labels.Sel	{?CNamefileListTutorialTutorials.Book ListTutShow(CCmdLists.Directory '*.Book'  fileListFieldYesValNameTutorialTutorials.Book ListTutOpen{(CCmdDesktops.OpenDoc ^  &Labels.SelFieldYesValNameTutorialTutorials.Book ListTutR;FJCTutorial Tutorials.Book DevPanel Tutorial Attr	QICCmdGadgets.ChangeAttr Tutorial  #Name  &textF.Value  #NameFieldYesValName"TutorialTutorials.Book TutAttrBTVQCCmdFieldNametextFTutorialTutorials.Book TutAttrBNew TextDocwidCCmdBookCompiler.NewTextDocFieldYesValNameTutorial Tutorials.Book NewTextDoc e$Oberon14i.Scn.Fnt		Directory	>CTutorial Tutorials.Book ListTut p$Oberon14i.Scn.FntCompiling & Browsing	^CTutorial Tutorials.Book Compile h$Oberon14i.Scn.FntOther Tools	KCTutorial Tutorials.Book DevPanel Zm+
+CCmdFieldYesValNameTutorial Tutorials.Book Browse _#Oberon10.Scn.FntListsW/
+CTutorial Tutorials.Book Browse d#Oberon10.Scn.Fnt
+
+Short Text/2
+CTutorial Tutorials.Book Browse c#Oberon10.Scn.Fnt		Long Text//
+CTutorial Tutorials.Book Browse |Compile ^WDICCmdBookCompiler.Compile ^FieldYesValNameTutorialTutorials.Book CompileR!	idCNameTutorialTutorials.Book CmdButL 
+dCNameTutorialTutorials.Book CmdButs#Oberon10.Scn.FntInsert CommandR
+CCmdNameTutorialTutorials.Book CmdBut`"#$%&'
+( CNameTutorialTutorials.Book CmdButChapter.CCmdBookCompiler.InsertCmd \ChapterFieldYesValNameTutorialTutorials.Book CmdBut~Label.CCmdBookCompiler.InsertCmd \LabelFieldYesValNameTutorialTutorials.Book CmdBut|Note.CCmdBookCompiler.InsertCmd \NoteFieldYesValNameTutorialTutorials.Book CmdBut|Link.CCmdBookCompiler.InsertCmd \LinkFieldYesValNameTutorialTutorials.Book CmdBut~Indexl.CCmdBookCompiler.InsertCmd \IndexFieldYesValNameTutorialTutorials.Book CmdBut|Call>.CCmdBookCompiler.InsertCmd \CallFieldYesValNameTutorialTutorials.Book CmdBut	

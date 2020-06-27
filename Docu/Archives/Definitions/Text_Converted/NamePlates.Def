@@ -1,0 +1,15 @@
+DEFINITION NamePlates;	(* portable *)  (* jm 19.4.95 *)
+
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		NamePlate = POINTER TO NamePlateDesc;
+		NamePlateDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE CopyNamePlate (VAR M: Objects.CopyMsg; from, to: NamePlate);
+	PROCEDURE NamePlateHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitNamePlate (F: NamePlate);
+	PROCEDURE NewNamePlate;
+
+END NamePlates.

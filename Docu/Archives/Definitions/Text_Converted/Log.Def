@@ -1,0 +1,23 @@
+DEFINITION Log;	(* portable *) (* ww 7-Jul-90 / mh 26.10.93 *)
+
+	(* viewer stuff *)
+	PROCEDURE Open;
+	PROCEDURE Pin;	(* puts output of last command on top of the viewer (should be called from viewers menu) *)
+	PROCEDURE Clear;
+
+	(* output stuff *)
+
+	(* The procedures behave as the corresponding ones in module Texts *)
+	PROCEDURE Int (x: LONGINT);
+	PROCEDURE Hex (x: LONGINT);
+	PROCEDURE Real (x: LONGREAL);
+	PROCEDURE Ch (ch: CHAR);
+	PROCEDURE Str (s: ARRAY OF CHAR);
+	PROCEDURE Bool (b: BOOLEAN);
+	PROCEDURE Set (s: SET);
+	PROCEDURE Date (t, d: LONGINT);
+	PROCEDURE Ln;
+	PROCEDURE DumpRange (VAR a: ARRAY OF CHAR; beg, len: LONGINT);
+	PROCEDURE Dump (VAR a: ARRAY OF CHAR);
+
+END Log.

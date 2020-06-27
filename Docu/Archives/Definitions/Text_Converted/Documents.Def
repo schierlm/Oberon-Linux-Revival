@@ -1,0 +1,101 @@
+DEFINITION Documents;	(* portable *) (* jm 18.1.95 *)
+
+(*The Documents module forms the basis of the Gadgets document model.
+*)
+	IMPORT Objects, Display, Attributes, Links, Gadgets, Files;
+
+	TYPE
+		Document = POINTER TO DocumentDesc;
+		DocumentDesc = RECORD ( Gadgets.FrameDesc ) 
+			name: ARRAY 128 OF CHAR;	(* Document name. *)
+			Load: PROCEDURE (D: Document);	(* Load document contents from disk. *)
+			Store: PROCEDURE (D: Document);	(* Store document contents to disk. *)
+		END;
+
+	(* Find out what document is located at X, Y on the display. *)
+		LocateMsg = RECORD ( Display.FrameMsg ) 
+			doc: Document;	(* Result, NIL if no document found. *)
+			X, Y: INTEGER;
+		END;
+
+	VAR 
+		Id: INTEGER;	(* 07F7H little-endian magic number/flag identifying document files. *)
+		historyHook: PROCEDURE (VAR D: Document); (* Called for each document opened. *)
+		errMsg: ARRAY 256 OF CHAR;
+	PROCEDURE LoadAttachments (VAR R: Files.Rider; VAR attr: Attributes.Attr; VAR link: Links.Link);
+	PROCEDURE StoreAttachments (VAR R: Files.Rider; attr: Attributes.Attr; link: Links.Link);
+
+(* Open the give document with name name. NIL is returned on failure. Unknown document types are opened as text documents. *)
+	PROCEDURE Open (name: ARRAY OF CHAR): Document;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Document);
+	PROCEDURE Handler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE New;
+
+(* Initialize document D with main as contents. *)
+	PROCEDURE Init (D: Document; main: Gadgets.Frame);
+
+(* Returns the marked document (with F1). NIL is returned when no document is marked. The visibility of the Oberon pointer is ignored. *)
+	PROCEDURE MarkedDoc (): Document;
+END Documents.
+
+(* Remarks:
+
+1. Documents
+Documents are nothing more than collections of objects, saved together in the same file. Such object collections require additional functionality that are not provided by the objects in the collection themselves. This additional functionality are provided by the document gadgets. Document gadgets act as a wrapper for a object/gadget collection, giving it a filename, icon, menu bar and printing capability. They are a type of container having a single child called the document main frame. The main frame of a document gadget is remembered in the dsc field of a document. The document gadget has exactly the same size as its main frame. The Documents.Init procedure "merges" the document with its main frame.
+	Each document class has a generator procedure. Just as the generator procedures of other gadgets, calling the generator of a document creates an "empty" instance of that document class. By filling in the name record field of a document, and calling its Load method, the document will "fill" its contents from the file with that name. Correspondingly, calling the Store method stores the document under that name to disk.
+
+2. Document Format
+All documents are provided with a standard header on disk so that they can be recreated or opened when just the filename is known. The header has the following format:
+
+	Tag DocumentGeneratorProcedure X Y W H.
+	Tag = 0F7X 07X.
+	DocumentGeneratorProcedure = {alpha} 0X.		(* Generator name *)
+	X, Y, W, H = INTEGER.				(* Prefered document position and size. *)
+	
+The document header is followed by the byte stream content of the document. DocumentGeneratorProcedure is called by Documents.Open to create an empty instance of the document gadget, which is then filled by a call to the Load method (as described above). To provide compatibility with the non-Oberon world that does not use such an identification header, an internal table of the Documents module pairs file extensions with document generator procedures. Should no document header be present, the file extension is used to file the (hopefully) correct document generator. The Load method of this document must then load the headerless file. It is allowed (but not recommended) to store a document without a header, should the extension table be set up correctly. The extension table can be extended by adding an entry to the Documents section of the Oberon registry. Eeach entry is a "Extension=Generator" pair.
+
+3. Menus
+Each document requires a menu bar with commands associated with the document type when opened with Desktops.OpenDoc. This menubar is gathered from the links "SystemMenu", "UserMenu" and "DeskMenu" provided by the document when the Desktops.OpenDoc command is executed. The menu can be constructed with the procedure Desktops.NewMenu or can be taken from a public library. The string given as parameter to procedure NewMenu must contain a sequence of Oberon commands. By immediately following a menu command with a word in square brackets, that word will be used as the menu bar button caption. A typical menu string might look as follows:
+
+	"MyDoc.Search[Search] MyDoc.Save[Store]"
+	
+Note that the Desktops module automatically adds additional buttons like [Close], [Grow], [Min] and [Copy].
+For more flexibility, documents may also defined their own menu bars by "exporting" them as public objects from a public library. The public library should contain three menubars for the Desktop, System track and User track respectively. These menus should have the names "DeskMenu", "SystemMenu" and "UserMenu" respectively. For example, the text documents have such a library (called "TextDocs.Lib"). When the library is missing the default menubars are used. Programmers must add support for this feature in their Document handlers. The desktop uses the LinkMsg to request the document to return its menu bar. You should always return a DEEP COPY of the menu-bar from the library. Best is to lock the menubars and to set the Border of the Panel to 0. Note that the menu bar can have any height and content. 
+
+For example (copied from PanelDocs.Mod):
+
+	IF M IS Objects.LinkMsg THEN
+		WITH M: Objects.LinkMsg DO
+			IF (M.id = Objects.get) & (M.name = "DeskMenu") THEN
+				M.obj := Gadgets.CopyPublicObject("PanelDocs.DeskMenu", TRUE);
+				IF M.obj = NIL THEN M.obj := Desktops.NewMenu(Menu) END;
+				M.res := 0
+			ELSIF (M.id = Objects.get) & (M.name = "SystemMenu") THEN
+				M.obj := Gadgets.CopyPublicObject("PanelDocs.SystemMenu", TRUE);
+				IF M.obj = NIL THEN M.obj := Desktops.NewMenu(Menu) END;
+				M.res := 0
+			ELSIF (M.id = Objects.get) & (M.name = "UserMenu") THEN
+				M.obj := Gadgets.CopyPublicObject("PanelDocs.UserMenu", TRUE);
+				IF M.obj = NIL THEN M.obj := Desktops.NewMenu(Menu) END;
+				M.res := 0
+			ELSE Documents.Handler(D, M)
+			END
+		END
+	ELSE ...
+
+4. Icon
+A document can indicate through its "Icon" attribute what public object should be regarded as its pictorial icon representation. The document should return a string attribute in the form "L.O", where L identifies the public library, and O the object in that library. The gadget identified this way is then packed by the desktop inside an icon gadget when Desktops.MakeIcon is executed.
+
+5. Load failure
+A document can indicate a failure to load by setting D.dsc to NIL before returning from the Load method.
+
+6. Example Code
+Examples of how documents are programmed can be found in the files DocumentSkeleton.Mod, OpenDemo.Mod and OpenDemo2.Mod.
+
+7. Uniform Resource Locator (URL) notation
+URL are unique references to documents located on the network. An URL is identified as a protocol specifier followed by a document location and name:
+
+	"protocol://location/name"
+	
+Typical protocols are http, mailto, ftp and so forth. The Documents module handles documents with URL-like names in a special way. Should the Open procedure be requested to open a document name with a protocol name followed by a ":", the protocol name is looked up in extension table instead of the filename extension. That is, protocols have precedence over filename extensions. 
+*)

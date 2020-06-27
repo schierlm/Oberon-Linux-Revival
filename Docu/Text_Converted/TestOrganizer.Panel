@@ -1,0 +1,13 @@
+PanelDocs.NewDoclBIERZWP=	
+lC$Button6C$Button<6C$Buttonr6CqThis is a Textfield with constraints 170 18 6 -38<CConstraints170 18 6 -38CmdFieldUjlCConstraints6 43 -250 -150CmdPoint`#Oberon10.Scn.Fnt==This is a text gadget with
+constraints set to
+	6 43 -250 -150BCConstraints6 155 6 6;Oberon12.Scn.FntOberon10.Scn.Fnt9Change the size of this document to observe how the panel contents
+adjusts itself. The source code of the Organizer panels is found in
+Organizers.Mod.
+
+This is a text gadget with
+constraints set to
+	6 155 6 6F
+jlCConstraints255 43 6 -150_#Oberon10.Scn.Fnt<<This is a text gadget with
+constraints set to
+	255 43 6 -150Organizers.NewPanelBasicGadgets.NewButtonTextFields.NewTextFieldTextGadgets.NewTexts.New

@@ -1,0 +1,91 @@
+DEFINITION LayoutPanels; (* portable *)
+
+	IMPORT
+		Objects, Texts, Display, Display3, Gadgets, Oberon, Panels, Documents,
+		LayoutPanels0;
+
+	TYPE
+		Panel = POINTER TO PanelDesc;
+		PanelDesc = RECORD ( Panels.PanelDesc ) 
+			layout: Texts.Text;
+		END;
+
+	VAR 
+		methods: Panels.Methods;	(* Default method block. *)
+
+(* Default store mechanism. *)
+	PROCEDURE StorePanel (F: Panel; VAR M: Objects.FileMsg);
+
+(* Default load mechanism. *)
+	PROCEDURE LoadPanel (F: Panel; VAR M: Objects.FileMsg);
+
+(* Default copy behavior. *)
+	PROCEDURE CopyPanel (VAR M: Objects.CopyMsg; from, to: Panel);
+
+(* Default method implementation. x, y is the panel coordinates. u, v, w, h the relative coordinates of the area to be restored. *)
+	PROCEDURE RestoreArea (F: Panels.Panel; x, y, u, v, w, h: INTEGER; M: Display3.Mask; dlink: Objects.Object);
+
+(* Recalculate and update all invalid (NIL) masks of children. partialupdate modifies the existing backgound 
+mask to reflect the current situation. buildback recreates the whole background mask from scratch. Both options 
+are normally used mutual exclusive. Partial update is faster if few masks were invalidated, otherwise use buildback.  
+Partial update requires the use of InvalidateMasks to keep the background mask valid. When in doubt simply use buildback. *)
+	PROCEDURE UpdateMasks (F: Panels.Panel; partialupdate, buildback: BOOLEAN);
+	PROCEDURE ResetElements (F: Panel);
+
+(* Method implementations. *)
+	PROCEDURE TrackMouse (F: Panels.Panel; VAR M: Oberon.InputMsg);
+	PROCEDURE ConsumeElement (F: Panel; top: LayoutPanels0.Element; new: Objects.Object; x, y: INTEGER);
+	PROCEDURE PanelHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitPanel (P: Panel);
+	PROCEDURE NewPanel;
+	PROCEDURE TrackCaret (F: Panels.Panel; VAR M: Oberon.InputMsg);
+	PROCEDURE TrackSelectChild (F: Panels.Panel; VAR M: Oberon.InputMsg; child: Gadgets.Frame);
+	PROCEDURE InsertFrames (F: Panels.Panel; u, v: INTEGER; list: Objects.Object);
+	PROCEDURE RemoveFrames (F: Panels.Panel; list: Display.Frame);
+	PROCEDURE TranslateChildren (F: Panels.Panel; list: Display.Frame; count, dx, dy: INTEGER);
+	PROCEDURE DragSelection (F: Panels.Panel; VAR M: Oberon.InputMsg);
+	PROCEDURE ConsumeChar (F: Panels.Panel; VAR M: Oberon.InputMsg);
+
+(* Document for LayoutPanels *)
+	PROCEDURE DocHandle (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitDoc (D: Documents.Document; W, H: INTEGER);
+	PROCEDURE NewDoc;
+
+(*
+	AddCol "^" "left"|"right"|num
+	AddCol "@" "left"|"right"
+*)
+	PROCEDURE AddCol;
+
+(*
+	AddRow "^" "bottom"|"top"|num
+	AddRow "@" "lower"|"upper"
+*)
+	PROCEDURE AddRow;
+
+(*
+	DelCol "^" "left"|"right"|num 
+	DelCol "@"
+*)
+	PROCEDURE DelCol;
+
+(*
+	DelRow "^" "top"|"bottom"|num 
+	DelRow "@" 
+*)
+	PROCEDURE DelRow;
+
+(* Inserts a Table Container at the current selection
+	InsertTable ^ <rows> <cols>
+*)
+	PROCEDURE InsertTable;
+
+(* Inserts a Place Container at the current selection
+	Syntax: InsertPlace ^
+*)
+	PROCEDURE InsertPlace;
+
+(*  Minimize "^" *)
+	PROCEDURE Minimize;
+
+END LayoutPanels.

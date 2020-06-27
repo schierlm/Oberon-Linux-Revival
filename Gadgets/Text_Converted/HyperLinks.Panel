@@ -1,0 +1,12 @@
+PanelDocs.NewDoc>BIERZIR2}wLbu
+
+
+>C=#Oberon10.Scn.FntLink
+C0XCCmdFieldNameURL>#Oberon10.Scn.FntLabel
+C2XCCmdFieldNameLabelQInspect8CCmdHyperDocTools.InspectFieldYesValTLink-Info|8CCmdHyperDocTools.LinkInfoFieldYesVal5XdCCmdFieldNameDoc-Type)0XL	CCmdFieldCNameDoc-SizeE#Oberon10.Scn.FntContent-TypedE
+CG#Oberon10.Scn.FntContent-LengthLO
+CO#Oberon12.Scn.FntQuery link information}CR#Oberon12.Scn.FntInspect the selected linkCRControls *8CCmdTextDocs.Controls *FieldYesValwApply8CCmdHyperDocTools.Apply '&URL.Value '  '&Label.Value '   &Opt.CmdFieldYesVal:vCCmdFieldNameNYesValNC:CCmdFieldYesValRNameR=#Oberon10.Scn.FntShowX
+C@#Oberon10.Scn.FntReplace'
+C:CCmdFieldYesValANameA=#Oberon10.Scn.FntAuto
+Co#Oberon10.Scn.FntOpenDoc/
+CCmd&N.YesVal  &R.YesVal  &A.YesValNameOptPanels.NewPanelTextFields.NewCaptionTextFields.NewTextFieldBasicGadgets.NewButtonBasicGadgets.NewIntegerBasicGadgets.NewCheckBox

@@ -1,0 +1,18 @@
+DEFINITION Splines;	(* portable *)
+
+	IMPORT Graphics;
+
+	TYPE
+		Spline = POINTER TO SplineDesc;
+		SplineDesc = RECORD ( Graphics.ObjectDesc ) 
+			n: INTEGER; open: BOOLEAN;
+			u, v: ARRAY  20 OF INTEGER
+		END;
+
+	VAR 
+		method: Graphics.Method;
+	PROCEDURE New;
+	PROCEDURE MakeOpen;
+	PROCEDURE MakeClosed;
+
+END Splines.

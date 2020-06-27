@@ -1,0 +1,8 @@
+import colors;
+
+with color=colors.rgb(0, 0.8, 0.4), width=3, dash=vector(10, 6, 4, 6), phase=5, cap="round", join="round", flatness=0.5 do
+	stroke from (10, 10) to (100, 10) to (70, 60) to (20, 40) end
+end;
+with color=colors.rgb(0.7, 0.2, 0), width=5, cap="square", join="miter", limit=2 do
+	stroke from (10, 70) to (130, 70) to (10, 20) end
+end

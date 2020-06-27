@@ -1,0 +1,10 @@
+TextDocs.ReplaceSystemEditor
+Configuration.Marker save user
+Configuration.Marker set system
+ET.ClearSysTrack
+System.OpenLog
+System.Open Popups.Tool
+EditKeys.Install
+TextPopups.Install
+SavePoints.Install
+Configuration.Marker set save

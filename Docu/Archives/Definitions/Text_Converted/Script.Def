@@ -1,0 +1,18 @@
+DEFINITION Script;	(* portable *)
+	PROCEDURE Open;
+	PROCEDURE Store;
+	PROCEDURE Search;
+	PROCEDURE Replace;
+	PROCEDURE ReplaceAll;
+	PROCEDURE ChangeFont;
+	PROCEDURE ChangeColor;
+	PROCEDURE ChangeOffset;
+	PROCEDURE Recall;
+	PROCEDURE NewStyle;
+	PROCEDURE SetStyle;
+	PROCEDURE GetStyle;
+	PROCEDURE Style;
+	PROCEDURE Print;
+	PROCEDURE PageBreaks;
+
+END Script.

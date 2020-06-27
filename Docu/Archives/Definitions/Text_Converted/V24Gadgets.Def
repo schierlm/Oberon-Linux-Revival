@@ -1,0 +1,11 @@
+DEFINITION V24Gadgets;	(* portable *)
+	PROCEDURE Open;
+	PROCEDURE Close;
+	PROCEDURE Reset;
+	PROCEDURE ToggleEcho;
+	PROCEDURE OpenLog;
+	PROCEDURE Send;
+	PROCEDURE SendSRec;
+	PROCEDURE NewFrame;
+
+END V24Gadgets.

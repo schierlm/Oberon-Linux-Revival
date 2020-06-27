@@ -1,0 +1,10 @@
+DEFINITION Compiler;	(* portable, except where noted *)
+
+	IMPORT
+		Texts;
+	PROCEDURE Module (source: Texts.Reader; name, options: ARRAY OF CHAR; breakpc: LONGINT; 
+			log: Texts.Text; VAR error: BOOLEAN);
+	PROCEDURE CompileFile (name, opt: ARRAY OF CHAR; VAR error: BOOLEAN);
+	PROCEDURE Compile;
+
+END Compiler.

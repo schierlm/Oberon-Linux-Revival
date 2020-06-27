@@ -1,0 +1,37 @@
+[Mod]
+Compiler.Compile *
+Compiler.Compile *\s
+Compiler.Compile *\f
+TextDocs.SearchDiff \w
+Builder.NextError
+Builder.ClearErrors *
+---Files--------------
+<5 Recent Files>
+---Procs-------------
+<Procedures>
+---Types-------------
+<Types>
+
+[Text]
+TextDocs.SearchDiff \w
+--------------------
+<5 Recent Files>
+
+[TeX]
+TeXTools.Tabbing
+TeXTools.Tabs
+TextDocs.SearchDiff \w
+--------------------
+<5 Recent Files>
+---LaTeX Sections-----
+<LaTeXSections>
+
+[Bib]
+TextDocs.SearchDiff \w
+--------------------
+<5 Recent Files>
+---BibTeX Entries-----
+<BibTeXEntries>
+
+[Tool]
+<5 Recent Files>

@@ -1,0 +1,147 @@
+DEFINITION TextGadgets0; (* portable *)
+
+(*
+Scaffolding for an extensible text editor. Extension is best attempted when the source code be available.
+*)
+	IMPORT
+		Display, Display3, Objects, Gadgets, Oberon, Texts;
+
+	CONST
+		eolW = 5;		(* width of a carriage return *)
+		LArrow = 0C4X; RArrow = 0C3X;		(* keyboard codes for left/right arrow *)
+
+	(* Textframe states *)
+		mayselect = 1;		(* TG may select embedded gadgets *)
+		mayfocus = 2;		(* caret can be set *)
+		mayexecute = 3;		(* TG may execute commands *)
+		mayscroll = 4;		(* TG has a scrollbar *)
+		maydelegate = 5;		(* TG may delegate mouse input to embedded gadgets *)
+		maymvchildren = 6;		(* TG may attempt to move embedded gadgets *)
+		mayconsume = 7;		(* TG may consume new frames *)
+		keepfont = 8;		(* inserted characters are in the font before the caret *)
+		autoindent = 9;		(* autoindent on/off *)
+		sizeadjust = 10;		(* TG must adjust its size according to its contents (grow/shrink)*)
+		grow = 11;		(* TG might increase its size if its contents is too big *)
+		shrink = 12;		(* TG might decrease its size if its contents is smaller than itself *)
+		caption = 13;		(* TG caption mode; not yet implemented *)
+		deepcopy = 14;		(* TG always deep copies it contents when copied *)
+		blockadj = 15;		(* always format the line before the current change point *)
+		locked = 16;		(* locked or not *)
+		autoscroll = 17;	(* may scroll automatically in a log fashion *)
+		flat = 18; 	(* frame does not have a 3D border *)
+		sliderW = 14;
+
+	TYPE
+	(* Reader for reading backwards in a text (uh) *)
+		BackRd = RECORD
+			text: Texts.Text;
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		Line = POINTER TO LineDesc;	(* for each text line *)
+		Box = POINTER TO BoxDesc;		(* for each frame in a line *)
+		Methods = POINTER TO MethodBlock;
+
+	(* used to identify positions in the text *)
+		Loc = RECORD
+			org: LONGINT;		(* start of the line *)
+			pos: LONGINT;		(* actual postition *)
+			x, y, dx: INTEGER;		(* rel coords and character width at this point *)
+			line: Line;		(* which line *)
+		END;
+
+		BoxDesc = RECORD
+			next: Box;		(* from left to right in line *)
+			org: LONGINT;		(* offset from beginning of line *)
+			f: Display.Frame;		(* the frame itself *)
+			x, voff: INTEGER;		(* rel x coordinate and verticall offset *)
+		END;
+
+		LineDesc = RECORD
+			next: Line;		(* ring from top to bottom, with sentinel	*)
+			base: INTEGER;		(* rel base line position, negative distance from top of TG *)
+			w, h, dsr, asr: INTEGER;		(* true text metrics, no formatting *)
+			left, right: INTEGER; 		(* area that should be covered by the selection *)
+			len: LONGINT;		(* length of line in characters *)
+			box: Box;		(* list of boxes *)
+			eot: BOOLEAN;		(* last line of text *)
+			draw: LONGINT;
+			spaces: INTEGER;		(* number of spaces in line *)
+			obj: Objects.Object;	(* hang special things on here *)
+			extra: LONGINT;		(* useful dummy field *)
+		END;
+
+		MethodBlock = RECORD
+			Background: PROCEDURE (F: Frame; R: Display3.Mask; X, Y, x, y, w, h: INTEGER);
+			Format: PROCEDURE (F: Frame; org: LONGINT; L: Line);
+			InSync: PROCEDURE (F: Frame; L1, L2: Line): BOOLEAN;
+			Display: PROCEDURE (F: Frame; M: Display3.Mask; x, y: INTEGER; org: LONGINT; L: Line; dlink: Objects.Object);
+			LocateChar: PROCEDURE (F: Frame; x, y, X, Y: INTEGER; VAR loc: Loc);
+			LocatePos: PROCEDURE (F: Frame; pos: LONGINT; VAR loc: Loc);
+			LocateString: PROCEDURE (F: Frame; x, y, X, Y: INTEGER; VAR loc: Loc);
+			PrintFormat: PROCEDURE (F: Frame; org: LONGINT; L: Line; VAR pagebreak: BOOLEAN);
+			Print: PROCEDURE (F: Frame; M: Display3.Mask; x, y: INTEGER; org: LONGINT; L: Line; dlink: Objects.Object);
+			Call: PROCEDURE (F: Frame; pos: LONGINT; keysum: SET; dlink: Objects.Object);
+		END;
+
+		DrawDesc = RECORD
+		END;
+
+		FrameDesc = RECORD ( Gadgets.ViewDesc ) 
+			state0: SET;
+			text: Texts.Text;
+			org, time: LONGINT;
+			left, right, top, bottom: INTEGER;
+			trailer: Line;
+			do: Methods;
+			car: BOOLEAN; carpos: Loc;
+			sel: BOOLEAN; selbeg, selend: Loc;
+			col, invertC: INTEGER;
+		END;
+
+	VAR 
+		PrintertopY, PrinterbotY, PrinterleftX, PagenoX, HeaderY: INTEGER;
+		printOpts: SET; (* 0: page number, 1: document name *)
+	PROCEDURE InSync (F: Frame; L1, L2: Line): BOOLEAN;
+	PROCEDURE OpenBackRd (VAR R: BackRd; text: Texts.Text; pos: LONGINT);
+	PROCEDURE Read (VAR R: BackRd; VAR ch: CHAR);
+	PROCEDURE RdPos (VAR R: BackRd): LONGINT;
+	PROCEDURE LinesUp (T: Texts.Text; pos: LONGINT; no: INTEGER): LONGINT;
+	PROCEDURE ToBoxes (F: Frame; x, y: INTEGER; VAR M: Objects.ObjMsg);
+	PROCEDURE LocateBox (F: Frame; X, Y, x, y, w, h: INTEGER; VAR L: Line): Box;
+	PROCEDURE RemoveCaret (F: Frame);
+	PROCEDURE SetCaret (F: Frame; pos: LONGINT);
+	PROCEDURE TrackCaret (F: Frame; R: Display3.Mask; VAR keysum: SET; x, y, w, h: INTEGER; VAR loc: Loc);
+	PROCEDURE TrackWord (F: Frame; R: Display3.Mask; VAR keysum: SET; x, y, w, h: INTEGER; VAR pos: LONGINT);
+	PROCEDURE TrackLine (F: Frame; R: Display3.Mask; VAR keysum: SET; x, y: INTEGER; VAR org: LONGINT; VAR L: Line);
+	PROCEDURE LinesOf (F: Frame): INTEGER;
+	PROCEDURE ScrollTo (F: Frame; pos: LONGINT);
+	PROCEDURE RemoveSelection (F: Frame);
+	PROCEDURE SetSelection (F: Frame; beg, end: LONGINT);
+	PROCEDURE TrackSelection (F: Frame; VAR keysum: SET; x, y: INTEGER; VAR beg, end: Loc; dlink: Objects.Object);
+	PROCEDURE CopyOver (F: Frame; text: Texts.Text; beg, end: LONGINT);
+	PROCEDURE CopyList (obj: Objects.Object; depth: INTEGER; VAR obj0: Objects.Object);
+	PROCEDURE DeleteSelectedFrames (T: Texts.Text);
+	PROCEDURE GetSelectedFrames (T: Texts.Text; VAR obj: Objects.Object);
+	PROCEDURE Call (F: Frame; pos: LONGINT; keysum: SET; dlink: Objects.Object);
+	PROCEDURE EditSlider (F: Frame; R: Display3.Mask; VAR M: Oberon.InputMsg; x, y, w, h: INTEGER);
+	PROCEDURE Locate (F: Frame; pos: LONGINT);
+	PROCEDURE Edit (F: Frame; R: Display3.Mask; x, y, w, h: INTEGER; VAR M: Oberon.InputMsg);
+	PROCEDURE Right (F: Frame; nbr: SHORTINT);
+	PROCEDURE Left (F: Frame; nbr: SHORTINT);
+	PROCEDURE Update (F: Frame; dlink: Objects.Object; id: INTEGER; beg, end: LONGINT; x, y, w, h: INTEGER; stamp: LONGINT; 
+	VAR d: DrawDesc);
+	PROCEDURE AdjustChild (F: Frame; x, y: INTEGER; VAR M: Display.ModifyMsg);
+	PROCEDURE UpdateChild (F: Frame; x, y: INTEGER; VAR M: Gadgets.UpdateMsg);
+	PROCEDURE RemoveChild (F: Frame; x, y: INTEGER; VAR M: Display.ControlMsg);
+	PROCEDURE FormatFrame (F: Frame);
+	PROCEDURE RestoreFrame (F: Frame; M: Display3.Mask; x, y, w, h: INTEGER; dlink: Objects.Object);
+	PROCEDURE RestoreFrameArea (F: Frame; M: Display3.Mask; x, y, w, h, U, V, W, H: INTEGER; dlink: Objects.Object);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+
+(* Return the size in which the frame's text will fit exactly *)
+	PROCEDURE Dimensions (F: Frame; VAR w, h: INTEGER);
+	PROCEDURE PrintText (F: Frame; VAR headertext: ARRAY OF CHAR);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame; T: Texts.Text);
+END TextGadgets0.

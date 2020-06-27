@@ -1,0 +1,80 @@
+DEFINITION Cards;	(* portable *)	(* written by Patrick Saladin  *)
+
+	IMPORT
+		Files, Display, Display3, Objects, Oberon, Gadgets;
+
+	CONST
+		CardW = 50; CardH = 68;
+		topC = 2; backC = 8;
+
+	TYPE
+		Card = POINTER TO CardDesc;
+		CardDesc = RECORD
+			next, prev: Card;
+			suit, nr: INTEGER;
+			visible: BOOLEAN;
+		END;
+
+		Move = POINTER TO MoveDesc;
+		MoveDesc = RECORD
+		END;
+
+		Stack = POINTER TO StackDesc;
+		Methods = POINTER TO MethodBlock;
+		StackDesc = RECORD ( Gadgets.FrameDesc ) 
+			tail: Card;
+			do: Methods;
+			bgNr: INTEGER;
+		END;
+
+		MethodBlock = RECORD
+			canDrop: PROCEDURE (S: Stack; C: Card): BOOLEAN;
+			dropCard: PROCEDURE (S: Stack; C: Card);
+			moveCard: PROCEDURE (self, to: Stack; C: Card; undo: BOOLEAN);
+			undoMove: PROCEDURE (S: Stack; M: Move);
+			restoreStack: PROCEDURE (S: Stack; M: Display3.Mask; x, y, w, h: INTEGER);
+			trackMouse: PROCEDURE (S: Stack; VAR M: Oberon.InputMsg);
+		END;
+
+		SimpleMove = POINTER TO SimpleMoveDesc;
+		SimpleMoveDesc = RECORD ( MoveDesc ) 
+			to: Stack;
+			card: Card;
+		END;
+
+		CollectMsg = RECORD ( Display.FrameMsg ) 
+			tail: Card;
+		END;
+
+		UndoMsg = RECORD ( Display.FrameMsg ) 
+		END;
+
+		BGMsg = RECORD ( Display.FrameMsg ) 
+			bgNr: INTEGER;
+		END;
+
+	VAR 
+		methods: Methods;
+	PROCEDURE Random (range: LONGINT): LONGINT;
+	PROCEDURE Shuffle (tail: Card);
+	PROCEDURE TrackMove (VAR M: Oberon.InputMsg; x, y: INTEGER; self: Stack; card: Card; 
+																draw, fade: PROCEDURE (x, y: INTEGER; card: Card));
+	PROCEDURE DrawCard (R: Display3.Mask; card: Card; x, y, w, h, bgNr: INTEGER);
+	PROCEDURE NewCard (suit, nr: INTEGER; visible: BOOLEAN): Card;
+	PROCEDURE CloneCard (card: Card): Card;
+	PROCEDURE WriteCard (VAR R: Files.Rider; card: Card);
+	PROCEDURE ReadCard (VAR R: Files.Rider; VAR card: Card);
+	PROCEDURE NewTail (): Card;
+	PROCEDURE IsEmpty (tail: Card): BOOLEAN;
+	PROCEDURE RemoveCard (tail: Card; card: Card);
+	PROCEDURE AppendCard (tail: Card; card: Card);
+	PROCEDURE AppendMove (S: Stack; M: Move);
+	PROCEDURE ClearMoves (S: Stack);
+	PROCEDURE CopyStack (VAR M: Objects.CopyMsg; from, to: Stack);
+	PROCEDURE StackHandler (S: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitStack (S: Stack);
+	PROCEDURE NewStack;
+	PROCEDURE SetBG;
+	PROCEDURE Undo;
+
+END Cards.

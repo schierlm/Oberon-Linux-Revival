@@ -1,0 +1,32 @@
+DEFINITION RembrandtDocs; 	(* portable *)
+(* Stellt ein Rembrandt-Frame als einen Dokumententyp dar *)
+
+	IMPORT
+		Pictures, Documents,
+		Rembrandt;
+
+(* Erhht den Zoomfaktor *)
+	PROCEDURE Inc;
+
+(* Verkleinert den Zoomfaktor *)
+	PROCEDURE Dec;
+
+(* Ein- bzw. ausschalten der Gitterlinien *)
+	PROCEDURE Grid;
+
+(* Initialisiert ein neues Document *)
+	PROCEDURE InitDoc (D: Documents.Document);
+
+(* Erstellt eine neues Document *)
+	PROCEDURE NewDoc;
+
+(* ffnet ein leeres RembrandtDocument mit Breite und Hhe als Parameter *)
+	PROCEDURE Open;
+
+(* ffnet ein neues RembrandtDocument mit Picture P und Name name *)
+	PROCEDURE OpenPict (P: Pictures.Picture; name: ARRAY OF CHAR);
+
+(* Markiertes RembrandtDocument zurckgeben *)
+	PROCEDURE MarkedFrame (): Rembrandt.Frame;
+
+END RembrandtDocs.

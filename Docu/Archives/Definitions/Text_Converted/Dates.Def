@@ -1,0 +1,49 @@
+DEFINITION Dates;	(* portable *)
+
+	CONST
+		minute = 60; hour = 60*minute; day = 24*hour; week = 7* day;
+		firstY = 1901;
+
+	VAR 
+		TimeDiff: LONGINT;	(* local difference to universal time in minutes *)
+
+(* Returns TRUE if year is a leap year *)
+	PROCEDURE IsLeapYear (year: INTEGER): BOOLEAN;
+
+(* Returns the number of days since 1.1.[firstY] *)
+	PROCEDURE NumberOfDays (date: LONGINT): LONGINT;
+
+(* Returns the date 1.1.[firstY] + days *)
+	PROCEDURE NumberOfDaysToDate (days: LONGINT): LONGINT;
+
+(* Converts year, month and day into an Oberon date *)
+	PROCEDURE ToDate (year, month, day: INTEGER): LONGINT;
+
+(* Converts hour, min and sec into an Oberon time *)
+	PROCEDURE ToTime (hour, min, sec: INTEGER): LONGINT;
+
+(* Extracts year, month and day of an Oberon date *)
+	PROCEDURE ToYMD (date: LONGINT; VAR year, month, day: INTEGER);
+
+(* Extracts hour, min and sec of an Oberon time *)
+	PROCEDURE ToHMS (time: LONGINT; VAR hour, min, sec: INTEGER);
+
+(* Returns weekday from date, where 0 is monday *)
+	PROCEDURE DayOfWeek (date: LONGINT): INTEGER;
+
+(* Returns number of days in a month *)
+	PROCEDURE DaysOfMonth (date: LONGINT): INTEGER;
+
+(* Following three procedures are used to add/subtract a certain amount of days/month/years. *)
+	PROCEDURE AddYear (date: LONGINT; years: INTEGER): LONGINT;
+	PROCEDURE AddMonth (date: LONGINT; months: INTEGER): LONGINT;
+	PROCEDURE AddDay (date: LONGINT; days: INTEGER): LONGINT;
+
+(* Following three procedures are used to add/subtract a certain amount of time. *)
+	PROCEDURE AddHour (time: LONGINT; hour: INTEGER): LONGINT;
+	PROCEDURE AddMinute (time: LONGINT; min: INTEGER): LONGINT;
+	PROCEDURE AddSecond (time: LONGINT; sec: INTEGER): LONGINT;
+
+(* Following procedure adds/subtracts a certain amount seconds to time/date. *)
+	PROCEDURE AddTime (VAR time, date: LONGINT; sec: LONGINT);
+END Dates.

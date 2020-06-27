@@ -1,0 +1,29 @@
+DEFINITION PanelDocs;	(* portable *)
+
+(*Implementation of a document for the panel gadgets.
+*)
+	IMPORT
+		Objects, Gadgets, Documents;
+
+(* Loads a panel from disk. VW, VH indicate the prefered size of the panel. *)
+	PROCEDURE OpenPanel (D: Documents.Document; name: ARRAY OF CHAR; VAR VW, VH: INTEGER): Gadgets.Frame;
+
+(* Document method. *)
+	PROCEDURE LoadPanel (D: Documents.Document);
+
+(* Document method. *)
+	PROCEDURE StorePanel (D: Documents.Document);
+	PROCEDURE DocHandle (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitDoc (D: Documents.Document; W, H: INTEGER);
+	PROCEDURE NewDoc;
+
+(* append public panel to context panel *)
+	PROCEDURE AppendPanel;
+
+(* remove context panel from its own context *)
+	PROCEDURE RemovePanel;
+
+(* remove context panel from its context and open as separate document *)
+	PROCEDURE DetachPanel;
+
+END PanelDocs.

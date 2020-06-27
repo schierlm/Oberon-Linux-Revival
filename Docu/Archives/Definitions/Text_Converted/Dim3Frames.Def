@@ -1,0 +1,67 @@
+DEFINITION Dim3Frames;	(* portable *)
+(* This module implements a 3D Engine frame and gadget *)
+
+	IMPORT
+		Display3, Gadgets, Oberon, Objects, Pictures,
+		Dim3Engine;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		Navigator = PROCEDURE (F: Frame; R: Display3.Mask; VAR M: Oberon.InputMsg);
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			P: Pictures.Picture;	(* bitmap for double buffer rendering *)
+			camera: Dim3Engine.Camera;	(* viewing parameters *)
+			navigate: Navigator;	(* maps mouse movements to camera movements *)
+			absX, absY: INTEGER;	(* cached screen coordinates *)
+		END;
+
+(*--- Flight Model Navigation ---*)
+	PROCEDURE FlightNavigator (F: Frame; R: Display3.Mask; VAR M: Oberon.InputMsg);
+
+(*--- Simple Navigation ---*)
+	PROCEDURE SimpleNavigator (F: Frame; R: Display3.Mask; VAR M: Oberon.InputMsg);
+
+(*--- Message Handling ---*)
+	PROCEDURE UpdateHorizonBox (F: Frame);
+
+(* default frame handler *)
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(*--- Frame Commands ---*)
+	PROCEDURE GetFrame (VAR F: Frame);
+
+(* generator procedure *)
+	PROCEDURE NewFrame;
+
+(* clear and free actual world *)
+	PROCEDURE ClearWorld;
+
+(* set horizon (yes/no) by check box *)
+	PROCEDURE SetHorizon;
+
+(* set flight model by button *)
+	PROCEDURE SetFlightModel;
+
+(* set simple model by button *)
+	PROCEDURE SetSimpleModel;
+
+(* reset view of actual frame *)
+	PROCEDURE ResetView;
+
+(* set view angle by slider *)
+	PROCEDURE SetViewAngle;
+	PROCEDURE AlignSelection;
+
+(* make benchmark test *)
+	PROCEDURE Benchmark;
+
+(* show actual statistics about world in log *)
+	PROCEDURE ShowStatistics;
+
+(* read new world *)
+	PROCEDURE Read;
+
+(* print actual frame rate in log *)
+	PROCEDURE Performance;
+
+END Dim3Frames.

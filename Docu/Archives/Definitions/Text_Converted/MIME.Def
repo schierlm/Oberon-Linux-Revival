@@ -1,0 +1,74 @@
+DEFINITION MIME; (* portable *)
+
+	IMPORT Streams, Texts;
+
+	CONST
+		MimeVersion = "Mime-Version: 1.0";
+		TextMime = "text/plain"; ISOVer = "ISO-8859-1";
+		OberonMime = "application/compressed/oberon";
+		EncAuto = -1; EncBin = 0; Enc8Bit = 1; Enc7Bit = 2; EncQuoted = 3; EncBase64 = 4; EncAsciiCoder = 5;
+		EncAsciiCoderC = 6; EncAsciiCoderCPlain = 7;
+		ContEncQuoted = "Content-Transfer-Encoding: quoted-printable";
+		ContEnc7Bit = "Content-Transfer-Encoding: 7bit";
+		ContEnc8Bit = "Content-Transfer-Encoding: 8bit";
+		ContEncBase64 = "Content-Transfer-Encoding: Base64";
+
+	TYPE
+		OpenString = POINTER TO ARRAY OF CHAR;
+		Header = POINTER TO HeaderDesc;
+		HeaderDesc = RECORD
+			fields: OpenString
+		END;
+	(* A list of the mime content-types supported.
+			The mime-types supported by Oberon are described in the "MIME" section of oberon.ini.
+			The syntax of a mime entry is:
+
+				mimedef = mime "=" [ suffix [ prefix ] ] .
+
+				mime	The mime type, e.g: "text/html", "image/gif", ...
+				suffix	Suffix to be used for temporary files.
+				prefix	Prefix to be used for temporary files .
+					e.g. "c:/temp/" writes the temporary files in the c:/temp directory *)
+
+		ContentType = POINTER TO ContentTypeDesc;
+		ContentTypeDesc = RECORD
+			typ: ARRAY 32 OF CHAR;
+			subTyp: ARRAY 64 OF CHAR;
+			suffix: ARRAY 8 OF CHAR;
+			prefix: ARRAY 128 OF CHAR;
+			support: BOOLEAN;
+		END;
+
+		Content = POINTER TO ContentDesc;
+		ContentDesc = RECORD
+			len: LONGINT;
+			typ: ContentType;
+			encoding: LONGINT
+		END;
+
+	VAR 
+		contTypes: ContentType; (* Root of the content-typ list. *)
+		textCont: Content;
+	PROCEDURE ReadHeader (S, echo: Streams.Stream; VAR h: Header; VAR len: LONGINT);
+	PROCEDURE FindFieldPos (h: Header; field: ARRAY OF CHAR; VAR pos: LONGINT);
+	PROCEDURE FindField (h: Header; field: ARRAY OF CHAR): LONGINT;
+	PROCEDURE NextValue (h: Header; VAR pos: LONGINT);
+	PROCEDURE ExtractValue (h: Header; pos: LONGINT; VAR val: ARRAY OF CHAR);
+	PROCEDURE FindParam (h: Header; pos: LONGINT; param: ARRAY OF CHAR; VAR val: ARRAY OF CHAR);
+	PROCEDURE ExtractEMail (h: Header; pos: LONGINT; VAR email: ARRAY OF CHAR);
+	PROCEDURE GetClock (VAR time, date: LONGINT);
+	PROCEDURE ExtractGMTDate (h: Header; pos: LONGINT; VAR time, date: LONGINT);
+
+(* Find a content-type description. *)
+	PROCEDURE GetContentType (fullTyp: ARRAY OF CHAR): ContentType;
+
+(* Create a temporary file name for contType. *)
+	PROCEDURE MakeTempName (contType: ContentType; VAR tempName: ARRAY OF CHAR);
+	PROCEDURE ExtractContentType (h: Header; pos: LONGINT; VAR cont: Content);
+	PROCEDURE ReadText (in: Streams.Stream; VAR W: Texts.Writer; cont: Content; mail: BOOLEAN);
+	PROCEDURE TextEncoding (h: Header; pos: LONGINT; cont: Content);
+	PROCEDURE ReadMultipartText (in: Streams.Stream; VAR T: Texts.Text; cont: Content; mail: BOOLEAN);
+	PROCEDURE WriteText (T: Texts.Text; beg, end: LONGINT; out: Streams.Stream; cont: Content; mail, crlf: BOOLEAN);
+	PROCEDURE WriteISOMime (S: Streams.Stream; cont: Content);
+
+END MIME.

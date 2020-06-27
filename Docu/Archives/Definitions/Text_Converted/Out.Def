@@ -1,0 +1,48 @@
+DEFINITION Out; (* portable *)
+
+(* Simple output routines for writing text into the Oberon log or a seperate viewer. *)
+
+(* Write character. *)
+	PROCEDURE Char (ch: CHAR);
+
+(* Write a string. *)
+	PROCEDURE String (str: ARRAY OF CHAR);
+
+(* Write the integer i in n field positions. *)
+	PROCEDURE Int (i, n: LONGINT);
+
+(* Write the integer i in hexadecimal with a leading space. *)
+	PROCEDURE Hex (i: LONGINT);
+
+(* Write the real x in n field positions. *)
+	PROCEDURE Real (x: REAL; n: INTEGER);
+
+(* Write the real x in n field positions in fixed point notation with f fraction digits. *)
+	PROCEDURE RealFix (x: REAL; n, f: INTEGER);
+
+(* Write the longreal x in n field positions. *)
+	PROCEDURE LongReal (x: LONGREAL; n: INTEGER);
+
+(* Write the longreal x in n field positions in fixed point notation with f fraction digits. *)
+	PROCEDURE LongRealFix (x: LONGREAL; n, f: INTEGER);
+
+(* Write a carriage return (CR or end-of-line). *)
+	PROCEDURE Ln;
+
+(* Open a separate viewer for output. *)
+	PROCEDURE Open;
+
+(* Revert output to the system log. *)
+	PROCEDURE Close;
+
+END Out.
+
+(* Remarks:
+
+1. Out uses a Writer from module Texts to write output to the log. Writing output using 
+Out is slow because the log is updated after every procedure call. For fast and flexible 
+output, use module Texts.
+
+2. Out.Open creates a new text and viewer for output.  Once this is done, output can 
+be sent to the system log again by executing Close.
+*)

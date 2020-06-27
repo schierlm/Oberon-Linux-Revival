@@ -1,0 +1,89 @@
+DEFINITION BasicGadgets;	(* portable *)
+
+(*Contains an implementation of the model gadgets Boolean, String, Integer, and Real, and of the visual gadgets Button, Checkbox and Slider. The buttons and checkboxes can also be used as radio-buttons by linking to them an Integer model gadget.
+*)
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		Boolean = POINTER TO BooleanDesc;
+		BooleanDesc = RECORD ( Gadgets.ObjDesc ) 
+			val: BOOLEAN;
+		END;
+
+		String = POINTER TO StringDesc;
+		StringDesc = RECORD ( Gadgets.ObjDesc ) 
+			val: ARRAY  64 OF CHAR;
+		END;
+
+		Integer = POINTER TO IntegerDesc;
+		IntegerDesc = RECORD ( Gadgets.ObjDesc ) 
+			val: LONGINT;
+		END;
+
+		Real = POINTER TO RealDesc;
+		RealDesc = RECORD ( Gadgets.ObjDesc ) 
+			val: LONGREAL;
+		END;
+
+		Button = POINTER TO ButtonDesc;
+		ButtonDesc = RECORD ( Gadgets.FrameDesc ) 
+			caption: ARRAY 32 OF CHAR;	(* Caption shown inside the button. *)
+			val: BOOLEAN;	(* Pushed/popped out. *)
+			popout: BOOLEAN;	(* Button should pop out immediately after pressed. *)
+			setval: INTEGER;	(* Button is pressed should the button model have this value. *)
+			look: Objects.Object;	(* Object dropped inside of button, used as button representation instead of caption. *)
+			led: BOOLEAN;	(* visibility of a led if Button is pressed *)
+			ledcol: INTEGER;	(* Color of LED when Button is pressed *)
+		END;
+
+		CheckBox = POINTER TO CheckBoxDesc;
+		CheckBoxDesc = RECORD ( Gadgets.FrameDesc ) 
+			val: BOOLEAN;	(* State. *)
+			setval: INTEGER;	(* checkbox is ticked should the checkbox model have this value. *)
+		END;
+
+		Slider = POINTER TO SliderDesc;
+		SliderDesc = RECORD ( Gadgets.FrameDesc ) 
+			min, max, val: LONGINT;	(* Minimum, maximum and current value *)
+		END;
+	PROCEDURE CopyBoolean (VAR M: Objects.CopyMsg; from, to: Boolean);
+	PROCEDURE BooleanHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitBoolean (obj: Boolean);
+	PROCEDURE NewBoolean;
+	PROCEDURE CopyString (VAR M: Objects.CopyMsg; from, to: String);
+	PROCEDURE StringHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitString (obj: String);
+	PROCEDURE NewString;
+	PROCEDURE CopyInteger (VAR M: Objects.CopyMsg; from, to: Integer);
+	PROCEDURE IntegerHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitInteger (obj: Integer);
+	PROCEDURE NewInteger;
+	PROCEDURE CopyReal (VAR M: Objects.CopyMsg; from, to: Real);
+	PROCEDURE RealHandler (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitReal (obj: Real);
+	PROCEDURE NewReal;
+
+(* Goes through the list of selected gadgets (must be buttons and checkboxes) and assigns to each of
+them a different SetValue attribute numbered from 0. This is useful to create mutual exclusive radio-buttons *)
+	PROCEDURE SetValues;
+	PROCEDURE CopyButton (VAR M: Objects.CopyMsg; from, to: Button);
+	PROCEDURE ButtonHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitButton (F: Button);
+	PROCEDURE NewButton;
+	PROCEDURE CopyCheckBox (VAR M: Objects.CopyMsg; from, to: CheckBox);
+	PROCEDURE CheckBoxHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitCheckBox (F: CheckBox);
+	PROCEDURE NewCheckBox;
+	PROCEDURE CopySlider (VAR M: Objects.CopyMsg; from, to: Slider);
+	PROCEDURE SliderHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitSlider (S: Slider);
+	PROCEDURE NewSlider;
+
+(* Indicate to the display space that the value of obj has changed. Calls Gadgets.Update. *)
+	PROCEDURE SetValue (obj: Objects.Object);
+
+(* Separate a button from its look (F.obj). The object is removed and inserted at the caret. Only functions when the button has a (consumed) gadget as a caption. *)
+	PROCEDURE Break;
+
+END BasicGadgets.

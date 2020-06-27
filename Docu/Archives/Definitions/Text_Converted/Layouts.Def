@@ -1,0 +1,85 @@
+DEFINITION Layouts;	(* portable *)
+
+	IMPORT Objects;
+
+	CONST	(* Node id constants *)
+		Inval = Objects.Inval;
+
+		(* data types *)
+		Int = Objects.Int; Real = Objects.Real; Bool = Objects.Bool;
+		Char = Objects.Char; String = Objects.String;
+		Format = 8; Ident =  9;
+
+		(* operators *)
+		Def =  20; Set =  21;
+		Params =  22; Layout =  23; Attributes =  24; Links =  25;
+		Instance = 26; Obj = 27; Break = 28;
+
+		(* special layout constants used in NewFormat *)
+		Left = 60; Right = 61; Bottom = 62; Top = 63; Center = 64;
+		Static = 65; Dynamic = 66; Hor = 67; Vert = 68;
+
+	TYPE
+		Node = POINTER TO NodeDesc;
+		NodeDesc = RECORD
+			id: INTEGER;
+		END;
+	PROCEDURE Insert (node, dsc: Node);
+			(*	insert dsc into node	*)
+	PROCEDURE SetParams (node, params: Node);
+			(*	set parameters when a Config is used	*)
+	PROCEDURE CopyOf (node: Node): Node;
+			(*	make a deep copy of node	*)
+	PROCEDURE IsVirtual (node: Node): BOOLEAN;
+			(*	TRUE if node is an object and virtual	*)
+	PROCEDURE Realize (node: Node): Objects.Object;
+			(*	once an object is realized, it can't be changed anymore	*)
+
+(*	Nodes for values	*)
+	PROCEDURE NewString (str: ARRAY OF CHAR): Node;
+	PROCEDURE NewIdent (str: ARRAY OF CHAR): Node;
+	PROCEDURE NewChar (ch: CHAR): Node;
+	PROCEDURE NewInt (int: LONGINT): Node;
+	PROCEDURE NewSize (MinSize, ExpandFactor: INTEGER): Node;
+	PROCEDURE NewReal (real: REAL): Node;
+	PROCEDURE NewBool (bool: BOOLEAN): Node;
+	PROCEDURE NewFormat (sym: INTEGER): Node;	(*	sym = Left | Right | Bottom | Top | Center | Static ...	*)
+
+(*	create new Nodes	*)
+	PROCEDURE NewNode (id: INTEGER): Node;		(*	LAYOUT, ATTR, LINKS, PARAMS	*)
+			(*	id = Layout | Attributes | Links | Params.											 *)
+			(*	Params are not inserted but set with "SetParams (node, params)".	*)
+	PROCEDURE NewSet (Name: ARRAY OF CHAR; Value: Node): Node;		(*	SET	*)
+	PROCEDURE NewDef (Name: ARRAY OF CHAR; Value: Node): Node;		(*	DEF	*)
+	PROCEDURE NewObject (NewProc: ARRAY OF CHAR): Node;		(*	NEW NewProc	*)
+			(*	NewProc = "": virtual object	*)
+	PROCEDURE NewInstance (Ident: ARRAY OF CHAR): Node;		(*	NEW Ident	*)
+	PROCEDURE NewPlace (NewProc: ARRAY OF CHAR): Node;		(*	PLACE	*)
+	PROCEDURE NewHList (NewProc: ARRAY OF CHAR): Node;		(*	HLIST	*)
+	PROCEDURE NewVList (NewProc: ARRAY OF CHAR): Node;		(*	VLIST	*)
+	PROCEDURE NewTable (NewProc: ARRAY OF CHAR): Node;		(*	TABLE	*)
+	PROCEDURE NewSpan (rows, cols: INTEGER): Node;		(*	SPAN	*)
+	PROCEDURE NewBreak (): Node;		(*	BREAK	*)
+	PROCEDURE NewConfig (): Node;		(*	CONFIG	*)
+	PROCEDURE CopyPublicObj (name: ARRAY OF CHAR; deep: BOOLEAN): Node;		(*	SCOPY, DCOPY	*)
+			(*	if name can't be found, a virtual object is returned	*)
+	PROCEDURE WrappedObject (obj: Objects.Object): Node;
+			(*	obj = NIL: make virtual object	*)
+
+END Layouts.
+
+(*
+		Create a Node for each operator and each argument except those specified when creating the operator node.
+		Arguments are inserted with 'Insert', except for parameter list, which are set with 'SetParams'.
+		To get the object from the layout structure, use Realize (node).
+
+		Example for using a configuration and setting parameters:
+
+		VAR container, newconfig, params : Layouts.Node;
+		...
+			newconfig := Layouts.NewInstance ("TheName"); Layouts.Insert (container, newconfig);
+			params := Layouts.NewNode (Layouts.Params); Layouts.SetParams (newconfig, params);
+			Layouts.Insert (params, NewSet ("FirstParam", NewString ("Value")));
+			Layouts.Insert (params, NewSet ("SecondParam", NewFormat (Layouts.Center)));
+		...
+*)

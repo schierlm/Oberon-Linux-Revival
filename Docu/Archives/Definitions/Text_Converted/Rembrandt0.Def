@@ -1,0 +1,64 @@
+DEFINITION Rembrandt0;	(* portable *)
+
+(* Dieses Modul enthlt div. Prozeduren fr den Rembrandt-Editor und Farboperationen, die auch in weiteren
+	Modulen gebraucht werden knnen. Einige Prozeduren und Variablen sind aus dem Backdrops-Modul bernommen
+	worden, da dieses Modul nun auch auf Rembrandt basiert *)
+	IMPORT
+		Gadgets, Pictures, Objects;
+
+	TYPE
+		ColFrame = POINTER TO ColFrameDesc;
+		ColFrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			col: INTEGER;
+		END;
+
+		Color = POINTER TO ColorDesc;
+		ColorDesc = RECORD ( Gadgets.ObjDesc ) 
+			col: INTEGER
+		END;
+
+	VAR 
+		color: Color;							(* Aktuelle Farbe fr Rembrandt-Editor *)
+		noc, maxnoc: INTEGER;		(* Anzahl Farben fr Backdrops / Maximale Anzahl Farben auf Bildschirm verfgbar *)
+		coltable: ARRAY  256 OF RECORD
+			r, g, b: INTEGER END;	(* Farbpalette fr Backdrops *)
+
+(* Zufallszahl *)
+	PROCEDURE Uniform (): REAL;
+	PROCEDURE InitSeed (seed: LONGINT);
+
+(* Dither *)
+	PROCEDURE Floyd (S, D: Pictures.Picture);
+
+(* Verndert die Farben eines Pictures mit den gegebenen Parameter *)
+	PROCEDURE Reduce (S, D: Pictures.Picture; ds, dv: REAL);
+
+(* Colorgadgets fr Farbanzeige im Rembrandt-Panel *)
+	PROCEDURE HandleColor (obj: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewColorObj;
+	PROCEDURE HandleColFrame (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewColFrame;
+
+(* Verschiedene Operationen auf Picture mit Clipping falls negative Koordinaten *)
+	PROCEDURE CopyBlock (S, D: Pictures.Picture; x, y: INTEGER; w, h, dx, dy, mode: INTEGER);
+	PROCEDURE ReplConst (P: Pictures.Picture; col, x, y, w, h: INTEGER);
+
+(* Speicherblock fr Picture allozieren oder Fehlermeldung ausgeben *)
+	PROCEDURE AllocatePictureMem (VAR P: Pictures.Picture; w, h, d: INTEGER);
+
+(* Best Match fr gesuchten Farbwert in der aktuellen Farbpalette *)
+	PROCEDURE NearestColor (r, g, b: LONGINT): INTEGER;
+
+(* Farbpalette ndern *)
+	PROCEDURE Darken;
+	PROCEDURE Lighten;
+	PROCEDURE SetColor;
+	PROCEDURE ChangeColor;
+
+(* Standardpalette wird neu geladen *)
+	PROCEDURE ResetAll;
+
+(* Einzelne Farbe auf Standardwert zurckgesetzt *)
+	PROCEDURE ResetOne;
+
+END Rembrandt0.

@@ -1,0 +1,195 @@
+DEFINITION HyperDocs;	(* portable *)
+
+	IMPORT Files, Objects, Texts,
+		Gadgets, TextGadgets0, TextGadgets, Documents, MIME;
+
+(* Module HyperDocs allows to build links between any documents. Documents are either documents on the
+		local disk or documents retrieved from the internet. A link to a document is just a string, which describes
+		where and how to get the document. The strings are encoded according to the URL (Uniform Resource Locators)
+		syntax (RFC 1738).
+		These module handles the following tasks:
+			- a database for links: each link is associated to a unique key (LONGINT)
+			- associating links to documents: history & caching
+
+		This modul supports file urls. The following line should be added to the LinkSchemes section of the Registry:
+			file = HyperDocs.NewLinkScheme
+		And the following line to the Documents section:
+			file = HyperDocs.NewDoc *)
+	CONST
+	(* Maximal length of different link parts. *)
+		PrefixStrLen = 16;
+		MaxLink = 1024;
+		ServerStrLen = 64;
+		PathStrLen = 256;
+		UndefKey = -1; (* A key value which is not associated to a link. *)
+
+	TYPE
+		LinkScheme = POINTER TO LinkSchemeDesc;
+		Node = POINTER TO NodeDesc;
+
+	(* The different link types (so called link schemes) are distinguished by different prefixes (e.g. http ). For each prefix
+		a single object is allocated the first time a link of that kind is generated. The different link schemes are defined in the
+		LinkSchemes section of Registry. The syntax for such an entry is: scheme "=" generator . *)
+		LinkSchemeDesc = RECORD ( Gadgets.ObjDesc ) 
+			prefix: ARRAY PrefixStrLen OF CHAR; (* The schemes prefix in all lowercase *)
+			usePath: BOOLEAN; (* TRUE if prefix must be followed by :// *)
+		END;
+
+	(* Base class for messages sent to a link scheme object. *)
+		LinkSchemeMsg = RECORD ( Objects.ObjMsg ) 
+			key: LONGINT;
+			res: INTEGER
+		END;
+
+		DefURL = POINTER TO DefURLDesc;
+		DefURLDesc = RECORD
+			key: LONGINT;
+			prefix: ARRAY PrefixStrLen OF CHAR;
+			host: ARRAY ServerStrLen OF CHAR;
+			path: ARRAY PathStrLen OF CHAR;
+			label: ARRAY 64 OF CHAR;
+			port: INTEGER
+		END;
+
+	(* Reqeuest to a link scheme object to parse link and register its normalized form in the database.
+		If base # NIL, the link may be a relative link.
+		res = 0: The link was succefully parsed and key contains a unique key for that link.
+		res # 0: The link does not match the syntax of the link scheme. *)
+		RegisterLinkMsg = RECORD ( LinkSchemeMsg ) 
+			link: ARRAY MaxLink OF CHAR;
+			base: DefURL
+		END;
+
+	(* Reqeuest to a link scheme object to query the type and size of the document referenced by key.
+		res = 0: Type and size contain the reqeuested information.
+		res # 0: The reqeuest failed for some reason. *)
+		InfoMsg = RECORD ( LinkSchemeMsg ) 
+			contType: MIME.ContentType;
+			size, date, time: LONGINT
+		END;
+
+	(* Reqeuest to a link scheme object to write the data of the document referenced by key to R.
+		res = 0: Ok
+		res = 1: Not supported
+		res # 0: Failed *)
+		FetchMsg = RECORD ( LinkSchemeMsg ) 
+			R: Files.Rider
+		END;
+
+	(* An entry in the history. *)
+		NodeDesc = RECORD
+			key, org: LONGINT;
+			old, prev: Node
+		END;
+
+	(* Context when taking a link. old and new are the history entries for the old (curDoc) and new document.
+		 replace: the old document is replaced by the new one.
+		 history: enter the new document into the history. *)
+		Context = POINTER TO ContextDesc;
+		ContextDesc = RECORD
+			old, new: Node;
+			curDoc: Documents.Document;
+			replace, history: BOOLEAN
+		END;
+
+	VAR 
+		loadingKey: LONGINT;
+		context: Context; (* Context for the current link. *)
+		linkC, oldLinkC: INTEGER; (* Default colors for text-links. *)
+		linkMethods, linkPictMethods: TextGadgets0.Methods; (* New methods for TextGadgets which handle underline for hyperlinks and background images. *)
+		docW, docH: INTEGER;
+
+(* Escape sequences in url are expanded. E.g. "Hello%20World" becomes "Hello World". *)
+	PROCEDURE UnESC (VAR url: ARRAY OF CHAR);
+
+(* All special charactrs in str are escaped. E.g. "a+b" becomes "a%2Bb".
+		Special characters are: 1X .. 20X, "+", "&", "=", "?", "%", "$", ";". "#", ":" & special. *)
+	PROCEDURE ESC (VAR str: ARRAY OF CHAR; special: CHAR);
+
+(* Get the link scheme object for prefix. *)
+	PROCEDURE LinkSchemeByPrefix (prefix: ARRAY OF CHAR): LinkScheme;
+
+(* Get the link scheme object for the link-scheme associated to key. *)
+	PROCEDURE LinkSchemeByKey (key: LONGINT): LinkScheme;
+
+(* Add link (in normalized form) to the database returning a unique key. *)
+	PROCEDURE RegisterLink (VAR link: ARRAY OF CHAR): LONGINT;
+
+(* Try to normalize link and add it to the database returning a unique key. If base # NIL, link is a relative link to that
+		base. *)
+	PROCEDURE BuildKey (base: DefURL; link: ARRAY OF CHAR): LONGINT;
+
+(* Create a temporary file name for D which is prefixed by prefix. key identifies the new name. *)
+	PROCEDURE TempDocName (prefix: ARRAY OF CHAR; VAR name: ARRAY OF CHAR; VAR key: LONGINT);
+
+(* Retrieve the link associated to key. *)
+	PROCEDURE RetrieveLink (key: LONGINT; VAR link: ARRAY OF CHAR);
+
+(* Store the link associated to key. *)
+	PROCEDURE StoreLink (VAR R: Files.Rider; key: LONGINT);
+
+(* Reload a link previously stored with StoreLink.*)
+	PROCEDURE LoadLink (VAR R: Files.Rider; VAR key: LONGINT);
+
+(* Default message handler for link scheme objects. *)
+	PROCEDURE LinkSchemeHandler (L: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewLinkControl;
+
+(* Create a text hyperlink object for key. *)
+	PROCEDURE LinkControl (key: LONGINT): Objects.Object;
+
+(* Get the node linked to doc. *)
+	PROCEDURE NodeByDoc (doc: Documents.Document): Node;
+
+(* Link node to doc. *)
+	PROCEDURE LinkNodeToDoc (doc: Documents.Document; node: Node);
+
+(* Create a new entry in the history. *)
+	PROCEDURE Remember (key: LONGINT; old: Node; VAR new: Node);
+
+(* Create a new entry in the history, when scrolling within the same document. *)
+	PROCEDURE RememberOrg (org: LONGINT; old: Node; VAR new: Node);
+
+(* Create a document name for key. *)
+	PROCEDURE DocNameByKey (VAR name: ARRAY OF CHAR; key: LONGINT);
+
+(* Open newDoc (key) using context cont. *)
+	PROCEDURE FollowKeyLink (cont: Context; newDoc: LONGINT);
+
+(* HyperDocs.FollowLink [ "%" ( "R" | "N" ) ] ( key | name )
+		Open document key or name using Desktops.ReplaceCurrentDoc (%R) or Desktops.ShowDoc (%N). *)
+	PROCEDURE FollowLink;
+
+(* Replace the current doc by newD, key is the key for the old document. *)
+	PROCEDURE ReplaceCurDoc (key: LONGINT; newD: Documents.Document);
+	PROCEDURE ScrollTo (F: TextGadgets.Frame; pos: LONGINT);
+
+(* HyperDocs.Back
+		Go one step back in the history of the current document. *)
+	PROCEDURE Back;
+
+(* Parsing of an file url. *)
+	PROCEDURE SplitFileAdr (VAR url, path, label: ARRAY OF CHAR): LONGINT;
+
+(* Make an absolute url out of value using base. *)
+	PROCEDURE Path (base: DefURL; VAR url, value: ARRAY OF CHAR);
+
+(* Checks if link is preceeded by a valid scheme-prefix. *)
+	PROCEDURE CheckPrefix (VAR link: ARRAY OF CHAR): LONGINT;
+	PROCEDURE NewLinkScheme;
+	PROCEDURE NewDoc;
+	PROCEDURE CacheText (key: LONGINT; text: Texts.Text);
+
+(* Add doc to the document cache. If the system is running out of memory documents in the cache are thrown
+		away. Cache entries marked as writeBack are written to disk. *)
+	PROCEDURE CacheDoc (key: LONGINT; doc: Documents.Document);
+	PROCEDURE Reload;
+
+(* Retrieve a document from the document cache. *)
+	PROCEDURE GetCachedDoc (key: LONGINT): Documents.Document;
+	PROCEDURE GetCachedText (key: LONGINT): Texts.Text;
+
+(* All documents in the cache are released. *)
+	PROCEDURE ClearCache;
+	PROCEDURE Visited (key: LONGINT): BOOLEAN;
+END HyperDocs.

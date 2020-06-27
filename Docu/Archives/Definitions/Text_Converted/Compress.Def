@@ -1,0 +1,146 @@
+DEFINITION Compress; (* portable *)
+
+	IMPORT Files;
+
+	CONST
+		Done = 0;
+		ArchiveNotFound = 1;
+		ErrorInArchive = 2;
+		EntryNotFound = 3;
+		ArchiveExists = 4;
+		FileError = 5;
+		KeyNeeded = 6;
+		encryption = 0;
+
+	TYPE
+		Name = ARRAY 32 OF CHAR;
+		Header = RECORD
+			name: Name;
+			length: LONGINT;
+			date, time: LONGINT;
+			ratio: REAL;
+			extensions: SET
+		END;
+
+		EnumProc = PROCEDURE (h: Header; VAR stop: BOOLEAN);
+		CryptProc = PROCEDURE (VAR Rin: Files.Rider; nIn: LONGINT; VAR Rout: Files.Rider; key: ARRAY OF CHAR; VAR res: INTEGER);
+
+	VAR 
+		Decrypt, Encrypt: CryptProc;
+
+(* Compress len Bytes form Ri to Ro. *)
+	PROCEDURE CopyToArc (VAR Ri, Ro: Files.Rider; len: LONGINT; VAR h: Header);
+
+(* Expand a maximum of len Bytes from Ri to Ro.
+	res:
+		Done
+		ErrorInArchive: error in compressed data *)
+	PROCEDURE CopyFromArc (VAR Ri, Ro: Files.Rider; VAR h: Header; VAR res: INTEGER);
+	PROCEDURE ClearCrypt ();
+	PROCEDURE InstallCrypt (install, key: ARRAY OF CHAR);
+
+(* Enumerate all entries in the archive (archive). Stop if stop (in enumProc) is set or if at end of archive.
+		res:
+			Done
+			ArchiveNotFound: archive-file not found
+			ErrorInArchive: internal error in archive-file *)
+	PROCEDURE Enumerate (archive: ARRAY OF CHAR; enumProc: EnumProc; sorted: BOOLEAN; VAR res: INTEGER);
+
+(* Add a new entry (file) to the archive (archive) with data read from R.
+		file: input: name of the entry
+				output: name choosen for entry (may differ if names collaps)
+		res:
+			Done
+			ArchiveNotFound: archive-file not found
+			ErrorInArchive: internal error in archive-file *)
+	PROCEDURE AddFile (archive: ARRAY OF CHAR; VAR file: ARRAY OF CHAR; VAR R: Files.Rider; len: LONGINT; VAR res: INTEGER);
+
+(* Delete entry (file) from the archive (archive).
+		res:
+			Done
+			ArchiveNotFound: archive-file not found
+			ErrorInArchive: internal error in archive-file
+			EntryNotFound: no such entry (entry) found *)
+	PROCEDURE DeleteFile (archive, file: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Extract entry (file) from the archive (archive) and write its data to R.
+		res:
+			Done
+			ArchiveNotFound: archive-file not found
+			ErrorInArchive: internal error in archive-file
+			EntryNotFound no such entry (entry) found *)
+	PROCEDURE ExtractFile (archive, file: ARRAY OF CHAR; VAR R: Files.Rider; VAR res: INTEGER);
+
+(* Extract all entries in archive (archive).
+		res:
+			Done
+			ArchiveNotFound: archive-file not found
+			ErrorInArchive: internal error in archive-file
+			FileError: an entry file could not be created *)
+	PROCEDURE ExtractAllFiles (archive: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Create a new empty archive.
+		res:
+			Done
+			ArchiveExists: archive allready existed
+			FileError: archive-file could not be created *)
+	PROCEDURE CreateArchive (archive: ARRAY OF CHAR; VAR res: INTEGER);
+
+(* Document new-procedure for compress-archives.
+		Old archive files can be opened with Desktops.OpenDoc old.arc(Compress.NewDoc) . *)
+	PROCEDURE NewDoc;
+
+(* Compress.Directory:
+	Display a list of all entries in an archive. If option "d" is used
+	additional information on contents is given. If option "s" is used
+	the output is sorted by filename.
+	syntax:
+		Compress.Directory Archive.Arc
+		Compress.Directory /d Archive.Arc
+		Compress.Directory ^
+		Compress.Directory /d ^ *)
+	PROCEDURE Directory;
+
+(* Compress.Add:
+	Add files to an archive, if the archive not already exists, create
+	a new one.
+	syntax:
+		Compress.Add Archive.Arc file1 file2 ... ~
+		Compress.Add Archive.Arc ^ ~ *)
+	PROCEDURE Add;
+
+(* Compress.Delete
+	Delete selected files from an archive.
+	syntax:
+		Compress.Delete Archive.Arc file1 file2 ... ~
+		Compress.Delete Archive.Arc ^ ~ *)
+	PROCEDURE Delete;
+
+(* Compress.Open
+	Unpack a file from an archive and open it in a viewer.
+	No file is written to disk.
+	syntax:
+		Compress.Open Archive.Arc file ~
+		Compress.Open Archive.Arc ^ ~ *)
+	PROCEDURE Open;
+
+(* Compress.Extract
+	Unpack selected files from an archive.
+	syntax:
+		Compress.Extract Archive.Arc file1 file2 ... ~
+		Compress.Extract Archive.Arc ^ ~ *)
+	PROCEDURE Extract;
+
+(* Compress.Rename
+	Rename entries in a archive.
+	syntax:
+		Compress.Rename Archive.Arc old1 => new1 old2 => new2 ... ~ *)
+	PROCEDURE Rename;
+
+(* Compress.ExtractAll
+	Unpack all files from a list of archives.
+	syntax:
+		Compress.ExtractAll Archive1.Arc ... ~*)
+	PROCEDURE ExtractAll;
+
+END Compress.

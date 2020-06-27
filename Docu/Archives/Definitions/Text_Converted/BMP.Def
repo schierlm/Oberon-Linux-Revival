@@ -1,0 +1,19 @@
+DEFINITION BMP;	(* portable *)
+
+	IMPORT Files, Pictures, Objects;
+
+(* BMP-File support (depth: 1, 4 and 8 / compression: RLE4 and RLE8) / ps 2.8.96 *)
+	PROCEDURE CheckFile (VAR R: Files.Rider): BOOLEAN;
+
+(* Read BMP file.  colorConversion indicates if the BMP file palette and contents should be converted to
+the current physical palette. Color matching is done by euclidean distance *)
+	PROCEDURE LoadBmp (VAR R: Files.Rider; colorConversion: BOOLEAN; pict: Pictures.Picture);
+	PROCEDURE Handle (obj: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Called from Pictures.Open to try and load a BMP picture. The picture descriptor is pre-allocated by Pictures in
+Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the BMP picture
+when a FileMsg is received (variant load). *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END BMP.

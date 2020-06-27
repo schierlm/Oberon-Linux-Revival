@@ -1,0 +1,127 @@
+DEFINITION Columbus; (* portable *)
+
+(*  - an inspector tool for objects and libraries. *)
+	IMPORT
+		Objects;
+	PROCEDURE NewDoc;
+	PROCEDURE NewPanel;
+
+	(* ---------------------- columbus inspector commands ----------------------- *)
+	PROCEDURE InspectObj (obj: Objects.Object);
+
+(* Used in the form:	Columbus.Inspect [<Name>]
+
+Inspects object or library. The target object or library can be specified by...
+	- <Name>, name of a public object/library
+	- a selected frame or a selected name of public a object/library
+	- the marked frame 
+The panel is opened in the attribute view. An existing Columbus panel is set to the attribute view, if the command is initiated within such a panel (magnifier button). If no target can be detected, a so-called empty panel is opened (an existing panel changes to this state, too). 
+*)
+	PROCEDURE Inspect;
+
+(* Used in the form:	Columbus.InspectLink <LinkName>
+
+Inspects the executor's link <LinkName>. The panel is opened in the attribute view. Columbus panels are automatically set to the attribute view, when initiating this command (reference gadgets on the panel use this command).
+*)
+	PROCEDURE InspectLink;
+
+	(* ---------------------- commands only usefull within Columbus ----------------------- *)
+
+(* Inspects panel's current object/library *)
+	PROCEDURE InspectCurrent;
+
+(* Applies attributes or links to the panel's current object *)
+	PROCEDURE Apply;
+
+(* Applies attributes or links to the selected gadget frames *)
+	PROCEDURE ApplyTo;
+
+(* Adds a new attribute or link to the panel's current object *)
+	PROCEDURE Add;
+
+(* Adds a new attribute or link to the selected gadget frames *)
+	PROCEDURE AddTo;
+
+(* Removes an attribute or link from the panel's current object *)
+	PROCEDURE Remove;
+
+(* Removes an attribute or link from the selected gadget frames *)
+	PROCEDURE RemoveFrom;
+
+(* Goes back one step in the panel's history *)
+	PROCEDURE Back;
+
+(* Sets the attribute "Value" of an object named "theobj". *)
+	PROCEDURE SetCurrent;
+
+	(* ---------------------- library editor object commands ----------------------- *)
+
+(* Used in the form:	Columbus.ShowObjs <LibName>
+
+Inserts a list of all named objects in <LibName> as panel into a scroll view named "objlist". <LibName> must include the ".Lib" extension. It also updates a text field named "thelib".  The view and the text field must be detectable in the current context. If the view can not be found, the list is shown as text.
+*)
+	PROCEDURE ShowObjs;
+
+(* Used in the form:	Columbus.GetObj <LibName.ObjName>
+
+If <LibName.ObjName> is a document gadget, a (deep) copy of the document is opened on the display. Frame gadget are inserted at the caret. A copy is made depending on the value of an object named "copystyle". If this object cannot be dedected in the current context, the copy style 'deep' is assumed. If <LibName.ObjName> is a model, the "Model" link of all selected frames is set to this model (No copies are made for modelsl).
+*)
+	PROCEDURE GetObj;
+
+(* Used in the form:	Columbus.FreeObj <LibName.ObjName>
+
+Frees <LibName.ObjName>. The scroll view named "objlist" in the current context is cleared, too. *)
+	PROCEDURE FreeObj;
+
+(* Used in the form:	Columbus.AddObj <LibName.ObjName>
+
+Inserts the object taken from the reference gadget in the current context named  "value"  as <LibName.ObjName>. If the reference gadget cannot be detected, the selected frame will be added instead. This command also updates the scroll view named "objlist" in the current context.
+*)
+	PROCEDURE AddObj;
+
+(* Used in the form:	Columbus.RenameObj <LibName.ObjName> <NewName>
+
+Renames <LibName.ObjName> with <NewName>. It also updates the the scroll view in the current context named "objlist".
+*)
+	PROCEDURE RenameObj;
+
+	(* ---------------------- library editor library commands ----------------------- *)
+
+(* Used in the form:	Columbus.ShowLibs <ObjName>
+
+Inserts the names of loaded libraries into a list named <ObjName> detectable in the current context. If the list could not be detected, a text is opened instead.
+*)
+	PROCEDURE ShowLibs;
+
+(* Used in the form:	Columbus.StoreLib {<LibName>}
+
+Stores <LibName>. <LibName> must include the ".Lib" extension.
+*)
+	PROCEDURE StoreLib;
+
+(* Used in the form:	Columbus.UnloadLib {<LibName>}
+
+Unloads <LibNames>. <LibName> must include the ".Lib" extension.
+*)
+	PROCEDURE UnloadLib;
+
+(* Used in the form:	Columbus.CleanupLib {<LibNames>}
+
+Frees unused objects in <LibName>. <LibNames> must include the ".Lib" extendion. The cleaned librariy will be stored to disk and reloaded into the memory.
+*)
+	PROCEDURE CleanupLib;
+END Columbus.
+
+(*
+Columbus is an universial tool for inspecting and changing different kind of information of objects like attributes and links. The tool can also be used to manage public libaries and their content.
+
+Columbus consists of two different panels. One can be used to configure the state of objects and is called 'Objects.Panel'. The other can be used manipulate public libaries and is called 'Libraries.Panel'. Parts of the 'Libraries.Panel' is integrated in the object inspector. The 'Objects.Panel' on the other hand can directly be opened from the library editor.
+
+Use the command Columbus.Inspect ~ to open the inspector panel. Before executing this commandf, you can specifiy the target object or library by...
+	- the name of a public object/library
+	- a selected frame or the selected name of public object/library
+	- the marked frame 
+The panel is opened in the attribute view. If no target can be detected, an so-calleds empty panel is opened.
+
+Desktops.OpenDoc Libraries.Panel ~ opens the library editor. This editor lets you manipulate public libraries and their contents.
+*)

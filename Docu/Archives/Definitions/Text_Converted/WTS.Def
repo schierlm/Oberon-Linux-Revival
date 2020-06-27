@@ -1,0 +1,9 @@
+DEFINITION WTS;	(* portable *)
+
+	IMPORT Files;
+
+	VAR 
+		R: Files.Rider;
+	PROCEDURE Convert;
+
+END WTS.

@@ -1,0 +1,52 @@
+DEFINITION ZlibWriters;	(* Stefan Walthert  *)
+
+	IMPORT
+		Files, ZlibDeflate;
+
+	CONST
+	(* result codes *)
+		Ok = ZlibDeflate.Ok; StreamEnd = ZlibDeflate.StreamEnd;
+		StreamError = ZlibDeflate.StreamError; DataError = ZlibDeflate.DataError; BufError = ZlibDeflate.BufError;
+
+	(* flush values *)
+		NoFlush = ZlibDeflate.NoFlush;
+		SyncFlush = ZlibDeflate.SyncFlush;
+		FullFlush = ZlibDeflate.FullFlush;
+
+	(* compression levels *)
+		DefaultCompression = ZlibDeflate.DefaultCompression; NoCompression = ZlibDeflate.NoCompression;
+		BestSpeed = ZlibDeflate.BestSpeed; BestCompression = ZlibDeflate.BestCompression;
+
+	(* compression strategies *)
+		DefaultStrategy = ZlibDeflate.DefaultStrategy; Filtered = ZlibDeflate.Filtered; HuffmanOnly = ZlibDeflate.HuffmanOnly;
+
+	TYPE
+	(* structure for writing deflated data in a file *)
+		Writer = RECORD
+			res-: LONGINT;	(* current stream state *)
+			flush-: SHORTINT;	(* flush strategy *)
+			wrapper-: BOOLEAN;	(* if set, zlib header and checksum are generated *)
+			crc32-: LONGINT;	(* crc32 of uncompressed data *)
+		END;
+
+(* change deflate parameters within the writer *)
+	PROCEDURE SetParams (VAR w: Writer; level, strategy, flush: SHORTINT);
+
+(* open writer on a Files.Rider *)
+	PROCEDURE Open (VAR w: Writer; level, strategy, flush: SHORTINT; wrapper: BOOLEAN; r: Files.Rider);
+
+(* write specified number of bytes from buffer into and return number of bytes actually written *)
+	PROCEDURE WriteBytes (VAR w: Writer; VAR buf: ARRAY OF CHAR; offset, len: LONGINT; VAR written: LONGINT);
+		(* invariant (110):	(0 <= offset) & (0 <= len) & (len <= LEN(buf)) *)
+
+(* write byte *)
+	PROCEDURE Write (VAR w: Writer; ch: CHAR);
+
+(* close writer *)
+	PROCEDURE Close (VAR w: Writer);
+		(* invariant (110):	w.s.in.avail = 0 *)
+
+(* compress srclen bytes from src to dst with specified level and strategy. dstlen returns how many bytes have been written. *)
+	PROCEDURE Compress (VAR src, dst: Files.Rider; srclen: LONGINT; VAR dstlen: LONGINT; level, strategy: SHORTINT; VAR crc32: LONGINT; VAR res: LONGINT);
+
+END ZlibWriters.

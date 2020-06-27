@@ -1,0 +1,42 @@
+LayoutPanels.NewDocHBIER6q=7!				V
+
+au
+o
+
+<#Syntax10.Scn.FntAAT(r=3vd=15hj=1vj=1b=5hf=1vf=1T(hd=15hj=1vj=1hf=1vf=1T(hj=1vj=1hf=1vf=1T(c=4r=3hj=1vj=1hf=1vf=3O(i=17hm=2vm=3w=20h=13)O(i=9w=64h=20hf=1vf=1)O(i=10w=64h=20hf=1vf=1)T(c=2hd=10hj=1vj=3hm=3vm=3hf=1T(c=2hj=1vj=3hf=1O(i=15hm=2vm=3w=20h=20)O(i=14w=16h=13))T(c=2hj=1vj=3hf=1O(i=12hm=2vm=3w=20h=20)O(i=11w=23h=13)))O(i=16hm=2vm=3w=25h=13)O(i=2w=64h=20hf=1vf=1)O(i=3w=64h=20hf=1vf=1)T(c=2hd=10hg=1hj=1vj=3hm=3vm=3hf=1T(c=2hj=1vj=3O(i=8hm=2vm=3w=20h=20)O(i=7w=28h=13))T(c=2hj=1vj=3O(i=5hm=2vm=3w=20h=20)O(i=4w=28h=13)))O(i=18hm=2vm=3w=50h=13)O(i=19w=64h=20hf=1vf=1)O(i=20w=64h=20hf=1vf=1)T(c=2hd=10hj=1vj=3hm=3vm=3hf=1T(c=2hj=1vj=3hf=1O(i=24hm=2vm=3w=20h=20)O(i=23w=23h=13))T(c=2hj=1vj=3hf=1O(i=22hm=2vm=3w=20h=20)O(i=21w=20h=13))))))T(c=3hj=1vj=1hf=1vf=1O(i=27w=64h=25hf=1vf=1)O(i=26w=64h=25hf=1vf=1)O(i=25w=88h=25hf=1vf=1))O(i=1hm=3w=166h=29))	
+
+HC[$Oberon24b.Scn.Fnt
+
+LayoutPanels
+QCminwminhDel @>yCCCmdLayoutPanels.DelRow  @  &upper.YesVal  &lower.YesVal ~FieldYesValColor
+minw@minhAdd @yBCCmdLayoutPanels.AddRow  @  &upper.YesVal  &lower.YesVal ~FieldYesValColor
+minw@minhR#Oberon10.Scn.Fntlower%|
+Cminwminh
+ayCColorCmdFieldYesVallowerminwminhNamelowerCR#Oberon10.Scn.Fntupper|
+Cminwminh
+ayCColorCmdFieldYesValupperminwminhNameupperDel @>`CCCmdLayoutPanels.DelCol @  &right.YesVal  &left.YesVal ~FieldYesValColor
+minw@minhAdd @`BCCmdLayoutPanels.AddCol  @  &left.YesVal  &right.YesValFieldYesValColor
+minw@minhR#Oberon10.Scn.Fntright%c
+Cminwminh
+f`
+CColorCmdFieldValueYesValrightNamerightminwminhCQ#Oberon10.Scn.Fntleftc
+Cminwminh
+_`
+CColorCmdFieldYesValleftNameleftminwminhQ#Oberon10.Scn.FntRow: |
+Cminwminh
+Q#Oberon10.Scn.FntCol:%c
+Cminwminh
+W#Oberon10.Scn.Fnt
+
+Container:2
+Cminw2minh
+xPlace ^>CCCmdLayoutPanels.InsertPlace _^  FieldYesValColor
+minw@minhTable ^BCCmdLayoutPanels.InsertTable _^  &rows.Value  &cols.ValueFieldYesValColor
+minw@minhQ#Oberon10.Scn.Fntcols%
+Cminwminh
+F2CNamecolsminwminhCmdFieldQ#Oberon10.Scn.Fntrows
+Cminwminh
+F2CNamerowsminwminhCmdField{MinimizePanel ^eCCmdLayoutPanels.Minimize _^FieldYesValColor
+minwXminhNewPanelreCCmdDesktops.OpenDoc (LayoutPanels.NewDoc)FieldYesValColor
+minw@minhlColumbusfCCmdColumbus.InspectFieldYesValColor
+minw@minhLayoutPanels.NewPanelTextFields.NewCaptionBasicGadgets.NewButtonBasicGadgets.NewCheckBoxBasicGadgets.NewIntegerTextFields.NewTextField

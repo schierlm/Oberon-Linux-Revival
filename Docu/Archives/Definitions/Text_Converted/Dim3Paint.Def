@@ -1,0 +1,49 @@
+DEFINITION Dim3Paint; (* portable *)
+(* Dim3Paint covers the basic drawing functions of the module Dim3Engine. It includes color management and
+      polygon drawing with and without the dynamic screen data structure *)
+
+	IMPORT
+		Pictures;
+
+	TYPE
+		TextureMap = POINTER TO TextureMapDesc;	(* pointer to background bitmap for shaded texture *)
+		DSEntry = POINTER TO DSEntryDesc;	(* Pointer to a dynamic screen entry *)
+		TSEntry = POINTER TO TSEntryDesc;	(* Pointer to the scanline entry for a transparent texture *)
+
+(* initialize standard rembrandt colormap, initialize color and dither tables *)
+	PROCEDURE InitColors;
+
+(* get color index for colormap that matches best *)
+	PROCEDURE GetColor (col: ARRAY OF REAL; light: REAL; grayscale: BOOLEAN): INTEGER;
+
+(* freeing of a DSEntryArray to pool *)
+	PROCEDURE FreeDSList (VAR ds: ARRAY OF DSEntry; n: INTEGER);
+
+(* initialisation of the dynamic Screen datastructure, max: screen width, n: screen height *)
+	PROCEDURE InitDynScreen (VAR ds: ARRAY OF DSEntry; max, n: INTEGER);
+
+(* Fill not painted rest of the screen with color col, free dynamic screen datastructure *)
+	PROCEDURE DrawRest (P: Pictures.Picture; ds: ARRAY OF DSEntry; col: INTEGER);
+
+(* Draw polygon with the dynamic screen method as following:
+		uni = TRUE : draw a constant shaded polygon; 
+		uni = FALSE & dither = FALSE & specular = FALSE : draw a gouraud shaded polygon without dithering and without specular reflection;
+		uni = FALSE & dither = FALSE & specular = TRUE : not allowed;
+		uni = FALSE & dither = TRUE & specular = FALSE : draw a gouraud shaded polygon with 2*2 dithering and without specular reflection; 
+		uni = FALSE & dither = TRUE & specular = TRUE : draw a gouraud shaded polygon with 2*2 dithering and with specular reflection; *)
+	PROCEDURE DrawShadePoly (P: Pictures.Picture; VAR ds: ARRAY OF DSEntry; col: ARRAY OF REAL; planeCol: INTEGER; 
+										grayscale, uni, sel, dither, specular: BOOLEAN; VAR x, y, i, s: ARRAY OF REAL; n: INTEGER);
+
+(* Draw constant shaded polygon without the dynamic screen method *)
+	PROCEDURE DrawPolygon (P: Pictures.Picture; col: INTEGER; sel: BOOLEAN; VAR x, y: ARRAY OF REAL; n: INTEGER);
+
+(* draw the transparent texture polygons back to front, free TSList *)
+	PROCEDURE DrawTSList (P: Pictures.Picture; ts: TSEntry);
+
+(* draw perspective correct texture polygon, if transparent = FALSE then use DrawTexture else use DrawTransparent *)
+	PROCEDURE DrawPersTexture (P: Pictures.Picture; VAR ds: ARRAY OF DSEntry; texture: ARRAY OF TextureMap; numPict: INTEGER; 
+									sel, transparent: BOOLEAN; VAR tsList: TSEntry; VAR x, y, w, u, v: ARRAY OF REAL; col, n: INTEGER);
+
+(* calculate and shade the mipmaps: P is the origin picture for texture *)
+	PROCEDURE ShadeTexture (P: Pictures.Picture; VAR texture: ARRAY OF TextureMap; VAR numPict: INTEGER; trans: BOOLEAN; light: REAL);
+END Dim3Paint.

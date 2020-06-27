@@ -1,0 +1,17 @@
+DEFINITION Rectangles;	(* portable *)
+
+	IMPORT Graphics;
+
+	TYPE
+		Rectangle = POINTER TO RectDesc;
+		RectDesc = RECORD ( Graphics.ObjectDesc ) 
+			lw, vers: INTEGER
+		END;
+
+	VAR 
+		method: Graphics.Method;
+	PROCEDURE New;
+	PROCEDURE Make;
+	PROCEDURE SetShade;
+
+END Rectangles.

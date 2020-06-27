@@ -1,0 +1,179 @@
+DEFINITION NetSystem;	(* portable *)
+
+	IMPORT SYSTEM;
+
+	CONST
+		anyport = 0;	(* any port value *)
+
+(* result values *)
+		done = 0;	(* everything went ok *)
+		error = 1;	(* failure occured *)
+
+(* return values of procedure State *)
+		closed = 0;	(* connection is closed (neither sending nor receiving) *)
+		listening = 1;	(* passive connection is listening for a request *)
+		in = 2;	(* receiving only *)
+		out = 3;	(* sending only *)
+		inout = 4;	(* sending and receiving is possible *)
+		waitCon =  5;	(* still waiting to be connected *)
+		errorCon =  6;	(* connecting failed *)
+
+	TYPE
+		Connection = POINTER TO ConnectionDesc;	(* handle for TCP connections *)
+		ConnectionDesc = RECORD
+			res: INTEGER;	(* result of last operation on a connection (error indication) *)
+		END;
+
+		IPAdr = LONGINT; (* IP address in network byte order *)
+		Socket = POINTER TO SocketDesc;	(* handle for UDP "connections" *)
+		SocketDesc = RECORD
+			res: INTEGER;	(* result of last operation on a connection (error indication) *)
+		END;
+
+	VAR 
+		anyIP: IPAdr;	(* "NIL" ip-number *)
+		allIP: IPAdr;	(* broadcast ip-number *)
+		hostIP: IPAdr;	(* main ip-number of local machine *)
+		hostName: ARRAY 64 OF CHAR;	(* main name of local machine *)
+
+(* -- Adressing/Naming section. *)
+
+(* Convert a dotted IP address string (e.g. "1.2.3.4") to an IPAdr value. *)
+	PROCEDURE ToHost (num: ARRAY OF CHAR; VAR adr: IPAdr; VAR done: BOOLEAN);
+
+(* Convert an IPAdr value to a dotted IP address string *)
+	PROCEDURE ToNum (adr: IPAdr; VAR num: ARRAY OF CHAR);
+
+(* Procedure delivers the ip-number of a named host. If a symbolic name is given, it will be resolved by use of domain name
+	servers. *)
+	PROCEDURE GetIP (name: ARRAY OF CHAR; VAR IP: IPAdr);
+
+(* GetName is the reverse of GetIP. Given an ip-number, it delivers the name of a host. *)
+	PROCEDURE GetName (IP: IPAdr; VAR name: ARRAY OF CHAR);
+
+(* -- TCP section. *)
+
+(* Procedure opens a connection. locPort, remPort, remIP are contained in the quadrupel <locIP, remIP, locPort, remPort>
+	which determines a connection uniquely. As locIP is always the current machine, it is omitted. If remPort is equal to
+	anyport or remIP is equal to anyIP, a passive connection will be opened. After execution, C is a brand new connection.
+	res indicates any error. *)
+	PROCEDURE OpenConnection (VAR C: Connection; locPort: INTEGER; remIP: IPAdr; remPort: INTEGER; VAR res: INTEGER);
+
+(* Like OpenConnection, but this procedure may return immediately and delay the actual opening of the connection.  
+	In this case State() should be checked to wait for the connection status to change from waitCon. *)
+	PROCEDURE AsyncOpenConnection (VAR C: Connection; locPort: INTEGER; remIP: IPAdr; remPort: INTEGER; VAR res: INTEGER);
+
+(* Procedure closes the connection. Connection can not be used for send operations afterwards. *)
+	PROCEDURE CloseConnection (C: Connection);
+
+(* Indicates whether there exists a remote machine which wants to connect to the local one. This Procedure is only useful
+	on passive connections. For active connections (State(C) # listen), it always delivers FALSE. *)
+	PROCEDURE Requested (C: Connection): BOOLEAN;
+
+(* Procedure accepts a new waiting, active connection (newC) on a passive one (State(C) = listen). If no connection is 
+	waiting, accept blocks until there is one or an error occurs. If C is not a passive connection, Accept does nothing
+	but res is set to Done. *)
+	PROCEDURE Accept (C: Connection; VAR newC: Connection; VAR res: INTEGER);
+
+(* Procedure returns the state of a connection (see constant section). *)
+	PROCEDURE State (C: Connection): INTEGER;
+
+(* Returns the number of bytes which may be read without blocking. *)
+	PROCEDURE Available (C: Connection): LONGINT;
+
+(* Blocking read a single byte. *)
+	PROCEDURE Read (C: Connection; VAR ch: CHAR);
+
+(* Blocking read len bytes of data (beginning at pos in buf) to buf. *)
+	PROCEDURE ReadBytes (C: Connection; pos, len: LONGINT; VAR buf: ARRAY OF SYSTEM.BYTE);
+
+(* Blocking read two bytes in network byte ordering. *)
+	PROCEDURE ReadInt (C: Connection; VAR x: INTEGER);
+
+(* Blocking read four bytes in network byte ordering. *)
+	PROCEDURE ReadLInt (C: Connection; VAR x: LONGINT);
+
+(* Blocking read a string terminated by ( [CR]LF | 0X ). *)
+	PROCEDURE ReadString (C: Connection; VAR s: ARRAY OF CHAR);
+
+(* Blocking write a single byte to C. *)
+	PROCEDURE Write (C: Connection; ch: CHAR);
+
+(* Blocking write len bytes of data (beginning at pos in buf) to C. *)
+	PROCEDURE WriteBytes (C: Connection; pos, len: LONGINT; VAR buf: ARRAY OF SYSTEM.BYTE);
+
+(* Blocking write two bytes in network byte ordering to C. *)
+	PROCEDURE WriteInt (C: Connection; x: INTEGER);
+
+(* Blocking write four bytes in network byte ordering to C. *)
+	PROCEDURE WriteLInt (C: Connection; x: LONGINT);
+
+(* Blocking write a string without "0X" and terminated by "CRLF" to C. *)
+	PROCEDURE WriteString (C: Connection; s: ARRAY OF CHAR);
+
+(* Procedure delivers the ip-number and port number of a connection's remote partner. *)
+	PROCEDURE GetPartner (C: Connection; VAR remIP: IPAdr; VAR remPort: INTEGER);
+
+(* -- UDP section. *)
+
+(* Opens a socket which is dedicated to datagram services. locPort is registered to receive datagrams
+	from any port and any host. *)
+	PROCEDURE OpenSocket (VAR S: Socket; locPort: INTEGER; VAR res: INTEGER);
+
+(* Closes the socket. You can not receive datagrams anymore. *)
+	PROCEDURE CloseSocket (S: Socket);
+
+(* Sends len bytes of data (beginning at pos in buf) to the host specified by remIP and remPort. *)
+	PROCEDURE SendDG (S: Socket; remIP: IPAdr; remPort: INTEGER; pos, len: LONGINT; VAR buf: ARRAY OF SYSTEM.BYTE);
+
+(* Stores an entire datagram in buf beginning at pos. On success (S.res = done), remIP and remPort indicate the sender,
+	len indicate the length of valid data. *)
+	PROCEDURE ReceiveDG (S: Socket; VAR remIP: IPAdr; VAR remPort: INTEGER; pos: LONGINT; VAR len: LONGINT; 
+	VAR buf: ARRAY OF SYSTEM.BYTE);
+
+(* Returns the size of the first available datagram on the socket. *)
+	PROCEDURE AvailableDG (S: Socket): LONGINT;
+
+(* Write 2 bytes in network byte ordering to buf[pos]. *)
+	PROCEDURE PutInt (VAR buf: ARRAY OF SYSTEM.BYTE; pos: INTEGER; x: INTEGER);
+
+(* Write 4 bytes in network byte ordering to buf[pos]. *)
+	PROCEDURE PutLInt (VAR buf: ARRAY OF SYSTEM.BYTE; pos: INTEGER; x: LONGINT);
+
+(* Read 2 bytes in network byte ordering from buf[pos]. *)
+	PROCEDURE GetInt (VAR buf: ARRAY OF SYSTEM.BYTE; pos: INTEGER; VAR x: INTEGER);
+
+(* Read 4 bytes in network byte ordering from buf[pos]. *)
+	PROCEDURE GetLInt (VAR buf: ARRAY OF SYSTEM.BYTE; pos: INTEGER; VAR x: LONGINT);
+
+(* -- Passwords section. *)
+
+(* Retrieve the password for user using service on host.  Parameters service, host and user must be specified. 
+Parameter user is in/out.  If empty, it returns the first (user,password) pair found, otherwise it returns the
+specified user's password. *)
+	PROCEDURE GetPassword (service, host: ARRAY OF CHAR; VAR user, password: ARRAY OF CHAR);
+
+(* Remove password for user using service on host. *)
+	PROCEDURE DelPassword (service, user, host: ARRAY OF CHAR);
+
+(* Command NetSystem.SetUser { service ":" ["//"] [ user [ ":" password ] "@" ] host [ "/" ] } "~" <enter password>
+		If password is not specified in-line, prompts for the password for the (service, host, user) triple. 
+		The (service, host, user, password) 4-tuple is stored in memory for retrieval with GetPassword. 
+		Multiple identical passwords may be set with one command. *)
+	PROCEDURE SetUser;
+
+(* Command NetSystem.ClearUser ~  Clear all passwords from memory. *)
+	PROCEDURE ClearUser;
+
+(* -- Initialisation section. *)
+
+(* Command NetSystem.Start ~  Start up NetSystem. *)
+	PROCEDURE Start;
+
+(* Command NetSystem.Stop ~  Shut down NetSystem. *)
+	PROCEDURE Stop;
+
+(* Command NetSystem.Show ~  Display status. *)
+	PROCEDURE Show;
+
+END NetSystem.

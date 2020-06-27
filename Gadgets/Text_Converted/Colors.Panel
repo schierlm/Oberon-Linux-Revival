@@ -1,0 +1,26 @@
+PanelDocs.NewDoc}BIER
+-':g9lMMEW_	a			'
+i
+
+
+/q7y+	
+
+ !"#$%&'()*+,
+}CF#Oberon10.Scn.Fnt
+
+Current Color$C
+C#ddC
+
+???'42dC
+?&CNameWell<&CCmdGadgets.Set Well.Color #Color(rCFieldHue36000\CFieldSaturation100-100FCFieldValue100DddF\CFieldValue100Id\\CFieldSaturation100Bgr\CFieldHue360<#Oberon10.Scn.FntHue@v
+CC#Oberon10.Scn.Fnt
+
+Saturation@`3
+C>#Oberon10.Scn.FntValue@J
+C+255rCFieldRed255-255\CFieldGreen255,255FCFieldBlue255C&F\CFieldBlue255D&\\CFieldGreen255B&r\CFieldRed255<#Oberon10.Scn.FntRedv
+C?#Oberon10.Scn.FntGreen
+`
+C=#Oberon10.Scn.FntBlueJ
+CNSet TextFCCmdColorGadgets.SetText &Well.Color ~[Set AttrFCCmdColorGadgets.SetAttr &Attr.Value  &Well.Color ~MGet TextPFCCmdColorGadgets.GetText Well Color ~ZGet AttrPFCCmdColorGadgets.GetAttr &Attr.Value  Well Color ~ZColorCCmdColorGadgets.SetSelAttr #Value &Well.Color ~NameAttr<&CCmdGadgets.Set Well.Color #Color<4&CCmdGadgets.Set Well.Color #Color
+<`&CCmdGadgets.Set Well.Color #Color<J&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&CCmdGadgets.Set Well.Color #Color<&&CCmdGadgets.Set Well.Color #Color<h&CCmdGadgets.Set Well.Color #Color
+<<&CCmdGadgets.Set Well.Color #Color	<R&CCmdGadgets.Set Well.Color #Color	Panels.NewPanelTextFields.NewCaptionColorGadgets.NewDiscColors.NewColorGadgets.NewWedgeColorGadgets.NewWellTextFields.NewTextFieldScrollbars.NewBasicGadgets.NewButton

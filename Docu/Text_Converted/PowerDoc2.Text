@@ -1,0 +1,799 @@
+{% (PAR 2) (FONT Oberon20b.Scn.Fnt) (COL 5) (LEAD 2)
+
+{% (FONT Oberon24b.Scn.Fnt) (COL 4) Air Stories %} %\
+
+{% (COM PowerDoc.Pop (FRAME (BG Pop0.Pict))) (COL 4)
+An airplane is circling for a landing in Atlanta. It's totally fogged in, zero
+visibility, and suddenly there's a small electrical fire in the cockpit which
+disables all of the instruments and the radio. The pilot continues circling, 
+totally lost, when suddenly he finds himself flying next to a tall office building. %\
+
+{% (COL 6) (LEAD 0)
+Synthetic Background Patterns %\
+{% (COM PowerDoc.Pop (FRAME (BG Pop1.Pict))) Bricks %}
+{% (COM PowerDoc.Pop (FRAME (BG Pop2.Pict))) Bows %}
+{% (COM PowerDoc.Pop (FRAME (BG Pop3.Pict))) Clouds %}
+{% (COM PowerDoc.Pop (FRAME (BG Pop4.Pict))) Coins %} %} %\
+
+He rolls down the window (this particular airplane happens to have
+roll-down windows) and yells to a person inside the building,
+{% (COL 6) "Where are we?" %}
+
+The person responds {% (COL 6) "In an airplane!" %} %}
+
+{% (COM PowerDoc.Pop (FRAME (BG Pop5.Pict))) (COL 4))
+The pilot then banks sharply to the right, circles twice, and makes a 
+perfect landing at Atlanta International. %}  %\
+
+{% (COM PowerDoc.Pop (FRAME (BG Pop6.Pict))) As the passengers emerge, shaken but unhurt,
+one of them says to the pilot, {% (COL 6) "I'm certainly glad you were able to land
+safely, but I don't understand how the response you got was any use." %} %\
+
+{% (COL 6) "Simple," %} responded the pilot.  {% (COL 6) "I got an answer
+that was completely accurate and totally irrelevant to my problem,
+so I knew ithad to be the IBM building." %} %\
+
+{% (FONT Oberon24b.Scn.Fnt) (COL 4) (System.Time) Rudergeschichten %} %\
+
+Vor einiger Zeit verabredete eine Schweizer-Firma ein jhrliches
+Wettrudern gegen eine japanische Firma. {% (COM PowerDoc.Flip F2) Ein Wettrudern, das mit
+einem Achter auf dem Rhein ausgetragen werden sollte. %} Beide Mannschaften
+trainierten lange und intensiv, um ihre hchsten Leistungsstufen zu erreichen.
+{% (COM PowerDoc.Flip) Als der grosse Tag kam, waren beide Mannschaften topfit,
+doch die Japaner gewannen das Rennen mit einem Vorsprung von einem Kilometer. %\
+
+{% (COM PowerDoc.Pop (FRAME (SIZE 200 @ 200) (BG "3") (STD PowerDoc2.Text (DSP 16 @ 16))))
+Nach dieser Niederlage war das Schweizer Team sehr betroffen und
+die Moral tief gesunken. Das oberste Management entschied, dass der Grund fr
+diese vernichtende Niederlage unbedingt herausgefunden werden muss. Ein
+Projekt-Team wurde gebildet, um das Problem zu untersuchen und geeignete
+Verbesserungs-Vorschlge zu unterbreiten. Nach langen Untersuchungen fand
+man heraus, dass bei den Japanern sieben Leute ruderten und ein Mann steuerte,
+whrend im Schweizer Team ein Mann ruderte und sieben steuerten. %} %} %} %\
+
+{% (COM PowerDoc.Flip) (COL 0) Das oberste Management engagierte sofort eine
+Beraterfirma, die eine Studie ber die Struktur des Schweizer Teams anfertigen sollte.
+Nach einigen Monaten und betrchtlichen Kosten kamen die Berater zum Schluss,
+dass zu viele Leute steuerten und zuwenig ruderten. Um einer weiteren Niederlage
+gegen die Japaner vorzubeugen, wurde die Teamstruktur gendert. Es gab jetzt
+vier Steuerleute, zwei Obersteuerleute, einen Steuerdirektor und einen Ruderer.
+Ausserdem wurde fr den Ruderer ein Leistungsbewertungssystem eingefhrt,
+um ihm mehr Ansporn zu geben. 'Im weiteren mssen wir seinem Aufgabenbereich
+erweitern und ihm mehr Verantwortung geben.' Im nchsten Jahr gewannen
+die Japaner mit einem Vorsprung von zwei Kilometern. %} %\
+
+Das Management entliess den Ruderer wegen schlechter Leistungen,
+verkaufte die Ruder und stoppte alle Investitionen fr ein neues Boot. Der
+Beraterfirma wurde ein Lob ausgesprochen und das eingesparte Geld dem obersten
+Management als Erfolgshonorar ausbezahlt. %\
+
+{% (FONT Oberon24b.Scn.Fnt) (COL 4) He's Nobody's Fool! %} %\
+
+When {% (FONT Oberon20i.Scn.Fnt) (COL 13) Albert Einstein %}
+was making the rounds of the speaker's circuit, he  usually found himself eagerly
+longing to get back to his laboratory work.  One night as they were driving to yet
+another rubber-chicken  dinner, Einstein mentioned to his chauffeur
+(a man who somewhat resembled Einstein in looks & manner) that
+he was tired of speechmaking.
+
+{% (COM PowerDoc.Flip) {% (COL 8) "I have and idea, boss," %} his chauffeur said. {% (COL 8) 
+"I've heard you give this speech so many times. I'll bet I could give it
+for you." %} Einstein laughed loudly and said, {% (COL 8) "Why not?
+Let's do it!" %} %}
+
+When they arrive at the dinner, Einstein donned the chauffeur's cap and 
+jacket and sat in the back of the room. The chauffeur gave a beautiful 
+rendition of Einstein's speech and even answered a few questions expertly.
+
+Then a supremely pompous professor asked an extremely esoteric question 
+about anti-matter formation, digressing here and there to let everyone 
+in the audience know that he was nobody's fool. Without missing a beat, 
+the chauffeur fixed the professor with a steely stare and said,  {% (COL 6) 
+"Sir, the answer to that question is so simple that I will let my chauffeur, 
+who is sitting in the back, answer it for me." %} %\
+
+{% (FONT Oberon24b.Scn.Fnt) Funny Spelling Checkers %} %\
+
+Ich pruefe gerade einen groesseren Text durch den Spellchecker (deutsches
+Woerterbuch). Hier einige Aenderungsvorschlaege:
+
+Wertebereich  -> Wetterbericht
+Middleware    -> Miederwaren
+Where         -> Werner
+Hash          -> Hasch oder Haha
+Hashverfahren -> Hamsterwaren
+misslingt     -> Miesling        (Problem Doppel-S)
+Parser        -> Pariser
+Basistypen    -> Babysitten
+
+Eine schoene Woche wuenscht
+                             Werner Schaad
+***
+
+ 	 ROME (Reuter) - An Italian who was late for his plane called
+ police on his cellular telephone to say there was a bomb on
+ board so the flight would be delayed.
+ 	 Police said the caller was a Neapolitan who had been racing
+ along the highway to Rome's Leonardo Da Vinci airport to catch a
+ 1 a.m. Alitalia flight to Caracas Wednesday.
+ 	 They traced the call to the man's mobile phone, dialed the
+ number and discovered him in a line at the check-in-desk.
+ 	 The man, named only as D.L., was charged with creating a
+ false alarm but was allowed to board the plane.
+ 	 It took off 35 minutes late after a search found no sign of
+ a bomb.
+
+***
+
+     God calls Bill Gates, Bill Clinton and Boris Yeltsin to his 
+     office and says "The world will end in 30 days, go back and tell 
+     your people."
+     
+     So Boris Yeltsin goes to the Russian people and says: "I have bad 
+     news and I have worse news....the bad news is that we were 
+     wrong...there is a god.  The worse news is that world will end in 
+     30 days."
+     
+     Bill Clinton goes on TV and tells the American people: "I have 
+     good news and I have bad news....The good news is that the basic 
+     family values upon which we have based our lives are right, there 
+     is a god....the bad news is that world will end in 30 days."
+     
+     Bill Gates goes to his executive committee and says: "I have 
+     great news and I have fabulous news...the great news is that God 
+     thinks I'm important.  The fabulous news is that we don't have to 
+     ship Windows95"
+
+***
+
+"When your hammer is C++,
+ everything begins to look like a thumb."
+
+        Steve Haflich, comp.lang.C++
+
+***
+
+Wie man Elefanten jagt.
+
+MATHEMATIKER jagen Elefanten, indem sie nach Afrika gehen, alles
+   entfernen, was nicht Elefant ist, und ein Element der Restmenge
+   fangen.
+
+ERFAHRENE MATHEMATIKER werden zunaechst versuchen: die Existenz
+   mindestens eines eineindeutigen Elefanten zu beweisen, bevor
+   sie mit Schritt 1 als untergeordneter Uebungsaufgabe fortfahren.
+
+MATHEMATIKPROFESSOREN beweisen die Existenz mindestens eines
+   eineindeutigen Elefanten und ueberlassen dann das Aufspueren und
+   Einfangen eines tatsaechlichen Elefanten ihren Studenten.
+
+INFORMATIKER jagen Elefanten, indem sie Algorithmus A ausfuehren:
+   A)
+   1.) gehe nach Afrika
+   2.) beginne am Kap der guten Hoffnung
+   3.) durchkreuze Afrika von Sueden nach Norden bidirektional in
+       Ost-West-Richtung
+   4.) fuer jedes Durchkreuzen tue:
+     a.) fange jedes Tier, das du siehst
+     b.) vergleiche jedes gefangene Tier mit einem als Elefant bekannten Tier
+     c.) halte an bei Uebereinstimmung
+
+ERFAHRENE PROGRAMMIERER veraendern Algorithmus A, indem sie ein als
+   Elefant bekanntes Tier in Kairo plazieren, damit das Programm
+   in jedem Fall korrekt beendet wird.
+
+ASSEMBLER-PROGRAMMIERER bevorzugen die Ausfuehrung von Algorithmus
+   A auf Haenden und Knien.
+
+SQL-PROGRAMMIERER verwenden folgenden Ausdruck:
+   SELECT Elefant FROM Afrika.
+
+NATURAL-PROGRAMMIERER lassen sich von ADABAS einen Elefanten bringen.
+
+INGENIEURE jagen Elefanten, indem sie nach Afrika gehen, jedes graue
+   Tier fangen, das ihnen ueber den Weg laeuft und es als Elefant
+   nehmen, wenn das Gewicht nicht mehr als 15% von dem eines vorher
+   gefangenen Elefanten abweicht.
+
+WIRTSCHAFTSWISSENSCHAFTLER jagen keine Elefanten. Aber sie sind fest
+   davon ueberzeugt, dass die Elefanten sich selber stellen wuerden,
+   wenn man ihnen nur genug bezahlt.
+
+STATISTIKER jagen das erste Tier, das sie sehen n-mal und nennen es
+   Elefant.
+
+UNTERNEHMENSBERATER jagen keine Elefanten. Und viele haben noch niemals
+   ueberhaupt irgendetwas gejagt. Aber man kann sie stundenweise 
+   engagieren, um sich gute Ratschlaege geben zu lassen.
+
+SYSTEMANALYTIKER waeren theoretisch in der Lage, die Korrelation
+   zwischen Hutgroesse und Trefferquote bei der Elefantenjagd zu
+   bestimmen, wenn ihnen nur jemand sagen wuerde, was ein Elefant ist.
+
+ELEFANTENJAGD FUER JEDERMANN:
+   Ich gehe nach Afrika, baue einen Kaefig auf, setze mich hinein und
+   definiere: Ich bin draussen. -> Alle Elefanten gefangen.
+
+HANDWERKER fangen Elefanten, indem sie einen aufspueren, ihm den
+   Kostenvoranschlag zuschicken und versprechen, Uebermorgen wiederzukommen.
+
+TELEKOM-MITARBEITER fangen Elefanten, indem sie ihnen eine kostenlose
+   Anrufweiterschaltung versprechen und sie bitten Donnerstag zu Hause zu
+   bleiben weil der Monteur *ganz bestimmt* am Donnerstag kommt.
+
+INVESTMENTBERATER fangen Elefanten, indem sie taeglich mindestens 50
+   anrufen und ihnen von den traumhaften Chancen auf dem Warenterminmarkt
+   fuer Heu erzaehlen.
+
+MICROSOFT VB's brauchen keine Elefanten zu fangen. Diese stellen sich vor
+   der oertlichen Sammelstelle an, und beantragen, sich ausliefern zu duerfen,
+   nachdem sie gehoert haben, dass mehr als 80 Prozent aller Elefanten sich
+   von Microsoft fangen lassen.
+
+APPLE VB's brauchen ebenfalls keine Elefanten zu fangen. sie sammeln nur die 
+   Angehoerigen derjenigen ein, die nach der Ankuendigung des letzten Koope-
+   rationsvertrages zwischen Apple und Microsoft den Freitod gewaehlt haben.
+
+UNIX VB's brauchen ebenfalls keine Elefanten zu fangen, weil alle Elefanten,
+   die nicht bei Apple und Microsoft gelandet sind, einen Anstellungsvertrag 
+   als Unix-VB erhalten.
+
+BANKER fangen Elefanten, indem sie sie daraufhinwieisen, dass ihre
+   Angehoerigen im Falle einer Flucht selbstverstaendlich die Kosten fuer die
+   Kugeln und die Beseitigung des Kadervers zu zahlen haben. Zuzueglich
+   eventueller Strafgelder fuer eventuelle Fehlhandlungen von Mitarbeitern
+   der Bank die durch fahrlaessiges Fliehen des Elefanten verursacht werden
+   und Verzugszinsen ab dem ersten Tag des Anfallens der Kosten.
+
+***
+
+======================================================================
+Actual radio conversation released by the Chief of Naval Operations,
+10-10-95.  (Note: not very "seasonal" but still amusing.....)
+======================================================================
+
+#1:  Please divert your course 15 degrees to the North to avoid a
+     collision.
+
+#2:  Recommend you divert YOUR course 15 degrees to South to avoid a
+     collision.
+
+#1:  This is the Captain of a US Navy ship. I say again, divert YOUR
+     course.
+
+#2:  No. I say again, you divert YOUR course.
+
+#1.  THIS IS THE AIRCRAFT CARRIER ENTERPRISE, WE ARE A LARGE WARSHIP OF
+     THE US NAVY. DIVERT YOUR COURSE NOW!
+
+#2.  This is a lighthouse. Your call.
+
+***
+
+ Here is a true story someone found regarding exams at Cambridge University.
+ It seems that during an examination one day a bright young student
+ popped up and asked the proctor to bring him Cakes and Ale.  The following
+ dialog ensued:
+ 
+  Proctor: I beg your pardon?
+ 
+  Student: Sir, I request that you bring me Cakes and Ale.
+ 
+  Proctor: Sorry, no.
+ 
+  Student: Sir, I really must insist.  I request and require that you
+           bring me Cakes and Ale.
+ 
+ At this point, the student produced a copy of the four hundred year old
+ Laws of Cambridge, written in Latin and still nominally in effect, and
+ pointed to the section which read (rough translation from the Latin):
+ 
+ "Gentlemen sitting examinations may request and require Cakes and Ale".
+ 
+ Pepsi and hamburgers were judged the modern equivalent, and the student
+ sat there, writing his examination and happily slurping away.
+ 
+ Three weeks later the student was fined five pounds for not wearing a
+ sword to the examination.
+
+***
+
+Frame 1, Cathy is in a store buying a computer.  She exasperatingly 
+tells the salesman "When I bought my last computer, the 85M disk was 
+supposed to hold everything I would ever write in my entire life". 
+ 
+Frame 2, Cathy:  "Now you tell me I need 285M just to install a
+word processor to write a thank you note."  
+
+Frame 3:  Salesman:  "Customers-- always have too much memory, 
+computers-- never have enough."
+
+So your concerns about the state of computing are making it into the
+pop culture.  
+
+***
+
+The most important tool a physicist has is the trash can. --Albert Einstein
+
+Why do you people in the sciences always ask for so much funding for your labs? The math department 
+only asks for paper, pencil and trash cans. And the philosophy department doesn't even ask for trash 
+cans. 
+	--anonymous university dean
+
+***
+
+Beware of mountain roads...
+
+A Software Engineer, a Hardware Engineer and a Departmental Manager
+were on their way to a meeting in Switzerland. They were driving down
+a steep mountain road when suddenly the brakes on their car failed. The
+car careened almost out of control down the road, bouncing off the
+crash barriers, until it miraculously ground to a halt scraping along the
+mountainside. The car's occupants, shaken but unhurt, now had a
+problem: they were stuck halfway down a mountain in a car with no
+brakes. What were they to do?
+
+"I know", said the Departmental Manager, "Let's have a meeting, propose
+a Vision, formulate a Mission Statement, define some Goals, and by a
+process of Continuous Improvement find a solution to the Critical
+Problems, and we can be on our way."
+
+"No, no", said the Hardware Engineer, "That will take far too long, and
+besides, that method has never worked before. I've got my Swiss Army
+knife with me, and in no time at all I can strip down the car's braking
+system, isolate the fault, fix it, and we can be on our way."
+
+Well", said the Software Engineer, "Before we do anything, I think we
+should push the car back up the road and see if it happens again."
+
+***
+
+ "Imagine if every Thursday your shoes exploded if you tied them the
+ usual way.  This happens to us all the time with computers, and nobody
+ thinks of complaining."
+                 -- Jeff Raskin, interviewed in Doctor Dobb's Journal
+
+***
+
+
+========================
+True story:
+--------------------------
+
+A guy rings tech support to report that his computer is faulty.
+Tech: "What's the problems?"
+LUser: "There is smoke coming out of the power supply."
+Tech: "You'll need a new power supply."
+LUser: "No I don't! I just need to change the startup files."
+Tech: "Sir, the power supply is faulty. You'll need to replace it."
+LUser: "No way! Someone told me that I just needed to change the startup
+and it will fix the problem! All I need is for you to tell me the command."
+
+10 minutes later, the LUser is still adamant that they are right. The Tech
+is frustrated and fed up.
+
+Tech: "Sorry, Sir. We don't normally tell our customers this, but there is
+an undocumented DOS command that will fix the problem."
+LUser: "I knew it!"
+Tech: "Just add the line LOAD NOSMOKE.COM at the end of the CONFIG.SYS. Let
+me know how it goes."
+
+10 minutes later.
+
+LUser: "It didn't work. The power supply is still smoking."
+Tech: "Well, what version of DOS are you using?"
+LUser: "MS-DOS 6.22."
+Tech: "That's your problem there. That version of DOS didn't come with
+NOSMOKE. Contact Microsoft and ask them for a patch that will give you the
+file. Let me know how it goes."
+
+1 hour later.
+
+LUser: "I need a new power supply."
+Tech: "How did you come to that conclusion?"
+LUser: "Well, I rang Microsoft and told him all about what you said, and he
+started asking questions about the make of power supply."
+Tech: "Then what did he say?"
+LUser: "He told me that my power supply isn't compatible with NOSMOKE."
+
+
+Go figure...
+
+***
+
+  Language proficiency is part of the international contracting scene.
+  This exchange between an English-speaking traveler and a member of
+  the hotel staff in a Far East hotel was recorded in the "Far-East
+  Economic Review".
+
+  Room Service: Morny. Rune-sore-bees.
+  Hotel Guest: Oh, sorry. I thought I dialed Room Service.
+  RS: Rye, rune-sore-bees. Morny. Djewish to odor sunteen?
+  HG: Uh... yes. I'd like some bacon and eggs.
+  RS: Ow July den?
+  HG: What?
+  RS: Aches. Ow July den? Pry, boy, pooch...?
+  HG: Oh, the eggs! How do I like them? Sorry. Scrambled please.
+  RS: Ow July dee baycome? Crease?
+  HG: Crisp will be fine.
+  RS: Hokay. An Santos?
+  HG: What?
+  RS: Santos. July Santos?
+  HG: Ugh. I don't know... I don't think so.
+  RS: No. Judo one toes?
+  HG: Look, I feel really bad about this, but I don't know what
+      "judo one  toes" means. I'm sorry.
+  RS: Toes! Toes! Why djew Don Juan toes? Ow bow cenglish mopping
+      we bother?
+  HG: English muffin! I've got it! You were saying toast! Fine. An
+      English muffin will be fine.
+  RS: We bother?
+  HG: No. Just put the bother on the side.
+  RS: Wad?
+  HG: I'm sorry. I meant butter. Butter on the side.
+  RS: Copy?
+  HG: I feel terrible about this but...
+  RS: Copy. Copy, tea, mill...
+  HG: Coffee! Yes, coffee please. And that's all.
+  RS: One Minnie. Ass rune torino fee, strangle aches, crease
+      baycome, tossy cenglish mopping we bother honey sigh, and
+      copy. Rye?
+  HG: Whatever you say.
+  RS: Hokay. Tendjewberrymud.
+  HG: You're welcome.
+
+***
+
+ Mllmnner mit Zgelmnnern verwechselt
+                                        
+ Einen verhngnisvollen Fehler hat sich 
+ ein Literaturprofessor an der engli-   
+ schen Universitt Cambridge geleistet: 
+ Er verwechselte Mllmnner mit Umzugs- 
+ helfern und hndigte ihnen seine       
+ Sammlung wertvoller Erstausgaben aus.  
+                                        
+ Den Fehler habe er erst bemerkt, als   
+ die 30 Umzugskartons mit den uner-     
+ setzlichen Papieren bereits im Mll-   
+ wagen gelandet und dort zerstckelt    
+ worden waren, berichtete der 76jhrige 
+ Frank Kermode.                         
+                                        
+ Jetzt verklagt er den Stadtrat von     
+ Cambridge um Schadenersatz in der Hhe 
+ von umgerechnet fast 40'000 Franken.   
+
+***
+
+Bill Gates died and, much to everyone's surprise, went to Heaven.  When
+he got there, he had to wait in the reception area.
+
+     Heaven's reception area was the size of Massachusetts.  There were
+literally millions of people milling about, living in tents with nothing to
+do all day.  Food and water were being distributed from the backs of trucks,
+while staffers with clipboards slowly worked their way through the crowd.
+Booze and drugs were being passed around.  Fights were commonplace.
+Sanitation conditions were appalling.  All in all, the scene looked like
+Woodstock gone metastatic.
+
+     Bill lived in a tent for three weeks until, finally, one of the
+staffers approached him.  The staffer was a young man in his late teens,
+face scarred with acne.  He was wearing a blue T-shirt with the words TEAM
+PETER emblazoned on it in large yellow lettering.
+
+     "Hello," said the staffer in a bored voice that could have been the
+voice of any clerk in any overgrown bureaucracy.  "My name is Gabriel and
+I'll be your induction coordinator."  Bill started to ask a question, but
+Gabriel interrupted him.  "No, I'm not the Archangel Gabriel.  I'm just a
+guy from Philadelphia named Gabriel who died in a car wreck at the age of
+17.  Now give me your name, last name first, unless you were Chinese in
+which case it's first name first."
+
+     "Gates, Bill."  Gabriel started searching though the sheaf of papers on
+his clipboard, looking for Bill's Record of Earthly Works.  "What's going on
+here?" asked Bill.  "Why are all these people here?  Where's Saint Peter?
+Where are the Pearly Gates?"
+
+     Gabriel ignored the questions until he located Bill's records.  Then
+Gabriel looked up in surprise.  "It says here that you were the president of
+a large software company.  Is that right?"
+
+     "Yes."
+
+     "Well then, do the math chip-head!  When this Saint Peter business
+started, it was an easy gig.  Only a hundred or so people died every day,
+and Peter could handle it all by himself, no problem.  But now there are
+over five billion people on earth.  Jesus, when God said to 'go forth and
+multiply,' he didn't say 'like rabbits!'  With that large a population, ten
+thousand people die every hour.  Over a quarter-million people a day.  Do
+you think Peter can meet them all personally?"
+
+     "I guess not."
+
+     "You guess right.  So Peter had to franchise the operation.  Now, Peter
+is the CEO of Team Peter Enterprises, Inc.  He just sits in the corporate
+headquarters and sets policy.  Franchisees like me handle the actual
+inductions."  Gabriel looked though his paperwork some more, and then
+continued. "Your paperwork seems to be in order.  And with a background like
+yours, you'll be getting a plum job assignment."
+
+     "Job assignment?"
+
+     "Of course.  Did you expect to spend the rest of eternity sitting on
+your ass and drinking ambrosia?  Heaven is a big operation.  You have to
+pull your weight around here!"  Gabriel took out a triplicate form, had Bill
+sign at the bottom, and then tore out the middle copy and handed it to Bill.
+"Take this down to induction center #23 and meet up with your occupational
+orientator.  His name is Abraham."  Bill started to ask a question, but
+Gabriel interrupted him. "No, he's not *that* Abraham."
+
+     Bill walked down a muddy trail for ten miles until he came to induction
+center #23.  He met with Abraham after a mere six-hour wait.
+
+     "Heaven is centuries behind in building its data processing
+infrastructure," explained Abraham.  "As you've seen, we're still doing
+everything on paper.  It takes us a week just to process new entries."
+
+     "I had to wait *three* weeks," said Bill.  Abraham stared at Bill
+angrily, and Bill realized that he'd made a mistake.  Even in Heaven, it's
+best not to contradict a bureaucrat.  "Well," Bill offered, "maybe that
+Bosnia thing has you guys backed up."
+
+     Abraham's look of anger faded to mere annoyance.  "Your job will be to
+supervise Heaven's new data processing center.  We're building the largest
+computing facility in creation.  Half a million computers connected by a
+multi-segment fiber optic network, all running into a back-end server
+network with a thousand CPUs on a gigabit channel.  Fully fault tolerant.
+Fully distributed processing.  The works."
+
+     Bill could barely contain his excitement.  "Wow!  What a great job!
+This is really Heaven!"
+
+     "We're just finishing construction, and we'll be starting operations
+soon. Would you like to go see the center now?"
+
+     "You bet!"
+
+     Abraham and Bill caught the shuttle bus and went to Heaven's new data
+processing center.  It was a truly huge facility, a hundred times bigger
+than the Astrodome.  Workmen were crawling all over the place, getting the
+miles of fiber optic cables properly installed.  But the center was
+dominated by the computers.  Half a million computers, arranged neatly
+row-by-row, half a million ....
+
+     .... Ceres ....
+
+     .... all running Oberon software!  Not a PC in sight!  Not a single
+byte of Microsoft code!
+
+     The thought of spending the rest of eternity using products that he had
+spent his whole life working to destroy was too much for Bill.  "What about
+PCs???" he exclaimed.  "What about Windows???  What about Excel???  What
+about Word???"
+
+     "You're forgetting something," said Abraham.
+
+     "What's that?" asked Bill plaintively.
+
+     "This is Heaven," explained Abraham.  "We need a computer system that's
+heavenly to use.  If you want to build a data processing center based on PCs
+running Windows, then ....
+
+     .... GO TO HELL!"
+
+***
+
+How Mil Specs Live Forever
+
+The US Standard railroad gauge (distance between the rails) is 4 feet, 8.5
+inches. That's an exceedingly odd number.
+
+Why was that gauge used?
+
+Because that's the way they built them in England, and the US railroads were
+built by English expatriates.
+
+Why did the English people build them like that? Because the first rail lines
+were built by the same people who built the pre-railroad tramways, and that's
+the gauge they used.
+
+Why did "they" use that gauge then? Because the people who built the tramways
+used the same jigs and tools that they used for building wagons, which used
+that wheel spacing.
+
+Okay! Why did the wagons use that odd wheel spacing? Well, if they tried to
+use any other spacing the wagons would break on some of the old, long distance
+roads, because that's the spacing of the old wheel ruts.
+
+So who built these old rutted roads? The first long distance roads in Europe
+were built by Imperial Rome for the benefit of their legions. The roads have
+been used ever since. And the ruts?
+
+The initial ruts, which everyone else had to match for fear of destroying
+their wagons, were first made by Roman war chariots. Since the chariots were
+made for or by Imperial Rome they were all alike in the matter of wheel
+spacing.
+
+Thus, we have the answer to the original questions. The United State standard
+railroad gauge of 4 feet, 8.5 inches derives from the original specification
+(Military Spec) for an Imperial Roman army war chariot.
+
+So, the next time you are handed a specification and wonder what horse's ass
+came up with it, you may be exactly right. Because the Imperial Roman chariots
+were made to be just wide enough to accommodate the back-ends of two war
+horses.
+
+MilSpecs and Bureaucracies live forever.
+
+***
+
+If a packet hits a pocket on a socket on a port,
+And the bus is interrupted as a very last resort,
+And the address of the memory makes your disk abort,
+Then the socket packet pocket has an error to report!
+
+If your cursor finds a menu item followed by a dash,
+And double-clicking the icon puts your window in the trash,
+And your data is corrupted 'cause the index doesn't hash,
+Then your situation's hopeless, and your system's gonna crash!
+
+If the label on the cable on the table at your house,
+Says the network is connected to the button on your mouse,
+But your packets want to tunnel on another protocol
+That's repeatedly rejected by the printer down the hall,
+
+And your screen is all distorted by the side effects of gauss
+So your icons in the window are as wavy as a souse,
+Then you may as well reboot and go out with a bang,
+Cuz as sure as I'm a poet, the sucker's gonna hang!
+
+When the copy of your floppy's getting sloppy on the disk,
+And the microcode instructions cause unnecessary RISC,
+Then you have to flash your memory and you'll want to RAM your ROM.
+Quickly turn off the computer and be sure to tell your mom!
+
+                  Jean Houston
+
+***
+
+ Once upon a time, in a kingdom not far from here, a king summoned two
+ of his advisors for a test. He showed them both a shiny metal box with
+ two slots in the top, a control knob, and a lever. "What do you think
+ this is?"
+ 
+ One advisor, an engineer, answered first. "It is a toaster," he said.
+ The king asked, "How would you design an embedded computer for it?"
+ The engineer replied, "Using a four-bit microcontroller, I would write
+ a simple program that reads the darkness knob and quantizes its
+ position to one of 16 shades of darkness, from snow white to coal
+ black. The program would use that darkness level as the index to a
+ 16-element table of initial timer values. Then it would turn on the
+ heating elements and start the timer with the initial value selected
+ from the table. At the end of the time delay, it would turn off the
+ heat and pop up the toast. Come back next week, and I'll show you a
+ working prototype."
+ 
+ The second advisor, a computer scientist, immediately recognized the
+ danger of such short-sighted thinking. He said, "Toasters don't just
+ turn bread into toast, they are also used to warm frozen waffles. What
+ you see before you is really a breakfast food cooker. As the subjects
+ of your kingdom become more sophisticated, they will demand more
+ capabilities. They will need a breakfast food cooker that can also
+ cook sausage, fry bacon, and make scrambled eggs. A toaster that only
+ makes toast will soon be obsolete. If we don't look to the future, we
+ will have to completely redesign the toaster in just a few years."
+ 
+ "With this in mind, we can formulate a more intelligent solution to
+ the problem. First, create a class of breakfast foods. Specialize this
+ class into subclasses: grains, pork, and poultry. The specialization
+ process should be repeated with grains divided into toast, muffins,
+ pancakes, and waffles; pork divided into sausage, links, and bacon;
+ and poultry divided into scrambled eggs, hard- boiled eggs, poached
+ eggs, fried eggs, and various omelet classes."
+ 
+ "The ham and cheese omelet class is worth special attention because it
+ must inherit characteristics from the pork, dairy, and poultry
+ classes. Thus, we see that the problem cannot be properly solved
+ without multiple inheritance. At run time, the program must create the
+ proper object and send a message to the object that says, 'Cook
+ yourself.' The semantics of this message depend, of course, on the
+ kind of object, so they have a different meaning to a piece of toast
+ than to scrambled eggs."
+ 
+ "Reviewing the process so far, we see that the analysis phase has
+ revealed that the primary requirement is to cook any kind of breakfast
+ food. In the design phase, we have discovered some derived
+ requirements. Specifically, we need an object-oriented language with
+ multiple inheritance. Of course, users don't want the eggs to get cold
+ while the bacon is frying, so concurrent processing is required, too."
+ 
+ "We must not forget the user interface. The lever that lowers the food
+ lacks versatility, and the darkness knob is confusing. Users won't buy
+ the product unless it has a user-friendly, graphical interface. When
+ the breakfast cooker is plugged in, users should see a cowboy boot on
+ the screen. Users click on it, and the message 'Booting UNIX v.8.3'
+ appears on the screen. (UNIX 8.3 should be out by the time the product
+ gets to the market.) Users can pull down a menu and click on the foods
+ they want to cook."
+ 
+ "Having made the wise decision of specifying the software first in the
+ design phase, all that remains is to pick an adequate hardware
+ platform for the implementation phase. An Intel Pentium with 40MB of
+ memory, a 1.2GB hard disk, and a VGA monitor should be sufficient. If
+ you select a multitasking, object oriented language that supports
+ multiple inheritance and has a built-in GUI, writing the program will
+ be a snap. (Imagine the difficulty we would have had if we had
+ foolishly allowed a hardware-first design strategy to lock us into a
+ four-bit microcontroller!)."
+ 
+ The king wisely had the computer scientist beheaded, and they all
+ lived happily ever after.
+
+***
+
+Citation from C. A. R. Hoare, Programming: Sorcery or Science?,
+IEEE Software, April 1984.
+
+"Only 30 years ago, our computers' valves and tanks and wires filled
+the walls and shelves of a large room, which the programmer would
+enter, carrying in his pocket his programming manual-a piece of folded
+cardboard known as the FACT CARD. Now the situation is reversed:
+the programmer enters a large room whose walls and shelves are
+lined with software manuals, but in case he wants to carry out
+some urgent calculations, he carries in his pocket-a computer."
+
+***
+
+Vor einiger Zeit verabredete eine Schweizer Firma ein jaehrliches Wettrudern gegen
+eine japanische Firma, das mit dem Achter auf dem Rotsee bei Luzern ausgetragen wurde.
+Beide Mannschaften trainierten lange und hart, um ihre hoechsten Leistungsstufen zu
+erreichen. Als der grosse Tag kam, waren beide Mannschaften topfit, doch die Japaner
+gewannen das Rennen mit einem Vorsprung von einem Kilometer.
+Nach dieser Niederlage war das Schweizer Team sehr betroffen und die Moral
+war auf dem Tiefpunkt. Das obere Management entschied, dass der Grund fuer diese
+vernichtende Niederlage unbedingt herausgefunden werden musste. Ein Projekt-team
+wurde eingesetzt, um das Problem zu untersuchen und um geeignete Abhilfemassnahmen
+zu empfehlen. Nach langen Untersuchungen fand man heraus, dass bei den Japanern
+sieben Leute ruderten und ein Mann steuerte, waehrend im Schweizer Team ein Mann
+ruderte und sieben steuerten.
+Das obere Management engagierte sofort eine Beraterfirma (Mc Namara), die eine
+Studie ueber die Struktur des Schweizer Teams anfertigen sollte. Nach einigen Monaten
+und betraechtlichen Kosten kamen die Berater zu dem Schluss, dass zuviele Leute
+steuerten und zuwenig ruderten. Um einer weiteren Niederlage gegen die Japaner 
+vorzubeugen, wurde die Teamstruktur geaendert. Es gab jetzt vier Steuerleute, zwei
+Obersteuerleute, einie Steuerdirektor und einier Ruderer. Ausserdem wurde fuer
+den Ruderer ein Leistungsbewertungssystem eingefuehrt, um ihm mehr Ansporn
+zu geben. "Wir muessen seinen Aufgabenbereich erweitern und ihm mehr 
+Verantwortung geben". Im naechsten Jahr gewannen die Japaner mit einem Vorsprung
+von zwei Kilometern!
+Das Management entliess den Ruderer wegen schlechter Leistung, verkaufte die
+Ruder und stoppte alle Investitionen fuer ein neues Boot. Der Beratungsfirma wurde
+ein Lob ausgesprochen und das eingesparte Geld wurde dem oberen Management
+ausbezahlt.
+
+***
+
+Scientists at NASA have developed a gun for the purpose of launching dead
+chickens. It is used to shoot a dead chicken at the windshield of an
+airline jet, military jet, or the space shuttle, at that vehicle's maximum
+traveling velocity. The idea being, that it would simulate the frequent
+incidents of collisions with airborne fowl, and therefore determine if the
+windshields are strong enough to endure high-speed
+bird strikes. British engineers, upon hearing of the gun, were eager to
+test the gun out on the windshield of their new high-speed trains.
+
+However, upon the firing of the gun, the engineers watched in shock as the
+chicken shattered the windshield, smashed through the control console,
+snapped the engineer's backrest in two, and embedded itself into the back
+wall of the cabin. Horrified, the engineers sent NASA the results of the
+experiment, along with the designs of the windshield, and asked the NASA
+scientists for any suggestions.
+
+The NASA scientists sent back a one sentence response:
+
+ Thaw the chicken!!
+
+**********************************************************
+
+%}

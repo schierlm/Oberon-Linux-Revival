@@ -1,0 +1,12 @@
+DEFINITION IFF;	(* portable *)
+
+	IMPORT Objects;
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+(* Called from Pictures.Open to try and load an PCX bitmap. The picture descriptor is pre-allocated by Pictures in
+Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the PCX
+Picture when a FileMsg is received (variant load). *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END IFF.

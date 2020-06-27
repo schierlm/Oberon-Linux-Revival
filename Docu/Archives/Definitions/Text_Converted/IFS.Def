@@ -1,0 +1,5 @@
+DEFINITION IFS;	(* portable *)
+	PROCEDURE Draw;
+	PROCEDURE Init;
+
+END IFS.

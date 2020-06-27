@@ -1,0 +1,117 @@
+DEFINITION Strings;	(* portable *)
+
+(* Strings is a utility module that provides procedures to manipulate strings.
+		Note: All strings MUST be 0X terminated. *)
+
+	CONST
+		CR = 0DX; (* the Oberon end of line character *)
+		Tab = 09X; (* the horizontal tab character *)
+		LF = 0AX; (* the UNIX end of line character *)
+
+	VAR 
+		isAlpha: ARRAY 256 OF BOOLEAN; (* all letters in the oberon charset *)
+		ISOToOberon, OberonToISO: ARRAY 256 OF CHAR; (* Translation tables for iso-8859-1 to oberon ascii code. *)
+		CRLF: ARRAY 4 OF CHAR; (* end of line "string" used by MS-DOS and most TCP protocols *)
+
+(* Length of str. *)
+	PROCEDURE Length (VAR (* in *)str: ARRAY OF CHAR): LONGINT;
+
+(* Append this to to. *)
+	PROCEDURE Append (VAR (* in/out *)to: ARRAY OF CHAR; this: ARRAY OF CHAR);
+
+(* Append this to to. *)
+	PROCEDURE AppendCh (VAR (* in/out *)to: ARRAY OF CHAR; this: CHAR);
+
+(* TRUE if ch is a hexadecimal digit. *)
+	PROCEDURE IsHexDigit (ch: CHAR): BOOLEAN;
+
+(* TRUE if ch is a decimal digit. *)
+	PROCEDURE IsDigit (ch: CHAR): BOOLEAN;
+
+(* TRUE if ch is a letter. *)
+	PROCEDURE IsAlpha (ch: CHAR): BOOLEAN;
+
+(* If ch is an upper-case letter return the corresponding lower-case letter. *)
+	PROCEDURE LowerCh (ch: CHAR): CHAR;
+
+(* If ch is an lower-case letter return the corresponding upper-case letter. *)
+	PROCEDURE UpperCh (ch: CHAR): CHAR;
+
+(* Convert str to all lower-case letters. *)
+	PROCEDURE Lower (VAR (* in *)str, (* out *)lstr: ARRAY OF CHAR);
+
+(* Convert str to all upper-case letters. *)
+	PROCEDURE Upper (VAR (* in *)str, (* out *)ustr: ARRAY OF CHAR);
+
+(* Is str prefixed by pre? *)
+	PROCEDURE Prefix (pre: ARRAY OF CHAR; VAR (* in *)str: ARRAY OF CHAR): BOOLEAN;
+
+(* Checks if str is prefixed by pre. The case is ignored. *)
+	PROCEDURE CAPPrefix (pre: ARRAY OF CHAR; VAR (* in *)str: ARRAY OF CHAR): BOOLEAN;
+
+(* Compare str1 to str2. The case is ignored. *)
+	PROCEDURE CAPCompare (VAR (* in *)str1, (* in *)str2: ARRAY OF CHAR): BOOLEAN;
+
+(* Get the parameter-value on line. The parameter value is started behind the first colon character. *)
+	PROCEDURE GetPar (VAR (* in *)line, (* out *)par: ARRAY OF CHAR);
+
+(* Get the suffix of str. The suffix is started by the last dot in str. *)
+	PROCEDURE GetSuffix (VAR (* in *)str, (* out *)suf: ARRAY OF CHAR);
+
+(* Change the suffix of str to suf. *)
+	PROCEDURE ChangeSuffix (VAR (* in/out *)str: ARRAY OF CHAR; suf: ARRAY OF CHAR);
+
+(* Search in src starting at pos for the next occurrence of pat.  Returns pos=-1 if not found. *)
+	PROCEDURE Search (pat: ARRAY OF CHAR; VAR (* in *)src: ARRAY OF CHAR; VAR (* in/out *)pos: LONGINT);
+
+(* Search in src starting at pos for the next occurrence of pat. *)
+	PROCEDURE CAPSearch (pat: ARRAY OF CHAR; VAR (* in *)src: ARRAY OF CHAR; VAR (* in/out *)pos: LONGINT);
+
+(* Convert a string into an integer. Leading white space characters are ignored. *)
+	PROCEDURE StrToInt (VAR str: ARRAY OF CHAR; VAR val: LONGINT);
+
+(* Convert the substring beginning at position i in str into an integer. Any leading whitespace characters are ignored.
+	After the conversion i pointes to the first character after the integer. *)
+	PROCEDURE StrToIntPos (VAR str: ARRAY OF CHAR; VAR val: LONGINT; VAR i: INTEGER);
+
+(* Convert an integer into a string. *)
+	PROCEDURE IntToStr (val: LONGINT; VAR str: ARRAY OF CHAR);
+
+(* Converts a real to a string. *)
+	PROCEDURE RealToStr (x: LONGREAL; VAR s: ARRAY OF CHAR);
+	PROCEDURE RealToFixStr (x: LONGREAL; VAR str: ARRAY OF CHAR; n, f, D: LONGINT);
+
+(* Convert a string into a real. Precondition: s has a well defined real syntax. Scientific notation with D and E to indicate exponents is allowed. *)
+	PROCEDURE StrToReal (s: ARRAY OF CHAR; VAR r: LONGREAL);
+
+(* Convert a string into a boolean. "Yes", "True" and "On" are TRUE all other strings are FALSE.
+	Leading white space characters are ignored. *)
+	PROCEDURE StrToBool (VAR str: ARRAY OF CHAR; VAR b: BOOLEAN);
+
+(* Convert a boolean into "Yes" or "No". *)
+	PROCEDURE BoolToStr (b: BOOLEAN; VAR str: ARRAY OF CHAR);
+
+(* Convert a string to a set *)
+	PROCEDURE StrToSet (str: ARRAY OF CHAR; VAR set: SET);
+
+(* Convert a set to a string *)
+	PROCEDURE SetToStr (set: SET; VAR str: ARRAY OF CHAR);
+
+(* Convert date (Oberon.GetClock) into specified format. *)
+	PROCEDURE DateToStr (date: LONGINT; VAR str: ARRAY OF CHAR);
+
+(* Returns a month's name (set short to get the abbreviation) *)
+	PROCEDURE MonthToStr (month: INTEGER; VAR str: ARRAY OF CHAR; short: BOOLEAN);
+
+(* Returns a day's name (set short to get the abbreviation) *)
+	PROCEDURE DayToStr (day: INTEGER; VAR str: ARRAY OF CHAR; short: BOOLEAN);
+
+(* Convert time (Oberon.GetClock) into specified format. *)
+	PROCEDURE TimeToStr (time: LONGINT; VAR str: ARRAY OF CHAR);
+
+(* Convert a string into an time value. Leading white space characters are ignored. *)
+	PROCEDURE StrToTime (str: ARRAY OF CHAR; VAR time: LONGINT);
+
+(* Convert a string into an date value. Leading white space characters are ignored. *)
+	PROCEDURE StrToDate (str: ARRAY OF CHAR; VAR date: LONGINT);
+END Strings.

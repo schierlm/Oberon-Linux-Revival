@@ -1,0 +1,35 @@
+DEFINITION Clocks; (* portable *)
+
+	IMPORT
+		Display, Objects, Gadgets;
+
+	CONST
+		tickId = 0; alarmId = 1;
+
+	TYPE
+		Alarm = POINTER TO AlarmDesc;
+		AlarmHandler = PROCEDURE (alarm: Alarm; VAR handled: BOOLEAN);
+		AlarmDesc = RECORD
+			handle: AlarmHandler;
+		END;
+
+		EnumAlarmHandler = PROCEDURE (alarm: Alarm; t, d: LONGINT; VAR handled: BOOLEAN);
+		TickMsg = RECORD ( Display.FrameMsg ) 
+			id: INTEGER;
+			date, time: LONGINT
+		END;
+
+		Clock = POINTER TO ClockDesc;
+		ClockDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE InstallAlarm (alarm: Alarm; time, date: LONGINT; handle: AlarmHandler);
+	PROCEDURE RemoveAlarm (alarm: Alarm);
+	PROCEDURE ShowAlarms (enum: EnumAlarmHandler);
+	PROCEDURE CopyClock (VAR M: Objects.CopyMsg; from, to: Clock);
+	PROCEDURE ClockHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InsertDate;
+	PROCEDURE InsertTime;
+	PROCEDURE NewClock;
+	PROCEDURE NewDigiClock;
+	PROCEDURE NewCalendar;
+END Clocks.

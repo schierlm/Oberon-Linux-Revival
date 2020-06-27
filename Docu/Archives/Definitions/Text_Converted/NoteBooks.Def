@@ -1,0 +1,17 @@
+DEFINITION NoteBooks; (* portable *)
+
+	IMPORT Objects, Display, Gadgets;
+
+	TYPE
+		NoteBook = POINTER TO NoteBookDesc;
+		NoteBookDesc = RECORD ( Gadgets.FrameDesc ) 
+			pages: Display.Frame;
+			time: LONGINT
+		END;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: NoteBook);
+	PROCEDURE Handler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitNoteBook (F: NoteBook);
+	PROCEDURE New;
+	PROCEDURE Show;
+
+END NoteBooks.

@@ -1,0 +1,108 @@
+DEFINITION News; (* portable *)
+
+	IMPORT Texts, NetTools,
+		MIME, Mail;
+
+(* This module implements a newsreader (RFC 977, 1036) for oberon. The News-modul supports news and nntp urls.
+		The nntp host is specified in the NetSystem section of the Registry (e.g. NNTP=news.inf.ethz.ch).
+		The following lines should be added to the LinkSchemes section of the Registry:
+			nntp = News.NewNNTPLinkScheme
+			news = News.NewNewsLinkScheme
+		And the following lines to the Documents section:
+			nntp News.NewDoc
+			news News.NewDoc.
+		For sending or posting new articles your e-mail address should be defined in the NetSystem section of the Registry.
+		e.g.: EMail = "me@home" *)
+	CONST
+		Done = NetTools.Done;
+		ErrGroup = 1;
+		ErrXOver = 2;
+		ErrArticle = 3;
+		ErrStat = 4;
+		ErrList = 5;
+		ErrPost = 6;
+		Failed = NetTools.Failed;
+
+	TYPE
+(* The connection to an nntp. *)
+		Session = POINTER TO SessionDesc;
+		SessionDesc = RECORD ( Mail.SMTPSessionDesc ) 
+		END;
+
+(* News.StoreInitText
+		Store information on read articles and subscribed groups. *)
+	PROCEDURE StoreInitText;
+
+(* Open a new session to nntp-host host on ort port. *)
+	PROCEDURE Open (VAR S: Session; host: ARRAY OF CHAR; port: INTEGER);
+
+(* Close the connection for session S. *)
+	PROCEDURE Close (S: Session);
+
+(* Write al list of all available groups to T. *)
+	PROCEDURE AllGroups (S: Session; VAR T: Texts.Text);
+
+(* List all new groups since the last access. *)
+	PROCEDURE NewGroups (S: Session; date, time: LONGINT; VAR T: Texts.Text);
+
+(* List all available articles in group in a certain range. 0-0 = all *)
+
+(* List all available articles in group. *)
+	PROCEDURE Articles (S: Session; group: ARRAY OF CHAR; VAR T: Texts.Text; thread: BOOLEAN);
+
+(* Retrieve article with number artnr in group. *)
+	PROCEDURE ArticleByNr (S: Session; group: ARRAY OF CHAR; artnr: LONGINT; VAR T: Texts.Text);
+
+(* Retrieve the article with the message-id msgid. *)
+	PROCEDURE ArticleByMsgId (S: Session; msgid: ARRAY OF CHAR; VAR T: Texts.Text);
+
+(* News.SubGroup ^
+		Subscribe a group (selection). *)
+	PROCEDURE SubGroup;
+
+(* News.UnsubGroup ^
+		Unsubscribe a group (selection). *)
+	PROCEDURE UnsubGroup;
+
+(* News.CatchUp ^
+		Mark all articles in a group (selection) as read. *)
+	PROCEDURE CatchUp;
+
+(* News.CatchUpAll
+		Mark all articles in all subscribed groups. *)
+	PROCEDURE CatchUpAll;
+	PROCEDURE NewDoc;
+
+(* News.ShowAllGroups
+		Show all newsgroups. *)
+	PROCEDURE ShowAllGroups;
+
+(* News.ShowNewGroups
+		Show new groups since last access. *)
+	PROCEDURE ShowNewGroups;
+
+(* News.SubscribedGroups
+		List subscribed groups. *)
+	PROCEDURE SubscribedGroups;
+	PROCEDURE NewNewsLinkScheme;
+	PROCEDURE NewNNTPLinkScheme;
+	PROCEDURE SendArticle (S: Session; T: Texts.Text; cont: MIME.Content);
+
+(* News.Send [mime] *
+		Send article (the marked text), mime:
+			ascii : text/plain, us-ascii
+			iso : text/plain, iso 8bit
+			oberon : text/plain with application/compressed/oberondoc attachment
+			<no mime> :
+				- Simple Text without different colors or fonts
+					no Umlaut -> ascii
+					Umlaut -> iso
+				- Text without objects, but with different colors or fonts -> oberon
+				- Text with objects -> ooberon *)
+	PROCEDURE Send;
+
+(* News.Reply (selection)
+	Compose a minimal followup article for the selected article. *)
+	PROCEDURE Reply;
+
+END News.

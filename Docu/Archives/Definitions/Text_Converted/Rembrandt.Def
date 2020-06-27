@@ -1,0 +1,136 @@
+DEFINITION Rembrandt;	(* portable *)
+(* Ist das Hauptmodul fr den Rembrandt-Editor *)
+
+	IMPORT
+		Display3, Objects, Gadgets, Oberon, Pictures;
+
+	CONST
+
+	(* ID's fr Selection *)
+		No = 0;				(* Keine Selektion *)
+		Block = 1;			(* Rectangle selektiert *)
+		Image = 2;			(* Ganzes Picture selektiert *)
+		Object = 3;			(* Ein Gebiet mit einer best. Farbe selektiert *)
+		Freehand = 4;		(* Polygon selektiert *)
+		idMove =0;			(* Belegung der MM falls Selektion vorhanden *)
+		idRotate =1;
+		idScale = 2;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			pict: Pictures.Picture;
+			selection: INTEGER;
+			sx, sy, sw, sh: INTEGER;	(* Selektionsbereich *)
+			car: BOOLEAN;
+			cx, cy: INTEGER;
+			col: INTEGER;
+		END;
+
+		TrackMMProc = PROCEDURE (F: Frame; VAR M: Oberon.InputMsg; x, y: INTEGER);
+
+	VAR 
+		trackMM: TrackMMProc;		(* Handler fr Operationen *)
+		trackSelMM: RECORD			(* Handler fr Selektionsoperationen *)
+			id: SHORTINT;
+			track: TrackMMProc
+		END;
+		cursor: Oberon.Marker;
+		selcolor: INTEGER;		(* Farbe fr Selektion *)
+
+(* Handler fr Attribute *)
+	PROCEDURE FrameAttributes (F: Frame; VAR M: Objects.AttrMsg);
+
+(* Wandelt die absoluten Bildschirmkoordinaten in Picturekoordinaten um *)
+	PROCEDURE ScreentoPict (F: Frame; x, y, absx, absy: INTEGER; VAR px, py: INTEGER);
+
+(* Wandelt relative Picturekoordinaten in absulute Bildschirmkoordinaten um *)
+	PROCEDURE PicttoScreen (F: Frame; x, y, relx, rely: INTEGER; VAR absx, absy: INTEGER);
+
+(* Entfernt eine vorhandene Selektion im Frame F*)
+	PROCEDURE RemoveSelection (F: Frame);
+
+(* Kopiert Picture-Palette *)
+	PROCEDURE CopyPalette (S, D: Pictures.Picture);
+
+(* Gibt die letzte Selektion in Form eines Pictures zurck *)
+	PROCEDURE GetSelectedPict (VAR P: Pictures.Picture; VAR x, y, w, h: INTEGER);
+
+(* Gibt Selektion innerhalb eines bestimmten Frames zurck *)
+	PROCEDURE GetSelectioninFrame (F: Frame; VAR P: Pictures.Picture; VAR x, y, w, h: INTEGER);
+
+(* Gibt einen String in den angegebenen Bereich aus *)
+	PROCEDURE DisplayText (sx, sy, sw, sh: INTEGER; text: ARRAY OF CHAR);
+
+(* Testet, ob die Koordinaten mx,my innerhalb des dargestellten Picture sind *)
+	PROCEDURE InsidePict (F: Frame; mx, my, x, y: INTEGER): BOOLEAN;
+
+(* Zeichnet den Pictureausschnitt neu *)
+	PROCEDURE RestorePict (F: Frame; Q: Display3.Mask; x, y, w, h, picx, picy, picw, pich: INTEGER);
+
+(* Kopiert ein Rembrandt-Gadget *)
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Frame);
+
+(* Sichert den angegebenen Bereich des Picture als Undo-Information *)
+	PROCEDURE SavePicture (P: Pictures.Picture; x, y, w, h: INTEGER);
+
+(* Zeichnet eine Linie von x0, y0 nach x1, y1 mit Dicke dw; kann als Gummilinie benutzt werden *)
+	PROCEDURE DisplayLine (F: Frame; x, y: INTEGER; Q: Display3.Mask; col, x0, y0, x1, y1, dw: INTEGER);
+
+(* Undo; kopiert den zuvor gesicherten Bereich ins entsprechende Picture zurck *)
+	PROCEDURE Undo;
+
+(* Aufspannen eines Rechtecks mit der Maus; analog Effects.SizeRect jedoch zustzlich mit Prozentangabe falls info=TRUE *)
+	PROCEDURE SizeRect (F: Frame; x, y: INTEGER; Q: Display3.Mask; VAR keysum: SET; VAR mx, my, sx, sy, sw, sh: INTEGER; info: BOOLEAN);
+
+(* Handler fr rechte Maustaste *)
+	PROCEDURE TrackSelection (F: Frame; VAR M: Oberon.InputMsg; x, y, w, h: INTEGER);
+
+(* Zoomfaktor abfragen bzw. setzen *)
+	PROCEDURE GetZoom (F: Frame; VAR factor: INTEGER);
+	PROCEDURE SetZoom (F: Frame; factor: INTEGER);
+
+(* Gitterlinien abfragen bzw. setzen *)
+	PROCEDURE GetGrid (F: Frame; VAR set: BOOLEAN);
+	PROCEDURE SetGrid (F: Frame; set: BOOLEAN);
+
+(* Attribut locked abfragen bzw. setzen *)
+	PROCEDURE GetLocked (F: Frame; VAR locked: BOOLEAN);
+	PROCEDURE SetLocked (F: Frame; locked: BOOLEAN);
+
+(* Attribut border abfragen bzw. setzen *)
+	PROCEDURE GetBorder (F: Frame; VAR border: BOOLEAN);
+	PROCEDURE SetBorder (F: Frame; border: BOOLEAN);
+
+(* Selektionsoperation verschieben aktivieren *)
+	PROCEDURE Move;
+
+(* Operation Stamp fr Clipboard *)
+	PROCEDURE ClipboardStamp;
+
+(* Clipboardfunktionen *)
+	PROCEDURE ClipboardCopy;
+	PROCEDURE ClipboardCut;
+	PROCEDURE ClipboardPaste;
+
+(* Selektionsarten aktivieren *)
+	PROCEDURE BlockSelect;
+	PROCEDURE ObjectSelect;
+	PROCEDURE FreehandSelect;
+
+(* Generiert Pattern-Code aus der letzten Block-Selektion; sollte nicht grsser als 32*32 sein *)
+	PROCEDURE MakePattern;
+
+(* Haupthandler *)
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Erstellt ein neues Gadget *)
+	PROCEDURE New;
+
+(* Fgt ein als Parameter angegebenes Picture als Rembrandt-Frame in ein Panel ein *)
+	PROCEDURE Insert;
+
+(* Erstellt ein neues Gadgets mit dem Picture pict *)
+	PROCEDURE NewP (F: Frame; pict: Pictures.Picture);
+
+END Rembrandt.

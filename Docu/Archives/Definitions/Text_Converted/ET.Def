@@ -1,0 +1,48 @@
+DEFINITION ET; (* portable *)
+	PROCEDURE Right;
+	PROCEDURE Left;
+	PROCEDURE Handle (F: Object; VAR M: ObjMsg);
+	PROCEDURE New;
+	PROCEDURE NewSys;
+	PROCEDURE Open;
+	PROCEDURE OpenSys;
+	PROCEDURE OpenAscii;
+	PROCEDURE OpenSysAscii;
+	PROCEDURE Show;
+	(* specification needed: "text.pattern"; loads the text text, searches the pattern *)
+	(* pattern and shows it in a viewer *)
+	PROCEDURE Store;
+	PROCEDURE StoreChar;
+	PROCEDURE StoreAscii;
+	PROCEDURE ClearTrack;
+	PROCEDURE ClearSysTrack;
+	PROCEDURE Marker;
+	PROCEDURE Search;
+	PROCEDURE SearchDiff;
+	PROCEDURE Replace;
+	PROCEDURE ReplaceAll;
+	PROCEDURE Locate;
+	PROCEDURE Error;
+	PROCEDURE Init;
+	PROCEDURE ExchangeMenu;
+	PROCEDURE Delete;
+	PROCEDURE Move;
+	PROCEDURE OpenLog;
+	PROCEDURE Clear;
+	PROCEDURE Recall;
+	PROCEDURE Font;
+	PROCEDURE Color;
+	PROCEDURE Do;
+	PROCEDURE Call;
+	PROCEDURE ListNames;
+	PROCEDURE Para;
+	PROCEDURE Remind;
+	(* reads the name after the command and *)
+	(* displays the text in the oberon log *)
+	PROCEDURE NameLog;
+	PROCEDURE Filter;
+	PROCEDURE Popup;
+	PROCEDURE SetMenu;
+	PROCEDURE ReplaceSystemEditor;
+
+END ET.

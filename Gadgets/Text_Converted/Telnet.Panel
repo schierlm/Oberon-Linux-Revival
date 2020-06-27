@@ -1,0 +1,6 @@
+PanelDocs.NewDocYBIER)w3r@~P\IM	
+
+YCcOpen(CCmdTelnetGadgets.Open Telnet '&Adr.Value '  ~FieldYesVal9user@host6CCmdFieldNameAdrcClose(CCmdTelnetGadgets.Close Telnet   ~FieldYesValColor
+_Log(CCmdTelnetGadgets.OpenLog Telnet   ~FieldYesValNamedPF1~ CCmdTelnetGadgets.Send Telnet  "\e[P"   ~FieldYesValNamedPF2 CCmdTelnetGadgets.Send Telnet  "\e[Q"   ~FieldYesValNamedPF3 CCmdTelnetGadgets.Send Telnet  "\e[R"   ~FieldYesValNamedPF4 CCmdTelnetGadgets.Send Telnet  "\e[S"   ~FieldYesValNamebESC^ CCmdTelnetGadgets.Send Telnet  "\e"   ~FieldYesValName,/(C5(CCmdFieldYesVal5
+
+zdC^"setenv TERM vt100\n"zCCmdTelnetGadgets.Send Telnet  #Value ~FieldIzCCmdTelnetGadgets.Send Telnet  #Value ~FieldIzCCmdTelnetGadgets.Send Telnet  #Value ~FieldIzCCmdTelnetGadgets.Send Telnet  #Value ~FieldIzCCmdTelnetGadgets.Send Telnet  #Value ~Field!,CNameTelnetPanels.NewPanelBasicGadgets.NewButtonTextFields.NewTextFieldIcons.NewIconizerTelnetGadgets.NewFrame

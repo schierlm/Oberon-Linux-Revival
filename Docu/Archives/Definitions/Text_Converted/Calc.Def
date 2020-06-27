@@ -1,0 +1,22 @@
+DEFINITION Calc;	(* portable *)
+
+	(* expression syntax:
+		Expr = Term {AddOp Term}.
+		Term = Factor {MulOp Factor}.
+		Factor = Atom {PowOp Atom}.
+		Atom = Number | Functor Atom | ident | "(" Expr ")".
+		PowOp = "^".
+		MulOp = "*" | "/" | "%" | "<" | ">".	-- % modulo, < shift left, > shift right
+		AddOp = ["+" | "-"].	-- no add op: addition(!)
+		Number = (digit {digit}) | (digit {hexDigit} "H") | (digit {hexDigit} "X") | (""" char """).
+		Functor = "arccos" | "arcsin" | "arctan" | "cos" | "entier" | "exp" | "ln" | "short" | "sign" | "sin" | "sqrt" | "tan".
+	*)
+	PROCEDURE Hex;	(* expr *)
+	PROCEDURE Dec;	(* expr *)
+	PROCEDURE Real;	(* expr *)
+	PROCEDURE Char;	(* expr *)
+	PROCEDURE Set;	(* {name ":=" expr} "~" *)
+	PROCEDURE List;
+	PROCEDURE Reset;
+
+END Calc.

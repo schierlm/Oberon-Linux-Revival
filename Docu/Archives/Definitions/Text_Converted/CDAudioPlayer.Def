@@ -1,0 +1,17 @@
+DEFINITION CDAudioPlayer;	(* portable *)
+	PROCEDURE FlipPower;
+	PROCEDURE Stop;
+	PROCEDURE FlipDoor;
+	PROCEDURE PlayAll;
+	PROCEDURE Play;
+	PROCEDURE FlipPause;
+	PROCEDURE Prev;
+	PROCEDURE Next;
+	PROCEDURE NewTrack;
+	PROCEDURE NewMin;
+	PROCEDURE NewSec;
+	PROCEDURE NewPower;
+	PROCEDURE NewPause;
+	PROCEDURE NewTracks;
+
+END CDAudioPlayer.

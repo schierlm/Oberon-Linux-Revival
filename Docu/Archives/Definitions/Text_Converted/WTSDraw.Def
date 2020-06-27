@@ -1,0 +1,7 @@
+DEFINITION WTSDraw;	(* portable *)
+
+	IMPORT TextFields, Objects;
+	PROCEDURE NewCap (fnt: Objects.Library; col, X, Y: INTEGER; s: ARRAY OF CHAR): TextFields.Caption;
+	PROCEDURE New;
+
+END WTSDraw.

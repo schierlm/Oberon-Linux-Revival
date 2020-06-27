@@ -1,0 +1,34 @@
+DEFINITION ScrollViews; (* portable *)	(* PS  *)
+
+(*Implementation of camera-views with adjustable viewpoints and scrollbars.
+ *)
+	IMPORT
+		Display, Objects, Views;
+
+	TYPE
+		View = POINTER TO ViewDesc;
+		ViewDesc = RECORD ( Views.ViewDesc ) 
+		END;
+	PROCEDURE CopyView (VAR M: Objects.CopyMsg; from, to: View);
+	PROCEDURE ViewHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitView (F: View; vBar, hBar: BOOLEAN);
+	PROCEDURE NewView;
+
+(* Create a camera-view of F. *)
+	PROCEDURE ViewOf (F: Display.Frame): View;
+
+(* enable/disable vertical and horizontal bars of view F. *)
+	PROCEDURE SetBars (F: View; vBar, hBar: BOOLEAN);
+
+END ScrollViews.
+
+(*
+ScrollView
+Create with:	Gadgets.Insert ScrollViews.NewView
+Alias:	-
+Function:	Click for a description of Views. The horizontal and vertical scrollbars of a ScrollView can be enabled or disabled through the corresponding attributes. If both bars are disabled, ScrollViews acts like a normal view.
+Attributes:
+	HScrollBar	enable/disable horizontal scrollbar
+	VScrollBar	enable/disable vertical scrollbar
+Links:
+*)

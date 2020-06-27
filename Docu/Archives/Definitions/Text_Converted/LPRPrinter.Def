@@ -1,0 +1,26 @@
+DEFINITION LPRPrinter;	(* portable *)
+
+	IMPORT Printer;
+	PROCEDURE Open (P: Printer.Printer; printer, options: ARRAY OF CHAR);
+	PROCEDURE Close (P: Printer.Printer);
+
+(* LPRPrinter.PrintPSFile queue@host [ "\" options ] ps-file 
+		Print the PostScript -file (ps-file) on the lpr-printer given by queue and host. *)
+	PROCEDURE PrintPSFile;
+
+(* LPRPrinter.ShowJobs queue@host
+		Display a list of the waiting jobs in the given queue. *)
+	PROCEDURE ShowJobs;
+
+(* LPRPrinter.RemoveJob queue@host [ job-nr ]
+		Remove the specified job or all jobs from queue. *)
+	PROCEDURE RemoveJob;
+
+(* LPRPrinter.BannerPage ( "on" | "off") *)
+	PROCEDURE BannerPage;
+
+(* LPRPrinter.MailBack  ( "on" | "off") *)
+	PROCEDURE MailBack;
+	PROCEDURE NewPrinter (): Printer.Printer;
+	PROCEDURE Install;
+END LPRPrinter.

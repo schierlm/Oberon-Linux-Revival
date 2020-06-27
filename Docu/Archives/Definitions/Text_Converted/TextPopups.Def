@@ -1,0 +1,6 @@
+DEFINITION TextPopups;	(* portable *)
+	PROCEDURE Do;
+	PROCEDURE Install;
+	PROCEDURE Remove;
+
+END TextPopups.

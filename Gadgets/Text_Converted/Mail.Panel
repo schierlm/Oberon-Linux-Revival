@@ -1,0 +1,41 @@
+PanelDocs.NewDocBIERHKd'R+3v7{			
+
+Q
+
+F e
+=
+h
+
+F j4{("h hJzq	!"#$%
+CCC;A
+dpCCmdMail.Show #PointNameMailList
+Oberon10.Scn.Fnt,^*2=	
+)F
+z"zQ-+/	*u'KIkO !	"k#B$l%w&5'r(F)*=+y,g[-@[.F/-0L,16*2&34ccL5jL6AiJC6ipC=#Oberon10.Scn.FntShowwCLToDo(r*CCmdGadgets.Set Query.Value 'topic=ToDo'AAllUr*CCmdGadgets.Set Query.Value ''$topic=ToDos
+Ctopic=ToDoCNameQuery	,Qr*C%
+
+*C>#Oberon10.Scn.FntTopicC
+PdCCmdMail.QueryTopic Query '#Point '
+
+Oberon10.Scn.FntC=#Oberon10.Scn.FntText
+]C5Reply(X*CCmdMail.Reply ^3Cite ^UX*CCmdMail.CiteGAsciiCode ^XBCCmdAsciiCoder.CodeFiles % ^>#Oberon10.Scn.FntTopic]C	,X*C%
+*C<#Oberon10.Scn.FntSet
+C
+PdCCmdMail.SetTopic MailList '#Point '
+
+Oberon10.Scn.Fnt	,$X*C%
+*C>#Oberon10.Scn.FntClearC
+PdCCmdMail.ClearTopic MailList '#Point '
+
+Oberon10.Scn.Fnt	, QX*C%
+*C=#Oberon10.Scn.FntMoveC
+PdCCmdMail.MoveTopic MailList '#Point '
+
+Oberon10.Scn.Fnt?#Oberon10.Scn.FntServerCC7Get(>*CCmdMail.Synchronize5Send *U>*CCmdMail.Send *(?CNameStatusBar	,&($T$>W&C%'
+WCA#Oberon10.Scn.FntSettings'C)*+,-./0123456789:<=>?@BCEFG
+AxC^#Oberon10.Scn.Fnt%%Local Settings (override Oberon.Text)CF#Oberon10.Scn.Fnt
+
+EMail AddressCC$_CNameEMailD#Oberon10.Scn.FntSMTP Server<C#_CNameSMTPC#Oberon10.Scn.Fnt
+
+POP Server7C"_bCNamePOP*POP3*CNamePOPModeA#Oberon10.Scn.FntPOP User-C#_CNameUserI#Oberon10.Scn.FntMax message sizeiUC/100000_iCNameMaxMsgSizeQ#Oberon10.Scn.FntLeave messages on serverM{C,MCNameLeaveOnServer@#Oberon10.Scn.FntAuto CcM%C%MCNameAutoCc@#Oberon10.Scn.FntSorting#C$Date-;CC$From-;C'Subject-;C$Nonej-;CB#Oberon10.Scn.Fnt		AscendingQ1C4QAC
+C@#Oberon10.Scn.FntContent>&C$Auto0CDCCNameContType&Oberon0CDC*ISO-8859-10CDC%ASCII0jCDCPanels.NewPanelBasicGadgets.NewIntegerMail.NewFrameMail.NewModelScrollbars.NewTextFields.NewCaptionBasicGadgets.NewButtonTextFields.NewTextFieldBasicGadgets.NewStringIcons.NewIconizerListGadgets.NewFrameMail.NewTopicModelBasicGadgets.NewCheckBoxBasicGadgets.NewBoolean

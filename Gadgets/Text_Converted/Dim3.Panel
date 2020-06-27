@@ -1,0 +1,48 @@
+PanelDocs.NewDoc
+6BIER[q5Wf
+Z?_u	
+
+
+
+6COClearHCCmdDim3Frames.ClearWorldFieldYesVal\CCmdDim3Frames.SetHorizon #ValueFieldYesValNamehorizonBoxTFlyingPHCCmdDim3Frames.SetFlightModelFieldYesValTPlanar4HCCmdDim3Frames.SetSimpleModelFieldYesValNReset`HCCmdDim3Frames.ResetViewFieldYesValO2x<`PHCCmdDim3Frames.SetViewAngle #ValueFieldN@CNameFOV60`4HCSAlign`HCCmdDim3Frames.AlignSelectionFieldYesValRBenchmark`HCCmdDim3Frames.BenchmarkFieldYesValXStatisticsHCCmdDim3Frames.ShowStatisticsFieldYesVal>Dim3Frames.Read #PointhDCNamefileListZShowt4 CCmdLists.Directory '*.poly' fileListFieldYesValJOpent4 CCmdDim3Frames.Read ^FieldYesVal?#Oberon10.Scn.FntWorld
+)
+C>#Oberon10.Scn.FntView
+`$
+CVPerformanceHCCmdDim3Frames.PerformanceFieldYesValA#Oberon10.Scn.FntHorizon
+ 0
+CB#Oberon10.Scn.Fnt		Movementsh:
+CF#Oberon10.Scn.Fnt
+
+Field of View`h>
+C?#Oberon10.Scn.FntScenes!
+CYDCNamecamera
+????	3>????????
+????L?L?(Dim3Frames.BenchmarkY??Y??????? 3D-Engine Oberon24b.Scn.Fnt?????L??L?L? ?L?L?(System.Time\L333 L> xd,
+hr,|
+hr,
+#xd,(L,T)"5,(1',
+#1',|"5,L,y-U0-%y8/LB2 8/}?%}?U0 L0
+v
+@v@v(v|4LvT9Wv|44v(4vWv
+Lv-a^K1^Kf)-8Ln>}?8f)1}?aLhLCLCLT)LT9LL@LT9$LT)$LLLL-8^:a^K8^:1^K8^:f)-8^:8L8^:n>}?8^:88^:f)8^:1}?8^:aL8^:hN=
+@N=@N=(N=|4LN=T9WN=|44N=(4N=WN=
+LN=yshQ>-shQ>U0-shQ>%yshQ>8/LshQ>B2 shQ>8/}?shQ>%}?shQ>U0 shQ>LshQ>0
+xdV>
+hrV>|
+hrV>
+#xdV>(LV>T)"5V>(1'V>
+#1'V>|"5V>LV>d
+
+
+*3=4+*45 )3*0/9:;:DE10:;LKUVCBLMMLVWUTVU65?@@?IJIHRS4=G>&'&%/087AB98BC$#-.#",-"#76@A,+56
+
+	
+	()FEOPGFPQ[ZZY21;<32<=('12)(23XWPOYZQPZ[<;EFTS	
+WV	YX-,67DCMN#$=<FG/.89'(%&%$./'&01?>HIKJTUBAKLJIST:9CD !A@JK! *+ONXY
+!"R[NMWXHQ[R$%SREDNO.-78"!+,>GQH) 54>?ffL?333?h?5>>?}D?$Lla"?1? ???
+Desktops.OpenDoc Clown.Pict~pf=i!?
+Lx?i!?51|eA?(aV4y(U;p>I
+&<?I
+A3#?g)t
+1>g?? Clown Oberon14b.Scn.Fnt?=???=Clown.Pict????Bart.Pict@@@@@@<(>3?.L?Rf$g??SC
+Panels.NewPanelBasicGadgets.NewButtonBasicGadgets.NewCheckBoxBasicGadgets.NewSliderBasicGadgets.NewRealTextFields.NewTextFieldLists.NewListTextFields.NewCaptionDim3Frames.NewFrameDim3Engine.NewWorld

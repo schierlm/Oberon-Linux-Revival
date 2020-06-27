@@ -1,0 +1,328 @@
+The Images Package
+
+Introduction
+
+Support for today's display cards, which regularly offer display modes with up to 16 million colors, has been incorporated into the Oberon display driver module with release 2.3.4. However, the basic module Pictures provided by the Oberon system only deals with raster images up to 256 colors. In order to deal with images of higher depth and to provide additional functionality for managing raster images, a new package has been developed whose features are presented here.
+
+The Images package
+ loads and stores bitmap images in multiple formats
+ displays images with depths from 1 to 32 bits
+ converts among different bitmap formats
+ performs basic image processing
+
+The Images module provides a procedural interface which allows clients to create and manipulate images easily. This procedural interface is expected to fulfill the requirements of almost all applications. However, for some special applications direct access to the image elements is crucial, and any performance overhead due to procedure calls or repeated address calculations may be unacceptable. The Images module therefore discloses the internal structure of images to its clients, allowing them to access pixels directly if necessary. This has the advantage that even special_purpose applications can share their image data with other clients of Images and do not have to implement operations for storing or displaying their images.
+
+The following sections describe how Images can be used by other modules. Basic functionality is covered in the first few sections, whereas later sections contain more and more advanced material which is only relevant to developers seeking further insight or wanting to extend the Images package.
+
+
+Initialization
+
+A variable of type Images.Image first must be allocated with NEW. It can then be initialized with
+
+	PROCEDURE Create (img: Image; width, height: INTEGER; VAR fmt: Format)
+
+The format parameter defines what kind of information is stored in every pixel and how much space every pixel occupies. It is discussed in detail below, suffice it to say that there are predefined Format variables for many common pixel formats. Create allocates all necessary memory, except if the image has already been initialized before. In that case, an already allocated block of memory is reused if it is large enough to accomodate the new image.
+
+Instead of creating a new empty image, a new image may also be initialized to a rectangular section of an already existing image with
+
+	PROCEDURE InitRect (img, base: Image; x, y, w, h: INTEGER)
+
+This is useful for restricting an image operation working on full images only to a smaller area within an image. Note that both img and base share the same memory so that changes to one effect the other as well.
+
+
+File Input and Output
+
+Very often an application needs to initialize an image object from a file or to store a modified image back to file:
+
+	VAR
+		LoadProc, StoreProc: PROCEDURE (img: Image; VAR fname: ARRAY OF CHAR; VAR done: BOOLEAN);
+
+	PROCEDURE Load (img: Image; name: ARRAY OF CHAR; VAR done: BOOLEAN)
+	PROCEDURE Store (img: Image; name: ARRAY OF CHAR; VAR done: BOOLEAN)
+
+The Images module clearly cannot support every image file format directly. When Load or Store are called, they determine the file type from the extension of the file name (e.g. "Pict"). This extension is used as a key into a section "ImageFormats" of the Oberon registry text (Oberon.Text). If a corresponding value is found, it is interpreted as a command and executed. What this command should do is to set LoadProc and StoreProc to appropriate procedures. These, when called, open the file with the given name and load or store the contents of the image from or to that file. If successful, they set the done parameter to TRUE before returning.
+
+
+Displaying Images
+
+For displaying an image directly, Display.TransferBlock has to be used. This only works if the format of the image to be displayed is Images.DisplayFormat, otherwise the image has to be converted to that format first. (Example code dealing with all details can be found in ImageGadgets.Restore.)
+
+The ImageGadgets module exports a frame type for displaying images within the Oberon system. A frame can be initialized with
+
+	PROCEDURE Init (frame: Frame; img: Images.Image)
+
+Image files can be opened as documents within the Oberon system with the ImageDocs.Open command, which expects a file name argument.
+
+Since Images.Image is derived from Objects.Object, images can serve as a model for other gadgets. However, if only a small part of an image is updated, calling Gadgets.Update may not be suitable for notifying all visual gadgets of the change. For this situation the Images module provides a special update message to restrict the area which should be redrawn.
+
+	TYPE
+		UpdateMsg = RECORD (Display.FrameMsg)
+			img: Image;	(* affected image *)
+			llx, lly, urx, ury: INTEGER;	(* area to update within image *)
+		END;
+	
+	PROCEDURE Update (img: Image; llx, lly, urx, ury: INTEGER);
+
+It should be noted that none of the Images operations broadcast model changes, for this is considered to be the responsibility of the application.
+
+
+An Example: Loading an Image From File And Displaying It
+
+The following is a simple example program which loads an image from file, converts it to display format and displays it at a given location. It uses some features which have not yet been discussed but should provide an overview of how to use Images.
+
+	PROCEDURE Show (name: ARRAY OF CHAR; x, y: INTEGER);
+		VAR img, tmp: Images.Image; done: BOOLEAN;
+	BEGIN
+		NEW(img);	(* allocate image descriptor *)
+		Images.Load(img, name, done);
+		IF done THEN	(* image successfully loaded *)
+			IF ~Images.Same(img.fmt, Images.DisplayFormat) OR (img.mem = NIL) THEN	(* convert first *)
+				NEW(tmp); Images.Create(tmp, img.width, img.height, Images.DisplayFormat);
+				IF img.fmt.bpp >= Images.DisplayFormat.bpp THEN	(* dither for achieving better quality *)
+					Images.Dither(img, tmp)
+				ELSE
+					Images.Copy(img, tmp, 0, 0, img.width, img.height, 0, 0, Images.SrcCopy)
+				END;
+				img := tmp
+			END;
+			Display.TransferBlock(img.mem^, 0, img.bpr, x, y, img.width, img.height, Display.set)
+		END
+	END Show;
+
+Notes:
+1. The loaded image is converted to display format because otherwise Display.TransferBlock could not be used. Another option would be to read pixels into a temporary buffer in DisplayFormat line by line and display those lines with Display.TransferBlock. This is the approach taken by ImageGadgets because the line buffer can be allocated on the stack instead of the heap.
+
+2. The loaded image is also converted if the memory used for holding pixels is not referenced in img.mem. However, Images.Create always guarantees a valid img.mem pointer.
+
+3. For restricting output to the visible parts of a mask, the mask has to be enumerated with Display3.Enum or Display3.EnumRect. For each enumerated rectangle (rx, ry, rw, rh) use
+	
+	Display.TransferBlock(img.mem^, ry * img.bpr + 8*rx DIV img.fmt.bpp, img.bpr, rx, ry, rw, rh, Display.set)
+
+
+Pixel Format
+
+In the Images model, every pixel contains at least one of the following components:
+ color, usually represented by red, green and blue intensities
+ an index into a color lookup table (palette)
+ alpha (coverage)
+
+Different pixel formats store different combinations of components or use different amounts of bits for storing the same components. The Images module exports several predefined pixel formats as global variables. Applications are encouraged to use these predefined formats whenever suitable because most operations are performed faster for these built_in formats.
+
+True Color Formats
+
+	CONST
+		b = 0; g = 1; r = 2; a = 3;	(* index of blue, green, red, and alpha components in a Pixel *)
+	
+	TYPE
+		Pixel = ARRAY 4 OF CHAR;
+	
+	VAR
+		BGR555, BGR565, BGR466, BGR888, BGRA8888, PixelFormat: Format;
+	
+	PROCEDURE SetRGB (VAR pix: Pixel; red, green, blue: INTEGER);
+	PROCEDURE SetRGBA (VAR pix: Pixel; red, green, blue, alpha: INTEGER);
+	PROCEDURE GetRGBA (pix: Pixel; VAR red, green, blue, alpha: INTEGER);
+
+Each of these formats contains red, green and blue intensities, the last two also alpha information. The layout of these formats is designed to correspond to the one used in display drivers supporting hi_color or true_color. PixelFormat is the format corresponding to the Pixel type and is usually equal to BGRA8888. Since there are 8 bits per component in a Pixel, valid values are in the range 0..255.
+
+Within a Pixel, alpha values are pre_multiplied into the red, green, and blue components. This speeds up compositing but reduces the number of distinct shades for pixels near full transparency.
+
+Indexed Formats
+
+Images which only use a few distinct colors can be stored more compactly if the colors used are stored in a table and pixels contain an index into that table instead of the full color information. This color lookup table (also called palette) is part of the pixel format.
+
+	TYPE
+		Palette = POINTER TO PaletteDesc;
+		PaletteDesc = RECORD
+			col: ARRAY 256 OF Pixel;	(* color table *)
+			used: INTEGER;	(* number of valid entries in color table *)
+		END;
+	
+	PROCEDURE PaletteIndex (pal: Palette; red, green, blue: INTEGER): INTEGER;
+	PROCEDURE InitPalette (pal: Palette; used, bits: INTEGER);
+	PROCEDURE ComputePalette (img: Image; pal: Palette; reservedcols, maxcols, bits: INTEGER);
+	
+	PROCEDURE InitPaletteFormat (VAR fmt: Format; pal: Palette);
+
+PaletteIndex finds the index of a palette color which most closely matches a given (red, green, blue) triple using a reverse color lookup table. To update the reverse color lookup table, InitPalette must be called whenever the colors in a palette have been initialized or modified. The resolution of the reverse color lookup table is specified with the bits parameter. The higher the resolution is, the more memory is needed (a value of 4 uses 16*16*16 = 4096 bytes).
+
+A suitable palette for an existing image is computed with ComputePalette. The first reservedcols entries in the palette are left as they are but the remaining maxcols entries are filled with those colors which appear most often in the image. Finally the computed palette is initialized with the number of colors used (usually reservedcols + maxcols) and the number of resolution bits given.
+
+Since palettes are completely user defined, there is no predefined format using a custom palette. However, such a format record can easily be created with InitPaletteFormat and has the same performance advantages as other predefined formats.
+
+Display Format
+
+	VAR
+		D8, DisplayFormat: Format;
+
+There is one special indexed format (D8) which uses the palette of the Oberon display driver. The D8 format does not contain an explicit palette structure. Instead, the palette colors are stored in Colors.Red, Colors.Green and Colors.Blue and the reverse color lookup is done with Colors.Match.
+
+The reason for having the D8 format is that many Oberon display drivers only support indexed mode with 256 colors. When the Images module is loaded, it examines the transfer format provided by the display driver and sets DisplayFormat accordingly, i.e. if the display is in hi_color or true_color mode, DisplayFormat is set to BGR555, BGR565, BGR466 or BGR888. Otherwise DisplayFormat is set to D8.
+
+Pure Alpha Formats
+
+	VAR
+		A1, A8: Format;
+
+These two formats contain only an alpha component. In the case of the A1 format, every pixel is either fully opaque or fully transparent, whereas for A8 every pixel has an opacity value from 0 (transparent) to 255 (opaque).
+
+Pure alpha formats are mainly used for character patterns when rendering text.
+
+
+Transfer Modes
+
+	CONST
+		(* compositing operations (srcCopy = replace, srcOverDst = paint *)
+		clear =  0; srcCopy =  1; dstCopy =  2; srcOverDst =  3; dstOverSrc =  4; srcInDst =  5; dstInSrc =  6;
+		srcWithoutDst =  7; dstWithoutSrc =  8; srcAtopDst =  9; dstAtopSrc =  10; srcXorDst =  11;
+	
+	TYPE
+		Mode0 = RECORD
+			src, dst: Format;	(* source and destination format *)
+			op: INTEGER;	(* compositing operation *)
+			col: Pixel;	(* substitute color used when transfering from pure alpha formats to colored ones *)
+		END;
+		TransferProc = PROCEDURE (VAR mode: Mode0; sadr, sbit, dadr, dbit, len: LONGINT);
+		Mode = RECORD (Mode0) 
+			transfer: TransferProc	(* procedure transfering pixels from source to destination *)
+		END;
+	
+	VAR
+		SrcCopy, SrcOverDst: Mode;
+	
+	PROCEDURE InitMode (VAR mode: Mode; op: INTEGER);
+	PROCEDURE InitModeColor (VAR mode: Mode; op, red, green, blue: INTEGER);
+	PROCEDURE SetModeColor (VAR mode: Mode; red, green, blue: INTEGER);
+	PROCEDURE Blend (op: INTEGER; VAR src, dst: Pixel);
+	PROCEDURE Bind (VAR mode: Mode; VAR src, dst: Format);
+
+Whenever pixels are copied, a mode parameter indicating the compositing operation to use is expected. The transfer mode is defined by a compositing operator and a default color which is used when the source only contains coverage (alpha) information.
+
+The Blend procedure combines two pixel values according to the given compositing operation and stores the result in the destination pixel. All operations can be viewed as a linear combination of the source and the destination pixel value with a factor fs for the source value and a factor fd for the destination value. The following table contains the values of these factors for all predefined blend operators, with as indicating the alpha value of the source pixel and ad that of the destination pixel.
+
+
+ operator	fs	fd	explanation
+
+ clear	0	0	clear destination
+ srcCopy	1	0	copy source to destination (cf. Display.replace)
+ dstCopy	0	1	no effect, destination remains the same
+ srcOverDst	1	1-as	copy opaque source part to destination (cf. Display.paint)
+ dstOverSrc	1-ad	1	fill transparent part of destination with source
+ srcInDst	ad	0	fill opaque part of destination with source
+ dstInSrc	0	as	clear destination where source is transparent
+ srcWithoutDst	1-ad	0	copy source where destination is opaque, clear elsewhere
+ dstWithoutSrc	0	1-as	clear destination where source is opaque
+ srcAtopDst	ad	1-as	replace opaque parts of destination with opaque parts of source
+ dstAtopSrc	1-ad	as	source where destination is transparent,
+ 			destination where source is opaque
+ srcXorDst	1-ad	1-as	source where destination is transparent,
+ 			destination where source is transparent
+
+
+Of course it is very inefficient to call the general Blend procedure for every pair of pixels. Any operation accessing several pixels should therefore bind the transfer mode to a specific source and destination format with the Bind procedure. This initializes the mode's transfer procedure, which can be used to move directly from pixels in source format to pixels in destination format, applying the requested compositing operation in the process. Because of these optimized transfer procedures, operations execute much faster on built_in formats than on custom formats.
+
+The most common compositing operations are srcCopy and srcOverDst. This is why Images exports two global variables SrcCopy and SrcOverDst which clients are free to use.
+
+
+Image Operations
+
+	PROCEDURE Clear (img: Image);
+
+Initializes the whole image with transparent black. For all but indexed formats this is equivalent to filling the memory occupied by the image with zeroes.
+
+	PROCEDURE Copy (src, dst: Image; llx, lly, urx, ury, dx, dy: INTEGER; VAR mode: Mode);
+
+Transfers the contents of rectangle (llx <= x < urx, lly <= y < ury) in the source image to (dx, dy) in the destination.
+
+	PROCEDURE Darken (img: Image; factor: REAL);
+	PROCEDURE Fade (img: Image; factor: REAL);
+	PROCEDURE Opaque (img: Image; factor: REAL);
+
+These operations are used to darken an image while maintaining coverage, to fade an image, or to modify an image's opacity. The factor for darkening and fading is usually less than 1.0. Opaque is actually a combination of the other two operators and Opaque(I, f) is equivalent to Darken(Fade(I, f), 1/f). The effect of Opaque is that only the alpha part of every pixel is multiplied by a factor but not its color components, which means that pixels become luminous when alpha becomes smaller and smaller (because alpha is pre_multiplied into color components).
+
+	PROCEDURE Add (i, j, res: Image);
+
+Adds two faded images and stores the result in a third image (which may be equal to one of the first two images).
+
+	PROCEDURE Dither (src, dst: Image);
+
+Uses the Floyd_Steinberg dithering algorithm to copy the source image to the destination image. This only makes sense if the color depth of the destination is smaller than that of the source, e.g. when converting a 24 bit true_color to a 8 bit indexed image.
+
+
+Pixel Operations
+
+	PROCEDURE Get (img: Image; x, y: INTEGER; VAR pix: Pixel; VAR mode: Mode);
+	PROCEDURE Put (img: Image; x, y: INTEGER; pix: Pixel; VAR mode: Mode);
+
+Get combines the pixel value stored at (x, y) with the pix variable, Put combines the given pix value with the pixel stored at (x, y). Whenever possible, use one of the other operations to access several pixels at once.
+
+	PROCEDURE GetPixels (img: Image; x, y, w: INTEGER; VAR fmt: Format; VAR buf: ARRAY OF CHAR; VAR mode: Mode);
+	PROCEDURE PutPixels (img: Image; x, y, w: INTEGER; VAR fmt: Format; VAR buf: ARRAY OF CHAR; VAR mode: Mode);
+
+These load or store a row of w pixels starting at (x, y). The pixels in the buffer are arranged according to the format parameter.
+
+	PROCEDURE Fill (img: Image; llx, lly, urx, ury: INTEGER; pix: Pixel; VAR mode: Mode);
+	PROCEDURE FillPattern (pat, dst: Image; llx, lly, urx, ury, px, py: INTEGER; VAR mode: Mode);
+
+These fill a rectangle (llx <= x < urx, lly <= y < ury) with the contents of a pixel or those of another image used as a pattern, respectively. For the pattern, an anchor point (px, py) is required, where the lower left corner of the pattern image is positioned. The pattern image is instanced at (px + n * pat.width, py + m * pat.height) for all integers n and m.
+
+
+Direct Access
+
+	TYPE
+		Image = POINTER TO ImageDesc;
+		ImageDesc = RECORD (Objects.ObjDesc)
+			width, height: INTEGER;	(* image dimensions *)
+			fmt: Format;	(* pixel format *)
+			bpr: LONGINT;	(* number of bytes per row (may be negative) *)
+			adr: LONGINT;	(* address of lower left pixel *)
+			mem: POINTER TO ARRAY OF CHAR;	(* block where pixels are stored; mem#NIL implies adr=ADR(mem[0]) *)
+		END;
+	
+	PROCEDURE Init (img: Image; width, height: INTEGER; VAR fmt: Format; bpr, adr: LONGINT);
+	PROCEDURE InitBuf (img: Image; w, h: INTEGER; VAR fmt: Format; bpr, off: LONGINT; VAR buf: ARRAY OF CHAR);
+
+As mentioned in the introduction, the Images module allows any client direct access to the memory holding an image's pixel values. (This is not completely type_safe because an erroneous program can modify the adr field in an image descriptor.) Obviously, applications which directly access pixel memory using adr need to import module SYSTEM, marking them as unsafe. If the mem field is valid, adr is required to point to the first element in the array pointed to by mem, opening an alternative (type_safe) way of bypassing Image's procedural interface. However, not all images use the mem field and using SYSTEM may be the only way to access pixel memory.
+
+Images organizes the memory for an image in the following way: an image references a contiguous block of memory holding pixel data in its adr field, where the point of reference is the address of the lower_left corner pixel. Pixels are organized in rows using bpr bytes each (bottom_up for positive bpr, top_down for negative bpr) with the leftmost pixel located at the lowest address of that row. Every pixel uses the same number of bits (1, 2, 4, 8, 16, 24, or 32), so every pixel either starts at a byte boundary or is completely contained in one byte. The pixel at (x, y) can thus be found at address (adr + y*bpr + x DIV fmt.bpp), bit number (x MOD fmt.bpp). Note that the leftmost pixel has bit address 0 and the rightmost pixel has bit address 8-fmt.bpp.
+
+If Create is used to allocate the memory for the image, the image memory is pointed to by the mem field and the adr field is set to the address of the first element in mem. However, the image can also be initialized by calling Init with explicit values for bpr and adr or by calling InitBuf and providing an array of characters to be used (the adr field is then set to the address of buf[off]). This array of characters can then e.g. be used as an argument to Display.TransferBlock.
+
+
+Implementing New Pixel Formats
+
+Although the Images module provides several predefined pixel formats, some applications may prefer to implement a custom format for accessing image data.
+
+	CONST
+		(* format codes *)
+		custom = 0; a1 = 1; a8 = 2; d8 = 3; p8 = 4; bgr555 = 5; bgr565 = 6; bgr466 = 7; bgr888 = 8; bgra8888 = 9;
+		
+		(* components *)
+		color = 0; alpha = 1; index = 2;
+	
+	TYPE
+		Format0 = RECORD
+			code: SHORTINT;	(* format code for quick format checks *)
+			bpp: SHORTINT;	(* number of bits per pixel *)
+			align: SHORTINT;	(* bytes per row must be multiple of this *)
+			components: SET;	(* components that are stored in a pixel *)
+			pal: Palette;	(* optional palette for indexed formats *)
+		END;
+		
+		PackProc = PROCEDURE (VAR fmt: Format0; adr, bit: LONGINT; VAR pix: Pixel);
+		
+		Format = RECORD (Format0)
+			pack, unpack: PackProc;
+		END;
+	
+	PROCEDURE InitFormat (VAR fmt: Format; code, bpp, align: SHORTINT; comp: SET; pal: Palette; pack, unpack: PackProc);
+
+(The type declaration for Format is split for purely technical reasons and no variables of type Format0 are ever used.)
+
+Every predefined pixel format has a distinct code for quickly distinguishing among built_in formats. Formats initialized with InitFormat usually use custom but are free to use any number which is not one of a1..bgra8888.
+
+The number of bits must be 1, 2, 4, 8, 16, 24, or 32, and align influences the calculation of bpr in Create. For align >= 1, bpr is computed as ((width * bpp + 7) DIV 8 + align - 1) DIV align * align.
+
+The most important fields in a format are the pack and unpack procedures. Their purpose is to convert pixels at a given address and bit position to general 32 bit RGBA pixels (unpack) and vice versa (pack).
+
+As has already been said, most operations will not be executed as fast for custom formats as for built_in formats. For time critical or repeatedly used operations, it may be adviseable to convert images in custom formats to a built_in format.

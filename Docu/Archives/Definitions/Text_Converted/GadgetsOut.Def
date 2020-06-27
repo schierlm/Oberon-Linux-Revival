@@ -1,0 +1,36 @@
+DEFINITION GadgetsOut;	(* portable *)
+
+	IMPORT Objects;
+
+(* Open - Open output to the named gadget (in the current context).
+	If the name contains a ".", the part before the dot specifies the gadget name,
+	and the part after the dot specifies the string attribute where output should 
+	go (default "Value").  Otherwise, if the gadget has a text model, output is 
+	sent to the model.  If gadget = "", output is sent to Oberon.Log. *)
+	PROCEDURE Open (gadget: ARRAY OF CHAR);
+
+(* Clear - Clear the output text or string. *)
+	PROCEDURE Clear;
+
+(* Append - Append the internal buffer to the output text or string.  In the case 
+	of output to a string attribute, the string is always overwritten. *)
+	PROCEDURE Append;
+
+(* Char/Date/Int etc. - Write value to buffer, exactly like Texts.WriteX *)
+	PROCEDURE Char (x: CHAR);
+	PROCEDURE Date (t, d: LONGINT);
+	PROCEDURE Int (x, n: LONGINT);
+	PROCEDURE IntHex (x: LONGINT);
+	PROCEDURE Real (x: REAL; n: LONGINT);
+	PROCEDURE RealFix (x: REAL; n, f, E: LONGINT);
+	PROCEDURE RealHex (x: REAL);
+	PROCEDURE LongReal (x: LONGREAL; n: LONGINT);
+	PROCEDURE LongRealFix (x: LONGREAL; n, f, E: LONGINT);
+	PROCEDURE LongRealHex (x: LONGREAL);
+	PROCEDURE Obj (x: Objects.Object);
+	PROCEDURE String (x: ARRAY OF CHAR);
+
+(* Ln - End a line of output and do an implicit Append. *)
+	PROCEDURE Ln;
+
+END GadgetsOut.

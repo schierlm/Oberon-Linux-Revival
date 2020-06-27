@@ -1,0 +1,56 @@
+DEFINITION ScriptFrames;	(* portable *)
+
+	IMPORT Texts, Objects, Oberon, Display;
+
+	TYPE
+		Location = RECORD
+			org, pos: LONGINT;
+			dx, x, y: INTEGER;
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Display.FrameDesc ) 
+			text: Texts.Text;
+			org: LONGINT;
+			col: INTEGER;
+			left, right, top, bot: INTEGER;
+			markH, mark: INTEGER;
+			time: LONGINT;
+			car, sel, hide: BOOLEAN;
+			carLoc: Location;
+			selBeg, selEnd: Location;
+		END;
+
+	VAR 
+		barW, left, right, top, bot: INTEGER;
+	PROCEDURE Mark (F: Frame; mark: INTEGER);
+	PROCEDURE Resize (F: Frame; x, y, newY: INTEGER);
+	PROCEDURE Pos (F: Frame; X, Y: INTEGER): LONGINT;
+	PROCEDURE SetCaret (F: Frame; pos: LONGINT);
+	PROCEDURE RemoveCaret (F: Frame);
+	PROCEDURE SetSelection (F: Frame; beg, end: LONGINT);
+	PROCEDURE RemoveSelection (F: Frame);
+	PROCEDURE Neutralize (F: Frame);
+	PROCEDURE TrackCaret (F: Frame; x, y, X, Y: INTEGER; VAR keysum: SET);
+	PROCEDURE TrackSelection (F: Frame; x, y, X, Y: INTEGER; VAR keysum: SET);
+	PROCEDURE TrackLine (F: Frame; x, y, X, Y: INTEGER; VAR org: LONGINT; VAR keysum: SET);
+	PROCEDURE TrackWord (F: Frame; x, y, X, Y: INTEGER; VAR pos: LONGINT; VAR keysum: SET);
+	PROCEDURE Show (F: Frame; pos: LONGINT);
+	PROCEDURE Call (F: Frame; pos: LONGINT; new: BOOLEAN);
+	PROCEDURE Write (F: Frame; ch: CHAR; lib: Objects.Library; col, voff: SHORTINT);
+	PROCEDURE Open (F: Frame; H: Objects.Handler; T: Texts.Text; org: LONGINT; 
+				col, left, right, top, bot: INTEGER);
+	PROCEDURE Copy (F: Frame; VAR F1: Frame);
+	PROCEDURE CopyOver (F: Frame; text: Texts.Text; beg, end: LONGINT);
+	PROCEDURE CopyRecall (F: Frame);
+	PROCEDURE GetSelection (F: Frame; VAR M: Oberon.SelectMsg);
+	PROCEDURE GetCaret (F: Frame; VAR M: Oberon.CaretMsg);
+	PROCEDURE Update (F: Frame; VAR M: Texts.UpdateMsg);
+	PROCEDURE Edit (F: Frame; x, y, X, Y: INTEGER; Keys: SET);
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewText (text: Texts.Text; pos: LONGINT): Frame;
+	PROCEDURE FirstLine (T: Texts.Text; VAR w, asr, dsr, nSpc: INTEGER; VAR len: LONGINT; VAR brk, eot: BOOLEAN);
+	PROCEDURE NextLine (VAR w, asr, dsr, nSpc: INTEGER; VAR len: LONGINT; VAR brk, eot: BOOLEAN);
+	PROCEDURE New;
+
+END ScriptFrames.

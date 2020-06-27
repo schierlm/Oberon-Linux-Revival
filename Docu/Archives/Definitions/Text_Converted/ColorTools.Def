@@ -1,0 +1,27 @@
+DEFINITION ColorTools; (* portable *)  (* jm 19.1.95 *)
+
+(* ColorPicker implementation *)
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		ColorPicker = POINTER TO ColorPickerDesc;
+		ColorPickerDesc = RECORD ( Gadgets.FrameDesc ) 
+			cmd: ARRAY 64 OF CHAR;		(* Cmd attribute *)
+			colors: ARRAY 256 OF INTEGER;		(* colors to be displayed *)
+			col: INTEGER;		(* last color to be picked *)
+		END;
+	PROCEDURE CopyColorPicker (VAR M: Objects.CopyMsg; from, to: ColorPicker);
+	PROCEDURE ColorPickerHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitColorPicker (F: ColorPicker);
+	PROCEDURE NewColorPicker;
+
+(* Used in the form:
+	
+	ColorTools.ChangeColor <colno>
+	
+Change the color of the selected text or the selected gadgets.	
+*)
+	PROCEDURE ChangeColor;
+
+END ColorTools.

@@ -1,0 +1,5 @@
+DEFINITION Sort;	(* portable *)
+	PROCEDURE Sort;	(*("^" | "*" | <name>) ["/" {c}]	where c IN {"r", "e", "u"}*)
+		(*Sort a marked viewer, a selection, or a file. Option /r means in reverse order; /e keep empty lines*)
+
+END Sort.

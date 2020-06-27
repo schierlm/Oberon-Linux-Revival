@@ -1,0 +1,13 @@
+DEFINITION ICO;	(* portable *)
+
+	IMPORT Files, Objects;
+	PROCEDURE ReadBitmapInfoHeader (VAR R: Files.Rider; VAR bmih: BitmapInfoHeader): BOOLEAN;
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+(* Called from Pictures.Open to try and load an ICO bitmap. The picture descriptor is pre-allocated by Pictures in
+Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the Win3.11
+Icon when a FileMsg is received (variant load). *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END ICO.

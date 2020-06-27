@@ -1,0 +1,37 @@
+DEFINITION ImageGadgets; (* portable *)
+
+	(*
+		Frame displaying a raster image
+	*)
+	IMPORT
+		Display, Objects, Display3, Gadgets, Images;
+
+	CONST
+		buffered = 0; dithered = 1;	(* available options *)
+
+	TYPE
+		(* frame *)
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			options: SET;	(* adjust udpate and resize behaviour *)
+		END;
+
+	(* restore frame area *)
+	PROCEDURE Restore (frame: Frame; x, y, w, h, fx, fy: INTEGER; mask: Display3.Mask);
+
+	(* print frame *)
+	PROCEDURE Print (frame: Frame; VAR msg: Display.DisplayMsg);
+
+	(* copy frame *)
+	PROCEDURE Copy (VAR msg: Objects.CopyMsg; from, to: Frame);
+
+	(* frame handler *)
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+	(* initialize frame with map model *)
+	PROCEDURE Init (frame: Frame; img: Images.Image);
+
+	(* frame generator *)
+	PROCEDURE New;
+
+END ImageGadgets.

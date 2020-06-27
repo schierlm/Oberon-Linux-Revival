@@ -1,0 +1,59 @@
+DEFINITION MineSweeper;	(* portable *)
+
+	IMPORT Display, Objects, Gadgets,
+		Panels, Documents;
+
+	CONST
+		DrawFields = 0; Time = 1; Flag = 2; DrawAll = 3;
+		CoveredUp = 1; Neutral = 2; FlagSet = 3; NotSure = 4;
+		FalseSet = 5; NotFound = 6;
+		Bombe = -1;
+			state: SHORTINT;
+			mines: SHORTINT;
+
+	TYPE
+		Field = POINTER TO FieldDesc;
+		FieldDesc = RECORD ( Gadgets.ObjDesc ) 
+			area: ARRAY  30, 16 OF Area;
+		END;
+
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		MinePanel = POINTER TO MinePanelDesc;
+		MinePanelDesc = RECORD ( Panels.PanelDesc ) 
+		END;
+
+		UpdateMsg = RECORD ( Display.FrameMsg ) 
+			id: INTEGER;
+			obj: Objects.Object;
+			coords: Coords;
+		END;
+
+		NotifyMsg = RECORD ( Display.FrameMsg ) 
+			dt: LONGINT;
+		END;
+	PROCEDURE InitField (F: Field; w, h, m: INTEGER; pause: BOOLEAN);
+	PROCEDURE TogglePause (F: Field);
+	PROCEDURE GetTime (F: Field; VAR t: LONGINT);
+	PROCEDURE GetNrToGo (F: Field; VAR nr: INTEGER);
+	PROCEDURE IsOver (F: Field): BOOLEAN;
+	PROCEDURE CoverUp (F: Field; x, y: INTEGER; normal: BOOLEAN);
+	PROCEDURE ToggleState (F: Field; x, y: INTEGER);
+	PROCEDURE CopyField (VAR M: Objects.CopyMsg; from, to: Field);
+	PROCEDURE FieldHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE CopyPanel (VAR M: Objects.CopyMsg; from, to: MinePanel);
+	PROCEDURE PanelHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE LoadDocument (D: Documents.Document);
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewField;
+	PROCEDURE NewView;
+	PROCEDURE NewPanel;
+	PROCEDURE NewDoc;
+	PROCEDURE NewGame;
+	PROCEDURE Deinstall;
+
+END MineSweeper.

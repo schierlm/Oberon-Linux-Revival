@@ -1,0 +1,43 @@
+DEFINITION JPEG;	(* portable *)
+
+	IMPORT
+		Files, Pictures, Objects;
+
+	CONST
+		ColorsOld = 0;
+		ColorsNew = 1;
+		DitherNone = 0;
+		DitherFS = 1;
+		Float = 0;
+		Integer = 1;
+		Scale = 2;
+
+	(* JPEG.Decode Decode file to pict
+		idct: Integer: use fast integer arithmetics
+				Float: use (slow) Floatingpoint arithmetics
+				Scale: use fast integer arithmetics and scale image by a factor of 2, 4 or 8
+		factor: Scaling-factor for idct = Scale
+		dither: DitherNone: no dithering
+					DitheFS: Floyd Steinberg dithering
+		colorMode: ColorsOld: use current display palette
+							ColorsNew: build a new (orthogonal) palette
+	*)
+	PROCEDURE Decode (file: Files.File; VAR pict: Pictures.Picture; idct, factor, dither, colorMode: INTEGER);
+
+	(* JPEG.Pict [ "\" opts ] infile outfile
+		opts:
+			I: Integer idct
+			F: Floatingpoint idct
+			S: Integer idct with scaling
+				2, 4, 8: Scaling factor
+			Y: use Floyd Steinberg dithering
+				C: build a new (orthogonal) palette
+				O: use current display palette
+			N: no dithering
+	*)
+	PROCEDURE Pict;
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END JPEG.

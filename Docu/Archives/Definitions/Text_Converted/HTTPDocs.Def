@@ -1,0 +1,21 @@
+DEFINITION HTTPDocs;	(* portable *)
+
+	IMPORT NetSystem, Texts, Documents,
+		MIME;
+
+(* This module implements the basis for the webbrowser.
+		The following line should be added to the LinkSchemes section of the Registry:
+			http = HTTPDocs.NewLinkScheme
+		And the following line to the Documents section:
+			http = HTTPDocs.NewDoc
+		To access HTTP within a firewall, add the proxy to the NetSystem section of the Registry:
+			HTTPProxy = host [ ":" port ] . *)
+	PROCEDURE ListCookies;
+	PROCEDURE Request (C: NetSystem.Connection; method: ARRAY OF CHAR; VAR key: LONGINT; proxy: BOOLEAN; VAR query: Texts.Text; log: BOOLEAN);
+	PROCEDURE Response (VAR C: NetSystem.Connection; key: LONGINT; main: BOOLEAN; VAR cont: MIME.Content; VAR location: ARRAY OF CHAR; log: BOOLEAN): LONGINT;
+	PROCEDURE NewLinkScheme;
+	PROCEDURE LoadDoc (D: Documents.Document);
+	PROCEDURE NewDoc;
+	PROCEDURE ReplaceDoc;
+
+END HTTPDocs.

@@ -1,0 +1,18 @@
+import colors, rectangles, shapes;
+
+const w = 300, h = 200;
+const frame = shapes.frame(w, h);
+const col = colors.blue;
+
+define render as
+  with color=col do
+    fill rect(0, 0, w, h) end
+  end
+end render;
+
+define matrix as
+  shapes.matrix(frame)
+end matrix;
+
+shapes.component("frame");
+shapes.color("col", "Color");

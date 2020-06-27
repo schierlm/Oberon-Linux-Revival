@@ -1,0 +1,12 @@
+DEFINITION ASCIITab;	(* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewFrame;
+
+END ASCIITab.

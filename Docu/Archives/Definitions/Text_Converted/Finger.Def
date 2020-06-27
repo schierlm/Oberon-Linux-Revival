@@ -1,0 +1,43 @@
+DEFINITION Finger;	(* portable *)
+
+(* Finger (RFC 1288) with Oberon text document support.
+
+	Insert into your plain old ASCII .plan or .project file 
+	the line
+	
+	-----ASCIICODED
+	
+	followed directly on the next line by an AsciiCoded version
+	of the Oberon text you want to have shown instead of
+	the normal contents of .plan or .project.
+	
+	Command Interface
+	
+	Usage:	Finger.Finger user@host
+	Example:	Finger.Finger marais@lillian.inf.ethz.ch.
+	
+	Document Interface
+
+	E.g.: Desktops.OpenDoc "finger://lillian.inf.ethz.ch/zeller".
+	The following line should be added to the LinkSchemes section of the Registry:
+		finger = Finger.NewLinkScheme
+	And the following line to the Documents section:
+		finger = Finger.NewDoc. *)
+	IMPORT Texts;
+
+	CONST
+		DefPort = 79;
+
+(* Parsing of a finger url. *)
+	PROCEDURE Split (VAR url, host, request: ARRAY OF CHAR; VAR port: INTEGER): LONGINT;
+
+(* Send the finger request to host. Most finger servers use port = Finger.DefPort.
+		If the request failed for any reason, T is set to NIL otherwise T contains the response. *)
+	PROCEDURE finger (VAR host, request: ARRAY OF CHAR; port: INTEGER; VAR T: Texts.Text);
+	PROCEDURE NewLinkScheme;
+	PROCEDURE NewDoc;
+
+(* Finger.Finger user@host *)
+	PROCEDURE Finger;
+
+END Finger.

@@ -1,0 +1,12 @@
+DEFINITION RandomNumbers;	(* portable *)
+
+(* Return a uniform random number r, with 0 < r < 1. *)
+	PROCEDURE Uniform (): REAL;
+
+(* Return an exponentially distributed random number r. *)
+	PROCEDURE Exp (mu: REAL): REAL;
+
+(* Initialize the random number seed. *)
+	PROCEDURE InitSeed (seed: LONGINT);
+
+END RandomNumbers.

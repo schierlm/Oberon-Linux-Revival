@@ -1,0 +1,32 @@
+DEFINITION System; (* portable, except where noted *)
+	PROCEDURE SetFont;
+	PROCEDURE SetColor;
+	PROCEDURE SetOffset;
+	PROCEDURE Time;
+	PROCEDURE Collect;
+	PROCEDURE Open;
+	PROCEDURE OpenLog;
+	PROCEDURE Clear;
+	PROCEDURE Close;
+	PROCEDURE CloseTrack;
+	PROCEDURE Recall;
+	PROCEDURE Copy;
+	PROCEDURE Grow;
+	PROCEDURE Free;
+	PROCEDURE ShowModules;
+	PROCEDURE ShowLibraries;
+	PROCEDURE FreeLibraries;
+	PROCEDURE Directory;
+	PROCEDURE CopyFiles;
+	PROCEDURE RenameFiles;
+	PROCEDURE DeleteFiles;
+	PROCEDURE Watch;
+	PROCEDURE State;
+	PROCEDURE ShowCommands;
+	PROCEDURE ShowTasks;
+	PROCEDURE Trap (error, fp, pc, page: LONGINT);	(* non-portable *)
+	PROCEDURE Quit;
+	PROCEDURE Reboot;	(* non-portable *)
+	PROCEDURE OpenKernelLog;	(* non-portable *)
+	PROCEDURE Init;	(* non-portable, for internal use *)
+END System.

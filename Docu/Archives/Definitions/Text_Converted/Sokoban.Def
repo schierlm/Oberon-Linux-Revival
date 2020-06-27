@@ -1,0 +1,16 @@
+DEFINITION Sokoban; (* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE ShowHighScores;
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewFrame;
+	PROCEDURE Restart;
+	PROCEDURE DocHandler (D: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewDoc;
+
+END Sokoban.

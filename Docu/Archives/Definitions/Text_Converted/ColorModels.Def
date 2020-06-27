@@ -1,0 +1,37 @@
+DEFINITION ColorModels;	(* portable *)	(* by W. Ibl *)
+
+(* Searches in ColorSymbols.RGB of Oberon.Text for color S and returns the associated RGB values.
+ok is set to TRUE if S has been found and to FALSE otherwise. r, g and b are left unchanged if ok is FALSE. *)
+	PROCEDURE StrToRGB (S: ARRAY OF CHAR; VAR r, g, b: REAL; VAR ok: BOOLEAN);
+
+(* Searches in ColorSymbols.HSV of Oberon.Text for color S and returns the associated HSV values.
+ok is set to TRUE if S has been found and to FALSE otherwise. h, s and v are left unchanged if ok is FALSE. *)
+	PROCEDURE StrToHSV (S: ARRAY OF CHAR; VAR h, s, v: REAL; VAR ok: BOOLEAN);
+
+(* Searches in ColorSymbols.CMY of Oberon.Text for color S and returns the associated CMY values.
+ok is set to TRUE if S has been found and to FALSE otherwise. c, m and y are left unchanged if ok is FALSE. *)
+	PROCEDURE StrToCMY (S: ARRAY OF CHAR; VAR c, m, y: REAL; VAR ok: BOOLEAN);
+
+(* convert a RedGreenBlue color specification to HueSaturationValue *)
+	PROCEDURE RGBToHSV (r, g, b: REAL; VAR h, s, v: REAL);
+
+(* convert a HueSaturationValue color specification to RedGreenBlue *)
+	PROCEDURE HSVToRGB (h, s, v: REAL; VAR r, g, b: REAL);
+
+(* convert a RedGreenBlue color specification to CyanMagentaYellow *)
+	PROCEDURE RGBToCMY (r, g, b: REAL; VAR c, m, y: REAL);
+
+(* convert a CyanMagentaYellow color specification to RedGreenBlue *)
+	PROCEDURE CMYToRGB (c, m, y: REAL; VAR r, g, b: REAL);
+
+(* transform a RedGreenBlue color specification to Display values,
+no color transformation is done. *)
+	PROCEDURE RGBToColor (r, g, b: REAL; VAR R, G, B: INTEGER);
+
+(* transform a RedGreenBlue color specification to a Display value, which is currently part of the palette.
+Color transformation is performed by using the euclidic distance.
+If scanpal is TRUE, the currently active palette is rescanned, otherwise the latest loaded values are used.
+With C the index of the best fitting palette entry is returned, R,G and B hold the RGB values of C *)
+	PROCEDURE RGBToPalette (r, g, b: REAL; VAR C, R, G, B: INTEGER; scanpal: BOOLEAN);
+
+END ColorModels.

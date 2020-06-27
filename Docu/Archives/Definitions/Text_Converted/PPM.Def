@@ -1,0 +1,14 @@
+DEFINITION PPM; (* portable *)	(* by W. Ibl *)
+(* The Portable Pixmap/Graymap File Format to Oberon Picture Format *)
+
+	IMPORT Objects;
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+(* Called from Pictures.Open to try and load an PPM pixmap, a PGM graymap or a PBM bitmap. The picture descriptor
+is pre-allocated by Pictures in Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that
+will load the PPM/PGM/PBM Picture when a FileMsg is received (variant load). Supported are Files either stored as an
+Oberon Text or imported from DOS (CR+LF) or UNIX (LF) *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END PPM.

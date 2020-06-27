@@ -1,0 +1,14 @@
+DEFINITION GIF;	(* portable *)
+
+	IMPORT Files, Objects, Pictures;
+	PROCEDURE CheckFile (f: Files.File): BOOLEAN;
+	PROCEDURE Load (VAR R: Files.Rider; transparentCol: INTEGER; colorConversion: BOOLEAN; pict: Pictures.Picture);
+	PROCEDURE Handle (obj: Objects.Object; VAR M: Objects.ObjMsg);
+
+	(* Called from Pictures.Open to try and load a GIF picture. The picture descriptor is pre-allocated by Pictures in
+	Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the GIF picture
+	when a FileMsg is received (variant load). *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+END GIF.

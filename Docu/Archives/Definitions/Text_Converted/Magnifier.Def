@@ -1,0 +1,5 @@
+DEFINITION Magnifier; (* portable *)
+	PROCEDURE Zoom;	(* width height zoomfactor *)
+	PROCEDURE Install;	(* width height zoomfactor *)
+	PROCEDURE Remove;
+END Magnifier.

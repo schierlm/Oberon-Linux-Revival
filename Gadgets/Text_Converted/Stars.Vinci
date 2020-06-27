@@ -1,0 +1,24 @@
+import colors;
+
+define star (n, size, col, w) as
+	let phi = rad(((n+1) div 3)*360.0/n) in
+		with color=col, width=w do
+			stroke
+				from (size, 0);
+				repeat n times
+					rotate(phi);
+					to (size, 0)
+				end;
+				close
+			end
+		end
+	end
+end star;
+
+translate(100, 100);
+for n = 0 to 4 do
+	let d = 30+10*n in
+		translate(d, 0);
+		star(5+2*n, d, colors.rgb(1 - n/4, n/4, 0), 7-n)
+	end
+end

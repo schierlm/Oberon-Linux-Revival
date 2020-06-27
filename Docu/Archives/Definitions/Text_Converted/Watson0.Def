@@ -1,0 +1,17 @@
+DEFINITION Watson0;	(* portable *)	(* PS	/		/	OP2-Version *)
+
+	IMPORT Texts;
+
+	VAR 
+		options: ARRAY 12 OF CHAR;	(* options: ['x' | 'd'] *)
+
+	(* converts a symbol file *)
+	PROCEDURE ShowDef (VAR mod: ARRAY OF CHAR; T: Texts.Text);
+
+	(* converts a symbol file, only shows the desired object *)
+	PROCEDURE ShowObj (VAR mod, objName: ARRAY OF CHAR; T: Texts.Text);
+
+	(* converts an object file and extracts commands *)
+	PROCEDURE ShowCmd (VAR file: ARRAY OF CHAR; T: Texts.Text);
+
+END Watson0.

@@ -1,0 +1,24 @@
+DEFINITION XPM;	(* portable *)	(* by W. Ibl *)
+(* The X PixMap to Oberon Picture Format *)
+
+	IMPORT Objects;
+	PROCEDURE Handle (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+
+(* Called from Pictures.Open to try and load an XPM pixmap. The picture descriptor is pre-allocated by Pictures in
+Objects.NewObj. InitPicture overwrites the handler of the picture with a new handler that will load the XPM
+Picture when a FileMsg is received (variant load). Supported are Files either stored as an Oberon Text or imported
+from DOS (CR+LF) or UNIX (LF) *)
+	PROCEDURE InitPicture;
+	PROCEDURE NewPicture;
+
+(* Define a new color. Use this, if a certain color name is undefined when loading a XPM picture.
+Syntax is: XPM.DefineColor color red green blue~
+color is a colorname, red, green and blue are REAL values between 0.0 and 1.0 *)
+	PROCEDURE DefineColors;
+
+(* Copy a color. Use this, if a certain color name is undefined when loading a XPM picture.
+Syntax is XPM.CopyColor from => to~.
+from is the source color specification and to is the target color specification *)
+	PROCEDURE CopyColors;
+
+END XPM.

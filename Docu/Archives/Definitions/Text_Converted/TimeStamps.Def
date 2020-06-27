@@ -1,0 +1,22 @@
+DEFINITION TimeStamps;	(* portable *)
+
+	IMPORT Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		RevFrame = POINTER TO RevFrameDesc;
+		RevFrameDesc = RECORD ( FrameDesc ) 
+		END;
+	PROCEDURE Copy (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE Handle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Init (F: Frame);
+	PROCEDURE New;
+	PROCEDURE CopyRev (VAR M: Objects.CopyMsg; from, to: RevFrame);
+	PROCEDURE RevHandle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitRev (F: RevFrame);
+	PROCEDURE NewRev;
+
+END TimeStamps.

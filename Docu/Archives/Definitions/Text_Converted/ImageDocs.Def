@@ -1,0 +1,14 @@
+DEFINITION ImageDocs; (* portable *)
+
+	(*
+		Image documents
+	*)
+	IMPORT
+		Documents;
+
+	(*--- Documents ---*)
+	PROCEDURE InitDoc (doc: Documents.Document);
+	PROCEDURE NewDoc;
+	PROCEDURE Open;
+
+END ImageDocs.

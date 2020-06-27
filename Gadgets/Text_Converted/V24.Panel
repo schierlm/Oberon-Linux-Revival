@@ -1,0 +1,6 @@
+PanelDocs.NewDoc_BIERmw.w'>S-$M	
+
+_C^Open(CCmdV24Gadgets.Open V24 &Params.Value   ~FieldYesValC1 38400 8 1 none6CCmdFieldNameParamsRClose(CCmdV24Gadgets.Close V24   ~FieldYesValRLog(CCmdV24Gadgets.OpenLog V24   ~FieldYesValWPF1 CCmdV24Gadgets.Send V24  "\e[P"   ~FieldYesValWPF2 CCmdV24Gadgets.Send V24  "\e[Q"   ~FieldYesValWPF3 CCmdV24Gadgets.Send V24  "\e[R"   ~FieldYesValWPF4 CCmdV24Gadgets.Send V24  "\e[S"   ~FieldYesValUESCn CCmdV24Gadgets.Send V24  "\e"   ~FieldYesVal
+/CNameV243
+B(CName<(CCmdFieldYesValName5
+|eCW"load\n"zCCmdV24Gadgets.SendSRec V24  #Value P4k.Bin ~Field_"fill 80020000 80700000 0\n"zCCmdV24Gadgets.Send V24  #Value ~FieldCzCCmdV24Gadgets.Send V24  #Value ~FieldCzCCmdV24Gadgets.Send V24  #Value ~FieldCzCCmdV24Gadgets.Send V24  #Value ~FieldPanels.NewPanelBasicGadgets.NewButtonTextFields.NewTextFieldV24Gadgets.NewFrameIcons.NewIconizer

@@ -1,0 +1,4 @@
+DEFINITION Coco;	(* portable *)
+	PROCEDURE Compile;
+
+END Coco.

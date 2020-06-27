@@ -1,0 +1,15 @@
+--
+-- Vinci library definitions
+--
+
+define rect (x0, y0, x1, y1) as
+	enter (0, y0 - y1) at (x0, y0) to (x1, y0) to (x1, y1) to (x0, y1) to (x0, y0) exit (x1 - x0, 0)
+end rect;
+
+define circle (x, y, r) as
+	enter (0, 1) at (x + r, y) arc (x, y), (x + r, y), (x, y + abs(r)) to (x + r, y) exit (0, 1)
+end circle;
+
+define ellipse (x, y, rx, ry) as
+	enter (0, ry) at (x + rx, y) arc (x, y), (x + rx, y), (x, y + ry) to (x + rx, y) exit (0, ry)
+end ellipse;

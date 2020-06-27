@@ -1,0 +1,31 @@
+PanelDocs.NewDoc)#2Panels.NewPanelBasicGadgets.NewSliderTextFields.NewCaptionBasicGadgets.NewButtonBasicGadgets.NewCheckBoxBasicFigures.NewRect1	
+
+ !"#$%&'()*+,-./01
+)CwCrCCmdMixerPanel.SetVolume 0  0  #Value  &MasterBoth.YesValFieldNameMasterLeftxCrCCmdMixerPanel.SetVolume 0  1  #Value  &MasterBoth.YesValFieldNameMasterRightu2CrCCmdMixerPanel.SetVolume 3  0  #Value  &VoiceBoth.YesValFieldNameVoiceLeftv>CrCCmdMixerPanel.SetVolume 3  1  #Value  &VoiceBoth.YesValFieldNameVoiceRightsXCrCCmdMixerPanel.SetVolume 1  0  #Value  &MIDIBoth.YesValFieldNameMIDILeftsdCrCCmdMixerPanel.SetVolume 1  1  #Value &MIDIBoth.YesValFieldNameMIDIRighto~CrCCmdMixerPanel.SetVolume 2  0  #Value  &CDBoth.YesValFieldNameCDLeftpCrCCmdMixerPanel.SetVolume 2  1  #Value  &CDBoth.YesValFieldNameCDRightsCrCCmdMixerPanel.SetVolume 4  0  #Value  &LineBoth.YesValFieldNameLineLeftsCr	CCmdMixerPanel.SetVolume 4  1  #Value &LineBoth.YesValFieldNameLineRight`Cr
+CCmdMixerPanel.SetVolume 5  0  #ValueFieldNameMicMono?#Oberon10.Scn.FntMaster"
+C>#Oberon10.Scn.FntVoice1
+C=#Oberon10.Scn.FntMIDIY
+C;#Oberon10.Scn.FntCD
+C=#Oberon10.Scn.FntLine
+C<#Oberon10.Scn.FntMic
+C:#Oberon10.Scn.FntL65
+C:#Oberon10.Scn.FntRA5
+C:#Oberon10.Scn.FntL5
+C:#Oberon10.Scn.FntR5
+CrLRCCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameMasterBothqLR2CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameVoiceBothpLRXCCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameMIDIBothnLR~CCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameCDBothpLRCCmdMixerPanel.LockVolume #SetVal  #YesValFieldYesVallockNameLineBoth:#Oberon10.Scn.FntL\5
+C:#Oberon10.Scn.FntRg5
+C:#Oberon10.Scn.FntL5
+C:#Oberon10.Scn.FntR5
+C:#Oberon10.Scn.FntL5
+C:#Oberon10.Scn.FntR5
+CO$Oberon16i.Scn.FntMixer for SBProyCCmd<#Oberon10.Scn.FntOut
+Cl
+CCmdMixerPanel.SetBox 8  0  #YesValFieldYesValtrueNameFilterFrqlow/high;#Oberon10.Scn.FntIn
+
+C?#Oberon10.Scn.FntFilter
+CA#Oberon10.Scn.Fntlow/high|-
+CjCCmdMixerPanel.SetBox 7  0  #YesValFieldYesValtrueNameOutFilteroff/oniCCmdMixerPanel.SetBox 6  0  #YesValFieldYesValtrueNameInFilteroff/on<#Oberon10.Scn.FntMic
+C;#Oberon10.Scn.FntCD
+C=#Oberon10.Scn.FntLine
+C@$Oberon10i.Scn.FntSource 
+C*1cuf4C*@;>CCaCCmdMixerPanel.SetBox 9  3  #YesValFieldYesValNameSourceLine_CCmdMixerPanel.SetBox 9  1  #YesValFieldYesValNameSourceCDcCCmdMixerPanel.SetBox 9  0  #YesValFieldYesValMicNameSourceMicMixerSBPro.Lib

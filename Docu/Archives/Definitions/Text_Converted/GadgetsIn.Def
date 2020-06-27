@@ -1,0 +1,35 @@
+DEFINITION GadgetsIn;	(* portable *)
+
+(* Open - Initialise input from a list of Gadgets in the current context.
+The syntax for gadgetlist in BNF is:  name ["." attr] { "," name ["." attr] }.  
+The default attr is "Value".  If the list is empty, start input from the command 
+parameter.  If a "^" follows the command, start input from the latest selection.  
+If a "*" follows the command, start input from the marked viewer.  Otherwise, 
+start input from the text following the command. *)
+	PROCEDURE Open (gadgetlist: ARRAY OF CHAR);
+
+(* Char - Input a single character token. *)
+	PROCEDURE Char (VAR x: CHAR);
+
+(* Int - Input an integer. *)
+	PROCEDURE Int (VAR x: LONGINT);
+
+(* Real - Input a real number. *)
+	PROCEDURE Real (VAR x: REAL);
+
+(* LongReal - Input a long real number. *)
+	PROCEDURE LongReal (VAR x: LONGREAL);
+
+(* Name - Input a name (max 32 characters). *)
+	PROCEDURE Name (VAR x: ARRAY OF CHAR);
+
+(* String - Input a string (max 32 characters). *)
+	PROCEDURE String (VAR x: ARRAY OF CHAR);
+
+(* Boolean - Input a boolean (Yes/No or True/False). *)
+	PROCEDURE Boolean (VAR x: BOOLEAN);
+
+(* Done - Return TRUE iff all input since the last Open call was successful. *)
+	PROCEDURE Done (): BOOLEAN;
+
+END GadgetsIn.

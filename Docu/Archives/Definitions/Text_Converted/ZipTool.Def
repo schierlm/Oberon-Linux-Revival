@@ -1,0 +1,71 @@
+DEFINITION ZipTool;	(* Stefan Walthert  *)
+
+	IMPORT Zip, Texts, Files;
+
+(* Writes the directory of an archive. *)
+	PROCEDURE WriteDirectory (VAR W: Texts.Writer; archive: ARRAY OF CHAR; details, tabs: BOOLEAN; VAR res: LONGINT);
+
+(* Shows the content of the selected zip-archive in a new viewer.
+	ZipTool.Directory [\d | \D] (^ | ZipFile)
+	Options:
+	\d: If set, details of entries of selected zip-archive are shown
+	\D: same as \d, but without style element for tabbing *)
+	PROCEDURE Directory ();
+
+(* Extracts the entry ent from the zip-archive ent and stores as under the filename name. Some log-output is generated.
+	If path is set, the file is stored in the directory according to the relative path in name.
+	If overwrite is set, files with the same name are overwritten, otherwise they are renamed to name.Bak.
+	Possible results: cf. Zip.ExtractEntry *)
+	PROCEDURE ExtractFile (arc: Zip.Archive; ent: Zip.Entry; name: ARRAY OF CHAR; path, overwrite: BOOLEAN; VAR res: LONGINT);
+
+(* Extracts the entry ent from the zip-archive ent and stores as under the filename name. Some log-output is generated.
+	If path is set, the file is stored in the directory according to the relative path in name.
+	If overwrite is set, files with the same name are overwritten, otherwise they are renamed to name.Bak.
+	Possible results: cf. Zip.ExtractEntry *)
+	PROCEDURE OpenFile (arc: Zip.Archive; ent: Zip.Entry; name: ARRAY OF CHAR; VAR tempfile: Files.File; 
+										path, overwrite, show: BOOLEAN; VAR res: LONGINT);
+
+(* Extracts the selected entries of the selected zip-Archive. The relative path in the file name of the entry
+	is ignored (c.f. option \d).
+	ZipTool.Extract [\d] [\o] (^ | ZipFile (^ | {Entry [=> NewName]}))
+	Options:
+	\d: If set, the file is stored in the directory according to the relative path in the file name of the entry
+	\o: If set, files with the same name are overwritten, otherwise they are renamed to filename.Bak *)
+	PROCEDURE Extract ();
+
+(* Extracts all entries of the selected zip-archives. The relative path in the file name of the entry
+	is ignored (c.f. option \d).
+	ZipTool.ExtractAll [\d] [\o] [\p DstPrefix] (^ | {ZipFile})
+	Options:
+	\d: If set, the file is stored in the directory according to the relative path in the file name of the entry
+	\o: If set, files with the same name are overwritten, otherwise they are renamed to filename.Bak
+	\p: If set, DstPrefix is prefixed to all file names of the entries in the zip-archives *)
+	PROCEDURE ExtractAll ();
+
+(* Extracts the selected entries of the selected zip-Archive. The relative path in the file name of the entry
+	is ignored (c.f. option \d).
+	ZipTool.Open [\d] [\o] (^ | ZipFile (^ | {Entry [=> NewName]}))
+	Options:
+	\d: If set, the file is stored in the directory according to the relative path in the file name of the entry
+	\o: If set, files with the same name are overwritten, otherwise they are renamed to filename.Bak *)
+	PROCEDURE Open ();
+
+(* Adds a file to the selected zip-archive.
+	level: specifies the compression level (0: no compression, 9: best compression)
+	strategy: specifies the compression strategy (from 0 - 2) 
+	res = Zip.Ok, Zip.BadName, Zip.EntryAlreadyExists, Zip.DataError *)
+	PROCEDURE AddFile (arc: Zip.Archive; srcname, dstname: ARRAY OF CHAR; level, strategy: SHORTINT; VAR res: LONGINT);
+
+(* Adds the selected files to the selected zip-archive.
+	ZipTool.Add [\level [\strategy]] (^ | ZipFile (^ | {Entry [=> NewName]}))
+	Options:
+	\level: specifies the compression level (0: no compression, 9: best compression)
+		if not set, default level (-1) is used
+	\strategy: specifies the compression strategy (from 0 - 2) *)
+	PROCEDURE Add ();
+
+(* Deletes the selected entries from the selected zip-archive.
+	ZipTool.Delete (^ | ZipFile (^ | {Entry})) *)
+	PROCEDURE Delete ();
+
+END ZipTool.

@@ -1,0 +1,66 @@
+DEFINITION Modules;	(* portable, except where noted *)
+
+(*
+ The Modules module implements the dynamic module loader of the Oberon system. 
+ It is responsible for loading and freeing modules.
+*)
+	IMPORT Kernel;
+
+	TYPE
+		Command = Kernel.Proc;
+		Module = Kernel.Module;
+		ModuleDesc = Kernel.ModuleDesc;	(* non-portable *)
+		ModuleName = Kernel.Name;
+
+	VAR 
+		res: INTEGER;	(* Error code for ThisMod and ThisCommand. res = 0 indicates success. *)
+		resMsg: ARRAY 256 OF CHAR;	(* Explanation of res, if res # 0 *)
+		extension: ARRAY 8 OF CHAR;	(* Extension of object files (non-portable) *)
+
+	(* The res codes are listed in the table below.
+		done = 0;
+		fileNotFound = 1
+		invalidObjFile = 2
+		corruptedObjFile = 4
+		cmdNotFound = 5
+		moduleNotFound = 6
+		notEnoughSpace = 7
+		refCntNotZero = 8
+		cyclicImport = 9
+		incompImport = 16
+	*)
+
+(* Returns a handle to an already loaded module. *)
+	PROCEDURE FindMod (name: ARRAY OF CHAR): Module;
+
+(* Returns a handle to an already loaded module, or if not loaded, loads the module and all its imported modules. *)
+	PROCEDURE ThisMod (name: ARRAY OF CHAR): Module;
+
+(* Returns a procedure variable representing an exported command in a module. 
+Calling this procedure executes the command. *)
+	PROCEDURE ThisCommand (mod: Module; name: ARRAY OF CHAR): Command;
+
+(* Free a module from memory. Only modules with no clients can be freed. The all flag requests that all imported modules should be freed too (i.e. a recursive call to Free). *)
+	PROCEDURE Free (name: ARRAY OF CHAR; all: BOOLEAN);
+
+(* InstallTermHandler - Install a procedure to execute when a module is freed. 
+Never perform upcalls in the installed procedure! *)
+	PROCEDURE InstallTermHandler (h: Kernel.Proc);
+
+END Modules.
+
+(* Remarks:
+
+1. Oberon uses reference counting to determine how many clients of a module are loaded.
+A module can only be freed when the reference count is 0.
+
+2. The res codes are not the same numerically on all Oberon platforms. It is advisable to use
+the resMsg as a correct indication of the error condition.
+
+3. Module and command names are single words consisting of A to Z, a to z, and 0 to 9.
+Names must not start with a digit.
+
+4. Care should be taken freeing modules. Oberon cannot detect if a client has a procedure
+variable still "pointing" at code in a freed module. Calling such a procedure can be
+unpredictable at times, although the system generates a trap most of the time.
+*)

@@ -1,0 +1,112 @@
+SavePoints 1.3.2000
+Jaco Geldenhuys
+
+To run:
+Compiler.Compile\sx SavePoints.Mod ~
+Compiler.Compile\s MakePoints.Mod ~
+MakePoints.Write ~	may take a while on slow machines, only necessary once
+System.Free MakePoints ~	not necessary
+SavePoints.Install ~
+SaveScreen.Run	watch for at least 20 seconds
+
+Configuration:
+SavePoints.Install  thick 3  dura 20  morph 80  frames 20 ~
+	thick 3	each point will be 3x3 pixels big (1..5)
+	dura 20	each figure is displayed for 20 seconds (2..60)
+	morph 80	after 80% of its time, a figure will start to morph (10..90)
+	frames 20	20 frames per second are displayed (1..30)
+SavePoints.Configuration
+SavePoints.InstallDefault
+SavePoints.Install dura 3 ~	for a quick catalogue of the images
+
+To archive:
+System.DeleteFiles SavePoints.Arc ~
+CompressTools.Add SavePoints.Arc
+	MakePoints.Mod SavePoints.Mod SavePoints.Text SavePoints.Html.Text ~
+
+Delete junk:
+System.DeleteFiles SavePoints.Obj MakePoints.Obj SavePoints.Data ~
+
+Notes:
+- The screensaver animation procedure runs longer than usual Oberon tasks.  It may interfere with other task dependent applications (network based, or background processing), so make sure that it is safe to run.
+- The number of points can be changed by setting the MaxPoint constant in MakePoints.Mod, but it should not be made less than 300.  If the screensaver runs too slowly, try to modify the frame rate.
+- Set the Verbose constant in MakePoints.Mod to see figure details and other info.
+- Set the Time constant in SavePoints.Mod to time screensaver invocations.
+- The size of the data file is 24 + (number of figures) * (6 + 8 * (number of points)).
+- It may sometimes seem that the 3D projection is broken but this is only the Neckar effect.
+- SavePoints.Install accepts another configuration parameter: "avoid n".  This tells the screensaver not to change the palette entry for colour n and ignore the colour during the colour cycle.  The parameter may be repeated to avoid more than one colour, e.g., SavePoints.Install avoid 0 avoid 10 avoid 16 ~  This is only valid for systems with 256 or more colours.
+- Comments to jaco@cs.sun.ac.za
+
+Figure selection:
+It is possible to tell MakePoints.Write which figures to write to the data file.  Use MakePoints.Write { figurename } ~
+If no figurenames are given, the default selection will be made.
+There are two special figurenames, "text" and "font", that must be followed by strings:
+
+	MakePoints.Write  font "Oberon10.Scn.Fnt"  text "Hello, world!" ~
+
+(Remember to reload SavePoints if you want to test out a new data file.)
+The other figurenames are:
+	countdown	cube	pyramids	box	hypercube	milky
+	plane	trigsurface	eiffel	spiral	sphere	ball1
+	ball2	torus	cylinder	dumbbell	pc	mug
+	mobius	cross	key	venus	mars	eggs
+	helix	zaflag	oberon	logo
+
+A maximum of 40 figures can be selected.  Note that countdown, pyramids, pc and logo count for 5, 3, 4 and 2 figures respectively.
+
+How to add a new figure:
+1. Study the code of one of the current figures in MakePoints.Mod.  Spiral and Box are good examples.
+2. Write your own figure.  Call procedure Set(x, y, z: REAL) to add a point to the current figure.  You can also call procedure GetPoint(VAR p: Point; n: INTEGER) to retrieve a point you have added before.  Rotate(cos, sin, x, y: REAL) will rotate the points using the trigonometric factors.  Calculating the number of points can be difficult; make sure you don't call Set() more than MaxPoint times!  Write your code so that it will work independently of the number of points.
+3. Please colour configurable constants red.
+4. If your figure needs to be displayed more quickly or slowly than usual, call procedure SetTimeFactor(t: REAL).  The factor t controls how fast time will pass for the figure.  1.0=normal, 0.5=double speed, 0.1=tenfold speedup, 2.0=twofold slowdown.
+5. If your figure must not morph to the next figure, but flip over instantly, call SetAttributes({nomorph}).
+6. Add your figure and its name to the list in MakeFigure().
+7. If everything works, mail the new code to jaco@cs.sun.ac.za
+
+To do:
+Fix color problems, including the lazy palette restoration problem
+Clean up configurable constants and code in general in MakePoints.Mod
+More figures?
+
+Changes:
+24.2.2000
+	created SavePoints
+27.2.2000
+	moved figure building to separate program MakePoints, stored in SavePoints.Data
+28.2.2000
+	submitted first version to ETH
+	added SavePoints.Data to archive in case it takes to long to render
+	added figures: key, pyramids, hypercube
+	tried the interpolation matrix method: slower but not better, code commented out
+	discovered that From() works the wrong way around! heavily used, so unchanged, just cope
+	tried to add a knot figure but the math is too complex and there are too few points
+	renamed Cone to Eiffel
+	added figure: eggs
+29.2.2000
+	removed MaxPoint constant from SavePoints.Mod, it is now read from the data file
+		note: too many points take long to interpolate and slow down the screensaver Step procedure
+		note: the creation of some figures may be influenced - need to clean this up
+	tested with 500 points, not much different visually, interpolation takes a few minutes
+	removed SavePoints.Data from archive, too large & only nec once, fast pcs are universal
+	SavePoints outputs the number of points and figures when loaded
+	renamed SavePoints.Tool to SavePoints.Text
+	created SavePoints.Html.Text for Patrik Reali's software depository
+	tried to add Sierpinsky sponge object, but there are too few points
+	added Verbose info mode to interpolation and data store procedures in MakePoints
+	changed version strings
+	replaced pseudo-type Real with REAL in both source files
+	changed the format of the data file: added tag & version info and timefactor for each figure
+	decided not to add color cyling: too much is too much!  would also bloat programs and data
+	added timefactor: figure can control how fast time passes.  1.0=normal, 0.5=double speed, 0.1=tenfold speedup
+	added a nomorph attribute: a figure that has it set will not morph to the next figure, but switch over instantly
+	added countdown figures at start of sequence
+	eliminated unnecessary interpolation for nomorph-ing figures
+	added new figures: South African flag, personal computer
+1.3.2000
+	made it possible to select which figures MakePoints.Write generates; see the section on figure selection above
+	added documentation on making new figures
+	added new figure: milky; supposed to be the milky way galaxy, but there are two few points to make it work
+	pruned the set of default figures somewhat to save on interpolation time
+	changed the look of the logo figure
+	added the "avoid" configuration parameter to SavePoints to specify colours that must not be used
+	colour cyling for 4 bit displays has been corrected and tested; each new figure is displayed in a different color

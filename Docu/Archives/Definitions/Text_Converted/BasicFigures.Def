@@ -1,0 +1,113 @@
+DEFINITION BasicFigures;	(* portable *)
+
+(*Gadgets for basic geometric figures. This modules provides a base for creating further geometric gadgets based on the editing of control points.
+*)
+	IMPORT Display3, Objects, Gadgets, Oberon;
+
+	CONST
+	(* State0 settings. *)
+		filled = 0;	(* Primitive is filled. *)
+		closed = 1;	(* Beginning and ending control points are connected. *)
+		editpoints = 3;	(* Editing of control points allowed. *)
+		trackmode = 3; (* Mode parameter for Draw method. Indicates fast drawing during interactive tracking. *)
+
+	TYPE
+		Point = POINTER TO PointDesc;
+		PointDesc = RECORD
+			prev, next: Point;	(* Control point list. *)
+			x, y: INTEGER;
+		END;
+
+		Figure = POINTER TO FigureDesc;
+		Methods = POINTER TO MethodDesc;
+		MethodDesc = RECORD
+		(* Request to redraw figure. Hint indicates a control point that has moved (useful for optimizing redraws). *)
+			Draw: PROCEDURE (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+			Print: PROCEDURE (F: Figure; M: Display3.Mask; x, y: INTEGER);
+			Normalize: PROCEDURE (F: Figure; VAR x, y, w, h: INTEGER);
+			Modify: PROCEDURE (F: Figure; nw, nh: INTEGER);
+			HitTest: PROCEDURE (F: Figure; x, y, mx, my: INTEGER): BOOLEAN;
+		END;
+
+		FigureDesc = RECORD ( Gadgets.FrameDesc ) 
+			p: Point;	(* List of control points. *)
+			width: INTEGER;	(* Line width. *)
+			state0: SET;	(* filled, closed, editpoints *)
+			col: INTEGER;	(* Color index. *)
+			patno: INTEGER;	(* Drawing pattern. *)
+			do: Methods;	(* Method block. *)
+		END;
+
+	VAR 
+	(* Standard method blocks. *)
+		CircleMethods,
+		LineMethods,
+		RectMethods,
+		Rect3DMethods,
+		SplineMethods: Methods;
+	PROCEDURE CopyFigure (VAR M: Objects.CopyMsg; from, to: Figure);
+
+(* Return point located at mouse position mx. my (NIL if no point at location). *)
+	PROCEDURE ThisPoint (F: Figure; x, y, mx, my: INTEGER): Point;
+
+(* Standard Tracking behavior. *)
+	PROCEDURE Track (F: Figure; x, y: INTEGER; VAR M: Oberon.InputMsg);
+	PROCEDURE FigureHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+
+(* Append a point with relative coordinates x, y to the control point list of F. *)
+	PROCEDURE AddPoint (F: Figure; x, y: INTEGER);
+
+(* === Lines === *)
+	PROCEDURE DrawLine (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+	PROCEDURE PrintLine (F: Figure; M: Display3.Mask; x, y: INTEGER);
+	PROCEDURE HitTestLine (F: Figure; x, y, mx, my: INTEGER): BOOLEAN;
+	PROCEDURE NormalizeLine (F: Figure; VAR x, y, w, h: INTEGER);
+	PROCEDURE ModifyLine (F: Figure; nw, nh: INTEGER);
+	PROCEDURE LineHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitLine (F: Figure; x, y, x0, y0: INTEGER);
+	PROCEDURE NewLine;
+
+(* === Circles === *)
+	PROCEDURE DrawCircle (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+	PROCEDURE PrintCircle (F: Figure; M: Display3.Mask; x, y: INTEGER);
+	PROCEDURE NormalizeCircle (F: Figure; VAR x, y, w, h: INTEGER);
+	PROCEDURE ModifyCircle (F: Figure; nw, nh: INTEGER);
+	PROCEDURE HitTestCircle (F: Figure; x, y, mx, my: INTEGER): BOOLEAN;
+	PROCEDURE CircleHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitCircle (F: Figure; r: INTEGER);
+	PROCEDURE NewCircle;
+
+(* === Rectangles === *)
+	PROCEDURE DrawRect (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+	PROCEDURE PrintRect (F: Figure; M: Display3.Mask; x, y: INTEGER);
+	PROCEDURE NormalizeRect (F: Figure; VAR x, y, w, h: INTEGER);
+	PROCEDURE ModifyRect (F: Figure; nw, nh: INTEGER);
+	PROCEDURE HitTestRect (F: Figure; x, y, mx, my: INTEGER): BOOLEAN;
+	PROCEDURE RectHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitRect (F: Figure; w, h: INTEGER);
+	PROCEDURE NewRect;
+
+(* === 3D-Rectangles === *)
+	PROCEDURE DrawRect3D (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+	PROCEDURE PrintRect3D (F: Figure; M: Display3.Mask; x, y: INTEGER);
+	PROCEDURE Rect3DHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitRect3D (F: Figure; w, h: INTEGER);
+	PROCEDURE NewRect3D;
+
+(* === Splines === *)
+	PROCEDURE DrawSpline (F: Figure; M: Display3.Mask; x, y: INTEGER; hint: Point; mode: INTEGER);
+	PROCEDURE PrintSpline (F: Figure; M: Display3.Mask; x, y: INTEGER);
+	PROCEDURE NormalizeSpline (F: Figure; VAR x, y, w, h: INTEGER);
+	PROCEDURE ModifySpline (F: Figure; nw, nh: INTEGER);
+	PROCEDURE HitTestSpline (F: Figure; x, y, mx, my: INTEGER): BOOLEAN;
+	PROCEDURE SplineHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitSpline (F: Figure);
+	PROCEDURE NewSpline;
+
+END BasicFigures.
+
+(* Remarks:
+
+1. Coordinate Systems
+In contrast to the typical gadgets relative coordinate system, the origin for relative control points is the left lower corner of a figure gadget. The x, y coordinates passed to the methods is the lower left corner of the gadget on the display.
+*)

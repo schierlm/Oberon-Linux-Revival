@@ -1,0 +1,7 @@
+DEFINITION UUDecoder; (* portable *)
+
+	IMPORT Files, Texts;
+	PROCEDURE GetName (T: Texts.Text; VAR beg: LONGINT; VAR name: ARRAY OF CHAR): BOOLEAN;
+	PROCEDURE DecodeText (T: Texts.Text; beg: LONGINT; F: Files.File): BOOLEAN;
+	PROCEDURE Decode;
+END UUDecoder.

@@ -1,0 +1,37 @@
+DEFINITION Views; (* portable *)
+
+(*Implementation of camera-views with adjustable viewpoints.
+ *)
+	IMPORT
+		Objects, Gadgets, Display, Display3;
+
+	TYPE
+		View = POINTER TO ViewDesc;
+		ViewDesc = RECORD ( Gadgets.ViewDesc ) 
+		(* Relative viewpoint of viewer object. Vector from top-left camera-view corner to top-left of contents. *)
+			vx, vy: INTEGER;
+			time: LONGINT; (* Selection time of viewed gadget. *)
+		END;
+
+	(* Structure to "store" an area on the display *)
+		Block = RECORD
+			mask: Display3.Mask;	(* Mask bounding the area to be drawn in. *)
+		END;
+
+	VAR 
+		background: INTEGER;	(* Background color of camera-views *)
+	PROCEDURE CopyView (VAR M: Objects.CopyMsg; from, to: View);
+	PROCEDURE ViewHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitView (F: View);
+	PROCEDURE NewView;
+
+(* Create a camera-view of F. *)
+	PROCEDURE ViewOf (F: Display.Frame): View;
+
+(* Save a description of a rectangular area on the display. RestoreBlock will issue a DisplayMsg to redraw this part of the display. Note that the mask of the Block must be used to draw in the area X, Y, W, H as the camera-view might be clipping parts away. These two procedures provide a portable, safe and memory efficient way of "storing" parts of the display while drawing temporarily. A low level way of saving and restoring areas on the display is provided by Effects, or by module Bitmaps. *)
+	PROCEDURE GetBlock (X, Y, W, H: INTEGER; dlink: Objects.Object; VAR b: Block);
+
+(* Restore previously "saved" display area. *)
+	PROCEDURE RestoreBlock (b: Block);
+
+END Views.

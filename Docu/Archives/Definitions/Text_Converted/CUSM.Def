@@ -1,0 +1,42 @@
+DEFINITION CUSM;	(* portable *)
+
+	IMPORT Texts, Objects;
+
+	VAR 
+		videosLog: Texts.Text;
+
+(****** GADGETS *)
+	PROCEDURE ReflAdrStrHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE ConfIDHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE HostNameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE ConnHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE VideosHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE NewReflAdrStr;
+	PROCEDURE NewConfID;
+	PROCEDURE NewHostName;
+	PROCEDURE NewConnLog;
+	PROCEDURE NewVideosLog;
+
+(********* END GADGETS *)
+
+(********* VIDEO DECODE *)
+	PROCEDURE Decode (VAR image: Image; VAR data: ARRAY OF CHAR; pos: INTEGER; imType: INTEGER; name: ARRAY OF CHAR);
+	PROCEDURE SetLum;
+	PROCEDURE SetContr;
+	PROCEDURE SetGamma;
+
+(********** END  VIDEO *)
+	PROCEDURE Connect;
+	PROCEDURE SetHostName;
+	PROCEDURE SetReflAdr;
+	PROCEDURE SetReflAdrFromList;
+	PROCEDURE SetConferenceID;
+	PROCEDURE HandleReflectorLogClick;
+	PROCEDURE OutLurckersList;
+	PROCEDURE StartStopVideo;
+
+	(**** GADGETS *)
+	(**** END GADGETS *)
+	PROCEDURE End;
+
+END CUSM.

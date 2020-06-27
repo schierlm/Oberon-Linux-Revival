@@ -1,0 +1,7 @@
+PanelDocs.NewDoc
+Panels.NewPanelBasicGadgets.NewSliderTextFields.NewCaptionE		
+CcjrCCmdMixerPanel.SetVolume 0  0  #ValueFieldNameMasterMonoa;jrCCmdMixerPanel.SetVolume 1  0  #ValueFieldNameMIDIMono__jrCCmdMixerPanel.SetVolume 2  0  #ValueFieldNameCDMonobjrCCmdMixerPanel.SetVolume 3  0  #ValueFieldNameVoiceMono?#Oberon10.Scn.FntMasterX"
+C;#Oberon10.Scn.FntCD^X
+C=#Oberon10.Scn.FntMIDI4X
+C>#Oberon10.Scn.FntVoice~X
+CJ$Oberon16i.Scn.FntMixer for SB 2.0"yCMixerSB.Lib

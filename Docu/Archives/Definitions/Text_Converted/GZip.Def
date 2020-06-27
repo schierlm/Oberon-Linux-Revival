@@ -1,0 +1,39 @@
+DEFINITION GZip;	(* eos  *)
+
+	(* minimal gzip implementation *)
+	IMPORT
+		Files, GZWriters;
+
+	CONST
+		Ok = 0;
+		FileError = -1;
+		DataError = -3;
+
+		(* compression levels *)
+		DefaultCompression = GZWriters.DefaultCompression; NoCompression = GZWriters.NoCompression;
+		BestSpeed = GZWriters.BestSpeed; BestCompression = GZWriters.BestCompression;
+
+		(* compression strategies *)
+		DefaultStrategy = GZWriters.DefaultStrategy; Filtered = GZWriters.Filtered; HuffmanOnly = GZWriters.HuffmanOnly;
+
+	(* uncompress (".gz"-) file in to file out *)
+	PROCEDURE UnzipFile (in, out: Files.File; VAR res: LONGINT);
+
+	(* uncompress list of files, automatically appending ".gz" to filename if not present.
+		GZip.Unzip [\o] (^ | {GZFile})
+		Options:
+		\o: If set, files with the same name are overwritten, otherwise they are renamed to filename.Bak *)
+	PROCEDURE Unzip;
+
+	(* compress file in into file out *)
+	PROCEDURE ZipFile (in, out: Files.File; level, strategy: SHORTINT; VAR res: LONGINT);
+
+	(* compress list of files, automatically appending ".gz" to filename if not present
+		GZip.Zip [\level [\strategy]] (^ | {File [GZFile]})
+		Options:
+		\level: specifies the compression level (0: no compression, 9: best compression)
+			if not set, default level (-1) is used
+		\strategy: specifies the compression strategy (from 0 - 2) *)
+	PROCEDURE Zip ();
+
+END GZip.

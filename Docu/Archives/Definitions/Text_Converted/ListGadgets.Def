@@ -1,0 +1,86 @@
+DEFINITION ListGadgets;	(* portable *)
+
+	IMPORT
+		Display3, Objects, Fonts,
+		Gadgets, ListRiders;
+
+	CONST
+
+	(* frame states *)
+		inclpath = 0;
+		multisel = 1;
+		extendsel = 2;
+		exponpoint = 3;
+		locked = 4;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		Line = POINTER TO LineDesc;
+		Method = POINTER TO MethodBlock;
+
+	(* used to identify position of line in list *)
+		Loc = RECORD
+			line: Line;	(* which line *)
+			y: INTEGER	(* line's y relative to top of frame *)
+		END;
+
+		LineDesc = RECORD
+			next, prev: Line;		(* ring from top to bottom, with sentinel	*)
+			key: LONGINT;		(* key of represented item *)
+			dx, w, h, dsr: INTEGER;		(* true text metrics *)
+			n, lev: INTEGER;		(* N: line number / lev: ident level *)
+			sel: BOOLEAN;		(* line is selected or not *)
+			folded: BOOLEAN;		(* line's desc. are visible (unfolded) *)		(* line has desc. *)
+		END;
+
+		MethodBlock = RECORD
+			GetRider: PROCEDURE (F: Frame; new: BOOLEAN): ListRiders.Rider;
+			Format: PROCEDURE (F: Frame; R: ListRiders.Rider; L: Line);
+			Display: PROCEDURE (F: Frame; Q: Display3.Mask; x, y, w, h: INTEGER; R: ListRiders.Rider; L: Line);
+			PrintFormat: PROCEDURE (F: Frame; R: ListRiders.Rider; L: Line);
+			Print: PROCEDURE (F: Frame; Q: Display3.Mask; x, y, w, h: INTEGER; R: ListRiders.Rider; L: Line)
+		END;
+
+		FrameDesc = RECORD ( Gadgets.FrameDesc ) 
+			R: ListRiders.Rider;
+			state0: SET;
+			time: LONGINT;
+			left, right, top, bottom: INTEGER;
+			tab: INTEGER;
+			textC, pointC, backC: INTEGER;
+			lines: Line;	(* sentinel *)
+			do: Method;
+			fnt: Fonts.Font;
+			car: BOOLEAN; carloc: Loc;
+			sel: BOOLEAN
+		END;
+
+	VAR 
+		methods: Method;
+	PROCEDURE DrawFold (Q: Display3.Mask; x, y, dim, col: INTEGER; folded: BOOLEAN);
+	PROCEDURE PrintFold (Q: Display3.Mask; x, y, dim, col: INTEGER; folded: BOOLEAN);
+
+(* Standard frame methods *)
+	PROCEDURE GetStandardRider (F: Frame; new: BOOLEAN): ListRiders.Rider;
+	PROCEDURE FormatLine (F: Frame; R: ListRiders.Rider; L: Line);
+	PROCEDURE DisplayLine (F: Frame; Q: Display3.Mask; x, y, w, h: INTEGER; R: ListRiders.Rider; L: Line);
+	PROCEDURE PrintFormatLine (F: Frame; R: ListRiders.Rider; L: Line);
+	PROCEDURE PrintLine (F: Frame; Q: Display3.Mask; x, y, w, h: INTEGER; R: ListRiders.Rider; L: Line);
+
+(* Standard procedures *)
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Frame);
+	PROCEDURE NewFrame;
+
+(* Integrates a list with a vert. scrollbar at caret position
+	Usage: ListGadgets.InsertVScrollList <frame> <model> ~
+*)
+	PROCEDURE InsertVScrollList;
+
+(* Integrates a list with a horiz. and vert. scrollbar at caret position
+	Usage: ListGadgets.InsertHVScrollList <frame> <model> ~
+*)
+	PROCEDURE InsertHVScrollList;
+
+END ListGadgets.

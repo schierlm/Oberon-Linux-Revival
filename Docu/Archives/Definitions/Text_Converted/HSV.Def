@@ -1,0 +1,29 @@
+DEFINITION HSV;	(* portable *)
+
+	IMPORT Objects, Display;
+
+	TYPE
+		Frame = POINTER TO FrameDesc;
+		RestoreProc = PROCEDURE (F: Frame; X, Y, W, H: INTEGER);
+		FrameDesc = RECORD ( Display.FrameDesc ) 
+			l, t: INTEGER;
+			restore: RestoreProc;
+		END;
+	PROCEDURE Pos (F: Frame; DX, DY: INTEGER; VAR X, Y: INTEGER);
+	PROCEDURE Loc (F: Frame; X, Y: INTEGER; VAR DX, DY: INTEGER);
+	PROCEDURE Clip (CX, CY, CW, CH: INTEGER; VAR X, Y, W, H: INTEGER);
+	PROCEDURE ClipFrame (F: Frame; X, Y: INTEGER; VAR W, H, DX, DY: INTEGER);
+	PROCEDURE ReplConst (F: Frame; col, X, Y, W, H, mode: INTEGER);
+	PROCEDURE ReplPattern (F: Frame; col: INTEGER; pat: LONGINT; X, Y, W, H, mode: INTEGER);
+	PROCEDURE Dot (F: Frame; col, X, Y, mode: INTEGER);
+	PROCEDURE Neutralize (F: Frame);
+	PROCEDURE RestoreFrame (F: Frame);
+	PROCEDURE Modify (F: Frame; id, dY, Y, H: INTEGER);
+	PROCEDURE Copy (F: Frame; VAR F1: Frame);
+	PROCEDURE TrackMouse (VAR keys: SET; VAR X, Y: INTEGER);
+	PROCEDURE IntToString (i: LONGINT; VAR alpha: ARRAY OF CHAR);
+	PROCEDURE Handle (F: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE Show;
+	PROCEDURE Insert;
+
+END HSV.

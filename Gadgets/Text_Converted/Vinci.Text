@@ -1,0 +1,654 @@
+The Graphical Description Language Vinci
+
+(draft, 11.05.2000 eos)
+
+1  Introduction
+
+Vinci is an interpreted graphical description language. Vinci programs can be visualized on the screen or converted to EPS files. A special package allows Vinci descriptions to be embedded within figures of the Leonardo graphics editor.
+
+Vinci translates graphical descriptions into equivalent Scheme programs and executes them in a Scheme environment that has been enriched with graphics-specific primitive operators.
+
+A Vinci program is always executed in a graphical context. Several statements and functions paint graphical objects on the output device to which this context is attached. The graphics context manages various graphical attributes, for example line width, font, fill color, and a coordinate system. Additional statements and functions modify the values in this graphics state.
+
+
+2  Input Files
+
+Vinci converts an Oberon or ASCII text file into a series of lexical tokens. White space between tokens is ignored, but may be necessary to separate consecutive tokens. Uppercase and lowercase are considered equal, except in string literals.
+
+1) Comments start with a double minus character and include all remaining characters on the same input line. They do not affect the meaning of a program.
+
+	Examples:
+		-- this is a comment
+		const x = 1.5;	-- this is another comment
+
+2) Identifiers start with a letter or a special initial character and are followed by an arbitrary number of further letters, initial characters, and digits. Identifiers denote the names of defined values and may be interpreted as keywords at specific locations in the program.
+
+	ident = initial {initial | digit} | quoted.
+	initial = letter | "!" | ":" | "$" | "%" | "?" | "_" .
+	letter = "a" .. "z" | "A" .. "Z".
+
+	Examples:
+		x	longerName	set!	this_is_ok_too	positive?	$%:
+
+3) Quoted identifiers are sometimes necessary to access standard functions from the Scheme library. When an identifier is enclosed between backquotes "`", it may contain other special characters as well.
+
+	quoted = "`" {initial | digit | "&" | "*" | "/" | "<" | "=" | ">" | "^" | "+" | "-" | "." | "@" | "~" } "`".
+	
+	Examples:
+		`+`	`rock&roll`	`vector-length`	`string->number`
+
+4) Numbers are unsigned integer or real constants. A decimal point must have digits on both sides if it is present. Exponential notation and non-decimal bases are not supported.
+
+	number = digit {digit} [ "." digit {digit} ].
+	digit = "0" .. "9".
+	
+	Examples:
+		0	1	2.345	0.00012	0.0
+
+5) Strings are sequences of characters enclosed in single or double quotes. Opening and closing quotes must match and must not occur within the string. Strings may not extend beyond the end of the current line.
+
+	string = ' " ' {char} ' " ' | " ' " {char} " ' ".
+	
+	Examples:
+		'Hi there!'	"''''"	"I'm feeling lonely"
+
+6) Operators are special characters representing functions. They include the following characters and character combinations:
+
+	+	++	-	*	/	&	~	=	#	<	<=	>	>=	.
+
+7) Delimiters are special characters  that are used to separate other tokens in specific contexts. They include the following characters:
+
+	,	(	)	;
+
+Although Vinci has no special keywords, Vinci interprets many identifiers as keywords if it encounters them at corresponding program locations. This is normally not a problem and allows you to bind values to identifiers even if they can also be used to guide program execution. However, Vinci ignores any bindings if it decides to interpret an identifier as a keyword.
+
+
+3  Program Structure
+
+Each Vinci program starts with an optional import section and consists of a series of statements.
+
+	Program = ["import" ident {"," ident} ";"] Seq.
+	Seq = Stat {";" Stat}.
+
+The import section contains the names of optional packages that the program relies on. Importing a package may result in additional Oberon modules being loaded or additional input files being parsed and their declarations being added to the definitions of the current environment.
+
+
+4  Expressions
+
+Expressions denote calculations that involve constant values and values that are associated with identifiers. Expressions consist of operators and operands. Associativity conflicts are either resolved by grammar rules or with explicit parentheses.
+
+	Expr = SimpleExpr [relop SimpleExpr].
+	SimpleExpr = ["+"|"-"] Term {addop Term}.
+	Term = Factor {mulop Factor}.
+	Factor = number|string|"(" Expr ")"|Qualident ["(" [Expr {"," Expr}] ")"]|"~" Qualident.
+	Qualident = [ident "."] ident.
+	relop = "="|"#"|"<"|"<="|">"|">=".
+	addop = "+"|"-"|"++"|"or".
+	mulop = "*"|"/"|"&"|"div"|"mod".
+
+All operators have exactly the same semantics as in Oberon, with the sole addition of the string concatenation operator ++:
+	
+	Example:
+		label "the result is " ++ `number->string`(x) at (100, 10);
+
+Oberon relational operators IN and IS have no equivalent in Vinci.
+
+
+5  Definitions and Environments
+
+Each identifier that occurs in a program must be defined before its value can be accessed. When an identifier is defined, it is coupled with a value, and this identifier-value couple, which is called binding, is added to the current environment. Several statements open a nested environment within the current environment. The following rules apply to nested bindings:
+
+1) Bindings from outer environments are visible within nested environments, but not vice versa.
+ 
+2) When the program leaves a nested environment (by finishing the corresponding statement), all its bindings vanish with it.
+ 
+3) Redefining an already defined identifier in the same environment replaces the old binding by the new one, but redefining an identifier that is defined in an outer environment merely hides the outer binding until the program leaves the current environment.
+
+4) The value of a binding in an outer environment can only be changed with the built-in Scheme function set!. We encourage you to use a purely functional programming style and do without assignments.
+
+All programs operate within an initial environment that contains bindings for many predefined constants and functions.
+
+5.1 Value Definitions
+A value definition associates an identifier with a constant value.
+
+	Const = "const" Assign.
+	Assign = ident "=" Expr {"," ident "=" Expr}.
+	
+	Examples:
+		const pi = 3.1415, pi2 = 2*pi;
+		const greeting = "Welcome";
+
+5.2 Function definitions
+A function definition associates an identifier with an anonymous function that computes a result from an arbitrary number of arguments.
+
+	Define = "define" ident ["(" [ident {"," ident}] ")"] "as" Seq "end" ident.
+	
+	Examples:
+		define sqr(x) as x * x end sqr;
+		define rect(x, y, w, h) as
+			from (x, y) to (x+w, y) to (x+w, y+h) to (x, y+h) close
+		end rect;
+
+The return value of a function is always the value of its last statement. When the function is invoked, it opens a new environment within the environment where it was defined (not within the environment of the caller!) and binds the arguments it is given to its formal parameters, which are defined by the names between the parentheses that follow its name.
+
+5.3 Local Values
+The let statement allows you to bind values to names within a temporary environment. If bindings for the same identifiers already exist within the same environment, they are thus not overwritten.
+
+	Let = "let" Assign "in" Seq "end".
+	
+	Examples:
+		let dx = x1 - x0, dy = y1 - y0 in
+			circle(x0, y0, sqrt(dx * dx + dy * dy))
+		end;
+		let a = 3, b = 4 in
+			let a = a + b, b = b - a in
+				-- a = 7, b = -3 !
+			end
+		end
+
+As illustrated in the second example, all previous bindings in the same let clause are already in effect at the time the value for the next binding is evaluated.
+
+
+6  Control Structures
+
+6.1  If
+
+	If = "if" Expr "then" Seq {"elsif" Expr "then" Seq} ["else" Seq] "end".
+	
+	Example:
+		if a < b then ...
+		elsif a > b then ...
+		else ...
+		end
+
+The Vinci if is equivalent in syntax and semantics to the IF statement in Oberon or the cond clause in Scheme.
+
+6.2  Loops
+
+	Repeat = "repeat" Expr "times" Seq "end".
+	For = "for" ident "=" Expr "to" Expr ["by" Expr] "do" Seq "end".
+	
+	Examples:
+		repeat 4 times
+			rotate(rad(90)); to (100, 0)
+		end;
+		for x = -10 to 10 by 2 do
+			stroke from (x, 0) to (x, 1) end
+		end;
+
+repeat and for statements both iterate a fixed number of times over a statement sequence. This sequence is executed in a nested environment. In the case of for, the nested environment contains a local control variable with the current value of the loop count. This value progresses from an initial to a final value in regular steps. The default step is 1.
+
+6.3  Function Calls
+
+	Call = Qualident "(" [Expr {"," Expr}] ")".
+	
+	Examples:
+		translate(10, 0);
+		images.draw(images.load("Bart.Pict"), 0, 0);
+
+A procedure call activates the function that is bound to the supplied identifier in the innermost environment where it is defined, optionally passing it a series of argument values to be bound to to function's formal parameters. The number of arguments must be equal to the number of formal parameters in the function definition.
+
+
+7  Labels
+
+Labels are short text captions that are rendered in the current fill color with the current font.
+
+	Label = "label" Expr Locator ["rotated" Expr].
+	Locator = ("at"|"over"|"above"|"below"|["to" ["lower"|"upper"]] ("left"|"right") "of") Coord.
+	Coord = "(" Expr "," Expr ")".
+	
+	Examples:
+		label "Hello, world!" at (100, 10);
+		label "Centered" over (50, 50);
+		label "(0, 0)" to lower right of (0, 0);
+
+The label is placed near the given point coordinate according to the locator parameter.
+
+
+8  Paths
+
+Vector graphics, i.e. lines, arcs, circles, etc. are drawn with Vinci's path statements.
+
+	Draw = ("stroke"|"fill"|"clip"|"record"|"draw") DrawSeq "end".
+	DrawSeq = DrawStat {";" DrawStat}.
+	DrawStat = [If|Repeat|For|Call|Let|Elements|Text].
+	Text = "text" Expr ["at" Coord].
+	Elements = {"from" Coord|Enter|Line|Arc|Curve|Corner|"close"|Exit}.
+	Enter = "enter" Coord "at" Coord.
+	Line = "to" Coord.
+	Arc = "arc" Coord ["," Coord ["," Coord]] "to" Coord.	center, tang vec 1, tang vec 2
+	Curve = "curve" Coord ["," Coord] "to" Coord.	control points
+	Corner = "corner" Coord "," Expr "to" Coord.	corner point, radius
+	Exit = "exit" Coord.
+	
+	Examples:
+		stroke from (0, 0) to (20, 10) end;	-- draws a line from (0, 0) to (20, 10)
+		fill from (0, 0) to (20, 0) to (10, 10) close end;	-- fills a triangle with corners at (0, 0), (20, 0), and (10, 10)
+		draw	-- draw same triangle with current pen
+			enter (-10, -10) at (0, 0);	-- enter at point (0, 0) from direction (-10, -10)
+			to (20, 0) to (10, 10) to (0, 0);
+			exit (20, 0)	-- exit at current point in direction (20, 0)
+		end;
+		clip from (0, 0) to (10, 0) arc (0, 0) to (0, 10) close end;	-- restricts future output to upper right quarter of circle
+		stroke from (0, 0) curve (10, 10), (20, -10) to (30, 0) end;	-- strokes a "~" shape
+		stroke text "ABC" at (0, 0) end;	-- strokes outlines of characters A, B, and C
+
+8.1  Paint Mode
+The first token in a path statement defines how the path will be rendered:
+	
+stroke	draw thin lines and curves
+fill	fill the interior of the path
+clip	restrict future output to the interior of the path
+record	record the path as the current path for painting it later
+draw	draw the path using the current pen object
+
+8.2  Subpaths
+Inside the body of the path, subpaths (connected sequences of primitive segments) are rendered. A subpath begins with a from or enter..at element and ends with close, exit, the start of a new subpath, or the end of the path. After from or at follow the coordinates of the subpath's starting point. Paths that are drawn with the current pen must start with enter..at and end with exit. For a closed subpath, the direction vector of the subpath's final segment follows between enter and at, and the direction of the subpath's starting segment follows after exit. For open subpaths, both directions are (0, 0).
+
+8.3  Segments
+A segment is a line or curve that leads the current subpath from its current point to a new point.
+
+to (x, y)	draws a line to (x, y)
+arc (xm, ym) to (x, y)	draws an elliptic arc to (x, y); center at (xm, ym);
+	geometry defined by current point and (x, y)
+arc (xm, ym), (x1, y1) to (x, y)	like above, but geometry defined by (x1, y1) and (x, y)
+arc (xm, ym), (x1, y1), (x2, y2) to (x, y)	like above, but geometry defined by (x1, y1) and (x2, y2)
+curve (x1, y1) to (x, y)	draw quadratic bezier curve to (x, y); control point (x1, y1)
+curve (x1, y1), (x2, y2) to (x, y)	draw cubic bezier curve to (x, y); control points (x1, y1)
+	and (x2, y2)
+corner (xc, yc), r to (x, y)	draw line, arc, and line to (x, y);
+	draw round corner with radius r at (xc, yc)
+
+8.4  Text
+The outlines of the characters in a string can be used as regular subpaths with text..at.
+
+
+9  Graphics State
+
+	With = "with" Assign "do" Seq "end".
+	Save = ("saveclip"|"savectm") Seq "restore".
+	
+	Examples:
+		with width=3, color=colors.color("blue") do
+			stroke from (0, 0) to (10, 0) end
+		end;
+		saveclip
+			clip circle(0, 0, 30) end;
+			with color=colors.color("yellow") do
+				fill rect(-30, -30, 30, 30) end
+			end;
+			with font="Oberon-Bold", size=20 do
+				label "Clipped Text" over (0, 0)
+			end
+		restore
+
+with assigns new values to an arbitrary number of values in the graphics state. The new values stay in effect until the end of the with body, where the previous values are restored. The graphics state cannot be modified while Vinci is constructing a path.
+
+Available state attributes are:
+attribute	type	function	example
+strokecol	color	color for stroking	colors.red
+fillcol	color	color for filling	colors.gray(0.5)
+color	color	color for stroking and filling	colors.rgb(0.2, 0.5, 0.9)
+strokepat	pattern	pattern for stroking	images.newpattern(img, 0, 0)
+fillpat	pattern	pattern for filling	images.newpattern(images.printpattern(3), 0, 0)
+pattern	pattern	pattern for stroking and filling
+width	real	stroke width
+dash	vector	stroke dash pattern	vector(20, 10, 10, 10)
+phase	real	stroke dash phase
+cap	string	line cap style	"butt"|"round"|"square"|"default"
+join	string	line join style	"bevel"|"round"|"miter"|"default" 
+limit	real	style limit
+flatness	real	flatness tolerance
+font	string	font name	"Oberon", "Oberon-Italic", "Syntax-Medium"
+size	integer	font size
+evenodd	bool	filling rule
+pen	object	pen object for draw	pens.stroker("color", colors.blue, "width", 3)
+	
+
+saveclip and savectm retain the current clip area and the current coordinate system. Any changes to the current clip area or the current transformation matrix in the body are reverted with restore.
+
+
+10  Packages
+
+Vinci programs may include additional definitions by importing corresponding packages with import as the very first statement. The import process works as follows:
+
+1) For an imported package "foo", a existing text file "foo.Pack" or "Foo.Pack" is opened and read. All definitions "name" in the package file are available as "foo.name" in the remainder of the program.
+
+2) If no package file is found, the section "Vinci" in Oberon.Text is consulted. An entry of the form "foo = M" or "Foo = M" results in module "M" being loaded. This module may define new primitive procedures which are then available in the remainder of the program.
+
+3) If no entry is found, a module "VinciFoo" is loaded if it exists. Again, the module may define additional packages and primitive procedures.
+
+Vinci itself defines the images, colors, and matrix packages. They therefore need not be imported explicitly.
+
+
+11  The Shapes Package
+
+By importing the shapes package, Vinci descriptions can be embedded in the Leonardo graphics editor. A Vinci shape is expected to define several functions; these are then called by the shape wrapper to draw the shape or to compute its bounding box.
+
+name	function	default
+matrix()	return matrix of local coordinate system	identity
+bbox()	return shape bounding box	union of component boxes
+render()	draw shape in local coordinate system	none
+drag()	draw quick approximation of shape while it
+	is being dragged around	none
+locate(llx, lly, urx, ury)	return if supplied rectangle overlaps shape	locate components
+
+The shapes package allows a Vinci description to define component shapes. These components can be selected and transformed interactively. Thus, if the Vinci shape makes its local coordinate matrix depend on its component shapes, the geometry of the Vinci shape can be interactively manipulated.
+
+Most Vinci shapes conform to one of the following patterns:
+1) To define a background shape that can neither be selected nor transformed, provide a large bounding box and only provide a render function. Rendering will always be performed in the global figure coordinate system (e.g. YinYang.Shape).
+
+2) To place a Vinci description in a rectangular frame, define a frame component and use its local coordinate matrix. By transforming the frame, a user transforms the entire shape (e.g. Rect2.Shape).
+
+	const frame = shapes.frame(w, h);
+	define render as ... end render;	-- render within rectangle (0, 0, w, h)
+	define matrix as shapes.matrix(frame) end matrix;
+	shapes.component("frame");	-- make the shape that's bound to "frame" a component of the shape
+
+3) To define several handle points that interactive users can move around, define them as point components and base all other functionality on their coordinates (e.g. Distance.Shape). The following example implements a triangle shape whose corners can be dragged around freely.
+
+	import shapes;
+	const p1 = shapes.point(0, 0), p2 = shapes.point(100, 0), p3 = shapes.point(50, 87);
+	define render as
+		stroke
+			from (attr(p1, "X"), attr(p1, "Y"));
+			to (attr(p2, "X"), attr(p2, "Y"));
+			to (attr(p3, "X"), attr(p3, "Y"));
+			close
+		end
+	end render;
+	shapes.component("p1");
+	shapes.component("p2");
+	shapes.component("p3");
+
+
+In addition to defining shapes as components, Vinci descriptions can export parameter values.
+
+	const i = 1, r = 2.3, s = "xyz", b = false, c = colors.color("red"), p = pens.filler(col);
+	
+	shapes.integer("i", "Integer Value");
+	shapes.real("r", "Real Value", 0.0, 10.0);
+	shapes.string("s", "Name");
+	shapes.bool("b", "Flag");
+	shapes.color("c", "Color");
+	shapes.pen("p", "Pen");
+
+The first parameter is the name under which the parameter value is bound to the shape's environment, whereas the second is the name that is displayed when the shape is inspected within Leonardo. For numeric values, an optional minimal and maximal value can also be specified. Leonardo users will be able to inspect and edit the current values of all these parameters.
+
+
+Appendix A - Vinci library and standard packages
+
+Name	Function	Returns
+
+module(string, ...)	loads modules, returns success	bool
+
+ctm	current transformation matrix	matrix
+translate(dx, dy)	translate coordinate system	-
+scale(sx [, sy [, x0, y0]])	scale coordinate system [relative to origin]	-
+rotate(phi [, x0, y0])	rotates coordinate system [around origin]	-
+rad(x)	convert degrees to radians	real
+concat(mat)	concatenate matrix to coordinate system	-
+setctm(mat)	set current transformation matrix	-
+
+cliprect()	return bounding box of current clip area	vector
+
+shape(s)	render shape object	-
+
+rect(x0, y0, x1, y1)	draw rectangular subpath (e.g. fill rect(...) end)	-
+circle(x, y, r)	draw circle subpath	-
+ellipse(x, y, rx, ry)	draw ellipse subpath
+
+Colors
+colors.rgb(r, g, b)	return color with given RGB values in range 0..1	color
+colors.gray(g)	return color with given gray level in range 0..1	color
+colors.index(n)	return color from Oberon display palette	color
+colors.r(color)	return red component	real
+colors.g(color)	return green component	real
+colors.b(color)	return blue component	real
+colors.black, colors.white,	standard colors	color
+  colors.red, colors.green, colors.blue,
+  colors.cyan, colors.magenta, colors.yellow
+
+Matrix
+matrix.init(m00, m01, m10, m11,	initialize matrix	matrix vector
+  m20, m21)
+matrix.invert(mat)	return inverted matrix	matrix vector
+matrix.translate(mat, dx, dy)	return translated matrix	matrix vector
+matrix.scale(mat, sx [, sy])	return scaled matrix	matrix vector
+matrix.rotate(phi)	return rotated matrix	matrix vector
+matrix.concat(mat, ...)	concatenate matrices	matrix vector
+
+images.load(string)	load image object from file	image object
+images.draw(img, x, y)	draw image at supplied position	-
+images.crop(img, llx, lly, urx, ury)	choose rectangular area inside image	image object
+
+Pens
+pens.stroker([name, val {, name, val}])	return stroker; attributes "color", "pattern", "width",	pen object
+	"limit", "cap", "join"
+pens.filler([name, val {, name, val}])	return filler; attributes "color", "pattern", "evenodd"	pen object
+pens.forker([name, val {, name, val}])	return forker; attributes "lower", "upper"	pen object
+pens.dasher([name, val {, name, val}])	return dasher; attributes "base", "pattern", "continuous"	pen object
+pens.outliner([name, val {, name, val}])	return outliner; attributes "width", "limit", "cap", "join",	pen object
+	"base", "mode"
+pens.arrow([name, val {, name, val}])	return arrow outliner; attributes same as outliner plus	pen object
+	"direction", "length", "offset", "distance"
+
+Shapes
+shapes.frame(w, h)	return Vinci frame with given dimensions	shape object
+shapes.point(x, y)	return point with given coordinates	shape object
+shapes.matrix(shape)	return coordinate system of given shape	matrix vector
+shapes.component(name)	declare name to be component shape	-
+shapes.integer(name, string [, min, max])	declare name to be integer parameter	-
+shapes.real(name, string [, min, max])	declare name to be real parameter	-
+shapes.string(name, string)	declare name to be string parameter	-
+shapes.bool(name, string)	declare name to be boolean parameter	-
+shapes.color(name, string)	declare name to be color parameter	-
+shapes.pen(name, string)	declare name to be pen parameter	-
+
+Rectangles
+rectangles.init(llx, lly, urx, ury)	initialize rectangle	rect vector
+rectangles.apply(rect, mat)	apply matrix to rectangle	rect vector
+rectangles.overlap?(r1, r2)	return if rectangles overlap	bool
+rectangles.inside?(r1, r2)	return if r1 is inside r2	bool
+rectangles.contains?(rect, x, y)	return if point (x, y) is inside rectangle	bool
+
+
+Appendix B - Scheme library
+
+Name	Function	Returns
+
+Equivalence
+eqv?(obj1, obj2)	return if objects are equivalent	bool
+eq?(obj1, obj2)	return if objects are the same	bool
+equal?(obj1, obj2)	return if objects are structurally equal	bool
+
+Booleans
+boolean?(val)	return if value is boolean	bool
+not(b)	logical negation	bool
+true, false	predefined values	bool
+
+Pairs and lists
+pair?(obj)	return if object is pair	bool
+cons(obj1, obj2)	return new pair with given car and cdr	pair
+car(pair)	return contents of car field	any
+cdr(pair)	return contents of cdr field	any
+set-car!(pair, obj)	set contents of car field	-
+set-cdr!(pair, obj)	set contents of cdr field	-
+caar(pair), cadr(pair), ... , cddddr(pair)	compositions of car and cdr	any
+null?(obj)	return if object is the empty list	bool
+list?(obj)	return if object is proper list	bool
+list(obj, ...)	return new list containing arguments	pair
+length(list)	return number of elements in list	integer
+append(list, ...)	return list consisting of argument lists' elements	list
+reverse(list)	return new list with elements in reverse order	list
+list-tail(list, k)	return tail of list, omitting first k elements	list
+list-ref(list, k)	return kth element of list	any
+memq(obj, list), memv(obj, list),	return first sublist of list that has obj as first element	list/false
+  member(obj, list)
+assq(obj, list), assv(obj, list),	return first pair in list that has obj as car	list/false
+  assoc(obj, list)
+
+Symbols
+symbol?(obj)	return if object is symbol	bool
+symbol->string(sym)	return symbol name as string	string
+string->symbol(string)	return new symbol with given name (case-sensitive!)	symbol
+
+Numbers
+number?(obj), complex?(obj), real?(obj)	return if object is number	bool
+rational?(obj)	return if object is rational number	bool
+integer?(obj)	return if object is integer	bool
+exact?(num), inexact?(num)	return if number is exact or inexact number	bool
+zero?(num), positive?(num), negative?(num)  return if number is zero, positive, or negative	bool
+odd?(int), even?(int)	return if integer is odd or even	bool
+min(x, ...), max(x, ...)	return minimum or maximum of arguments	number
+abs(num)	return absolute value of number	number
+quotient(num, denom)	return quotient of num/denom	number
+remainder(num, denom)	return remainder of num/denom (sign of num)	number
+modulo(num, denom)	return modulo of num/denom (sign of denom)	number
+gdc(a, b, ...)	return greatest common divisor of arguments (missing!)	number
+lcm(a, b, ..)	return least common multiple of arguments (missing!)	number
+floor(num)	round towards negative infinity	number
+ceiling(num)	round towards infinity	number
+truncate(num)	round towards zero	number
+round(num)	round to nearest	number
+rationalize(x, y)	return simplest rational in [x-y .. x+y]	number
+	(currently always returns inexact result)
+exp(num), log(num),	transcendental functions	number
+sin(num), cos(num), tan(num),
+asin(num), acos(num), atan(num [,num])
+sqrt(num)	square root	number
+expt(x, y)	return x raised to the power y	number
+exact->inexact(num)	convert exact number into inexact number	real
+inexact->exact(num)	convert inexact number into exact number	rational/integer
+number->string(num [, radix])	convert number to string	string
+string->number(num [, radix])	convert string to number	number
+
+Characters
+char?(obj)	return if object is character	bool
+char=?(x, y), char<?(x, y), char>?(x, y)	character comparisons	bool
+char<=?(x, y), char>=?(x, y)
+char-ci=?(x, y),	case-insensitive character comparisons	bool
+char-ci<?(x, y), char-ci>?(x, y),
+char-ci<=?(x, y), char-ci>=?(x, y)
+char-alphabetic?(char)	return if character is alphabetic ...	bool
+char-numeric?(char)	... numeric ...	bool
+char-whitespace?(char)	... whitespace ...	bool
+char-upper-case?(char)	... upper-case ...	bool
+char-lower-case?(char)	... or lower-case	bool
+char->integer(char)	convert character to its ASCII code	integer
+integer->char(int)	convert ASCII code to character	char
+char-upcase(char)	convert character to upper-case	char
+char-downcase(char)	convert character to lower-case	char
+
+Strings
+string?(obj)	return if object is string	bool
+make-string(k [, char])	return string of length k (and fill with character)	string
+string(char, ...)	return string consisting of given characters	string
+string-length(string)	return number of characters in string	integer
+string-ref(string, k)	return character k of string	char
+string-set!(string, k, char)	set character k of string to char	-
+string=?(s1, s2),	standard string comparisons	bool
+string<?(s1, s2), string>?(s1, s2),
+string<=?(s1, s2), string>=?(s1, s2)
+string-ci=?(s1, s2),	case-insensitive string comparisons	bool
+string-ci<?(s1, s2), string-ci>?(s1, s2),
+string-ci<=?(s1, s2), string-ci>=?(s1, s2)
+substring(string, start, end)	return substring starting at start and ending before end	string
+string-append(string, ...)	concatenate all given strings	string
+string->list(string)	convert string to list of characters	list
+list->string(list)	convert list of characters to string	string
+string->copy(string)	return newly allocated copy of given string	string
+string-fill!(string, char)	fill all characters of string with char	-
+
+Vectors
+vector?(obj)	return if object is vector	bool
+make-vector(k [, fill])	return vector of length k (and fill with object)	vector
+vector(obj, ...)	return vector with given values as elements	vector
+vector-length(vec)	return number of elements of vector	integer
+vector-ref(vec, k)	return kth element of vector	any
+vector-set!(vec, k, elem)	set kth element of vector to elem	-
+vector->list(vec)	convert vector to list	list
+list->vector(vec)	convert list to vector	vector
+vector-fill!(vec, elem)	set all elements of vector to elem	-
+
+Control
+procedure?(obj)	return if object is procedure	bool
+apply(proc, list, ...)	apply function to all list elements, one by one	any
+map(proc, list, ...)	apply function to element combinations of argument lists	list
+for-each(proc, list, ...)	like map, but without return value	-
+delay(obj)	return promise of value	special
+force(promise)	force promise to be realized
+call-with-current-continuation(proc)	not implemented	any
+
+Ports
+input-port?(obj)	return if object is input port	bool
+output-port?(obj)	return if object is output port	bool
+current-input-port()	return current input port	input
+current-output-port()	return current output port	output
+call-with-input-file(string, proc)	pass input port for file with given name to proc	any
+call-with-output-file(string, proc)	pass output port to file with given name to proc	any
+with-input-from-file(string, proc)	call proc with input from file with given name	any
+with-output-to-file(string, proc)	call proc with output to file with given name	any
+open-input-file(string)	return input port for file with given name	input
+open-output-file(string)	return output port to file with given name	output
+close-input-port(input)	close input port	-
+close-output-port(output)	close output port	-
+read([port])	read object from standard or given input port	any
+read-char([port])	read character from standard or given input port	char/eof
+peek-char([port])	return character that next read-char will return	char/eof
+eof-object?(obj)	return is object is end-of-file object	bool
+char-ready?([port])	return if character can be read from port	bool
+write(obj [, port])	write object to standard or given output port	-
+display(obj [, port])	like write, but cannot be read() again	-
+newline([port])	write newline character to standard or given output port	-
+write-char(char [, port])	write character to standard or given output port	-
+
+System Interface
+load(string)	read expressions and definitions from file with given name	any
+
+Objects
+new(string)	instantiate object from generator or alias	object
+libobj(lib, name)	get public object from library and object names	object
+copy(obj [, true])	return shallow (default) or deep copy of object	object
+attr(obj, name)	return object attribute	various
+set-attr!(obj {, name, val})	set object attribute(s)	object
+link(obj, name)	return object link	object
+set-link!(obj {, name, obj})	set object link(s)	object
+
+
+Appendix C - Vinci SyntaxProgram	= ["import" ident {"," ident} ";"] Seq.
+Seq	= Stat {";" Stat}.
+Stat	= [Const|Define|With|Save|Draw|Label|DrawStat].
+Const	= "const" Assign.
+Define	= "define" ident ["(" [ident {"," ident}] ")"] "as" Seq "end" ident.
+Let	= "let" Assign "in" Seq "end".
+If	= "if" Expr "then" Seq {"elsif" Expr "then" Seq} ["else" Seq] "end".
+Repeat	= "repeat" Expr "times" Seq "end".
+For	= "for" ident "=" Expr "to" Expr ["by" Expr] "do" Seq "end".
+With	= "with" Assign "do" Seq "end".
+Save	= ("saveclip"|"savectm") Seq "restore".
+Draw	= ("stroke"|"fill"|"clip"|"record"|"draw") DrawSeq "end".
+Label	= "label" Expr Locator ["rotated" Expr].
+Assign	= ident "=" Expr {"," ident "=" Expr}.
+Locator	= ("at"|"over"|"above"|"below"|["to" ["lower"|"upper"]] ("left"|"right") "of") Coord.
+DrawSeq	= DrawStat {";" DrawStat}.
+DrawStat	= [If|Repeat|For|Let|Elements|Expr].
+Elements	= {"from" Coord|Enter|Line|Arc|Curve|Corner|"close"|Exit|Text}.
+Enter	= "enter" Coord "at" Coord.
+Line	= "to" Coord.
+Arc	= "arc" Coord ["," Coord ["," Coord]] "to" Coord.
+Curve	= "curve" Coord ["," Coord] "to" Coord.
+Corner	= "corner" Coord "," Expr "to" Coord.
+Exit	= "exit" Coord.
+Coord	= "(" Expr "," Expr ")".
+Text	= "text" Expr ["at" Coord].
+Expr	= SimpleExpr [relop SimpleExpr].
+SimpleExpr	= ["+"|"-"] Term {addop Term}.
+Term	= Factor {mulop Factor}.
+Factor	= number|string|"(" Expr ")"|Qualident|Call|"~" Qualident.
+Call	= Qualident "(" [Expr {"," Expr}] ")".
+Qualident	= [ident "."] ident.
+relop	= "="|"#"|"<"|"<="|">"|">=".
+addop	= "+"|"-"|"++"|"or".
+mulop	= "*"|"/"|"&"|"div"|"mod".
+

@@ -1,0 +1,7 @@
+DEFINITION V24Log;	(* portable *)
+	PROCEDURE Start;
+	PROCEDURE Stop;
+	PROCEDURE Send;
+	PROCEDURE SendLn;
+
+END V24Log.

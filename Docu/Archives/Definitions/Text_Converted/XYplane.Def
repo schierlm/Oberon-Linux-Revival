@@ -1,0 +1,18 @@
+DEFINITION XYplane;	(* portable *)
+(* virtual screen consiting of W x H pixels *)
+
+	IMPORT Objects;
+
+	CONST
+		erase = 0; draw = 1; (* values for parameter mode in Dot *)
+
+	VAR 
+		W, H: INTEGER;	(* size of virtual screen in pixel *)
+	PROCEDURE XYhandle (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE Clear;
+	PROCEDURE Open;
+	PROCEDURE Dot (x, y, mode: INTEGER);
+	PROCEDURE IsDot (x, y: INTEGER): BOOLEAN;
+	PROCEDURE Key (): CHAR;
+
+END XYplane.

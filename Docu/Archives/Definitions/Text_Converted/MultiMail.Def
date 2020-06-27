@@ -1,0 +1,4 @@
+DEFINITION MultiMail;	(* portable *)
+	PROCEDURE Send;
+
+END MultiMail.

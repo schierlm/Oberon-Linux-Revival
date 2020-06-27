@@ -1,0 +1,25 @@
+DEFINITION Histogram;	(* portable *)
+
+	IMPORT
+		Objects, Gadgets;
+
+	CONST
+		idversion = "Histogram 0.1d7";
+
+	TYPE
+		Histogram = POINTER TO HistogramDesc;
+		HistogramDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+	PROCEDURE Update (H: Histogram);
+	PROCEDURE ResetCounts (H: Histogram);
+	PROCEDURE Reset (H: Histogram);
+	PROCEDURE AddPoint (H: Histogram; x: LONGREAL);
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Histogram);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE InitFrame (F: Histogram; suspended, diff: BOOLEAN);
+	PROCEDURE NewFrame;
+	PROCEDURE NewSuspendedFrame;
+	PROCEDURE NewDiffFrame;
+	PROCEDURE NewSuspendedDiffFrame;
+
+END Histogram.

@@ -1,0 +1,15 @@
+DEFINITION HTMLImages;	(* portable *)
+	PROCEDURE NewMap;
+
+(* HTMLDocs.LoadIMG
+		Load the image linked to the icon. *)
+	PROCEDURE LoadIMG;
+
+(* HTMLDocs.LoadAllIcons
+		Load all images and object linked to icons in the marked page. *)
+	PROCEDURE LoadAllIcons;
+	PROCEDURE NewIcon;
+	PROCEDURE NewMAP;
+	PROCEDURE NewAREA;
+	PROCEDURE NewIMG;
+END HTMLImages.

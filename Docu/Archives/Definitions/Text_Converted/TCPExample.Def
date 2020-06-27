@@ -1,0 +1,7 @@
+DEFINITION TCPExample;	(* portable *)
+
+(* TCPExample.Time
+	ask your time server for the current time. *)
+	PROCEDURE Time;
+
+END TCPExample.

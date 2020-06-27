@@ -1,0 +1,15 @@
+-- vinci example displaying a smiley face
+-- VinciDocs.Open *
+import colors;
+
+with width=3 do
+	with color=colors.yellow do
+		fill circle(100, 100, 80) end
+	end;
+	stroke circle(100, 100, 80) end;
+	fill circle(70, 110, 10) end;
+	stroke
+		from (120, 110) arc (130, 130) to (140, 110);
+		from (60, 70) arc (100, 140) to (140, 70)
+	end
+end

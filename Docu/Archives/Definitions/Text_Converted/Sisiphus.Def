@@ -1,0 +1,15 @@
+DEFINITION Sisiphus;	(* portable *)
+
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		Frame = POINTER TO RECORD ( Gadgets.FrameDesc ) 
+			col: INTEGER;
+			age: LONGINT
+		END;
+	PROCEDURE CopyFrame (VAR M: Objects.CopyMsg; from, to: Frame);
+	PROCEDURE FrameHandler (F: Objects.Object; VAR M: Objects.ObjMsg);
+	PROCEDURE New;
+	PROCEDURE Sync;
+END Sisiphus.

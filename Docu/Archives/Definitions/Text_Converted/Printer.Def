@@ -1,0 +1,90 @@
+DEFINITION Printer; (* portable, except where noted *)
+
+(*Module Printer provide an interface for installable printers.
+*)
+	IMPORT Files, Fonts, Pictures;
+
+	TYPE
+		Printer = POINTER TO PrinterDesc;
+		PrinterDesc = RECORD
+			res: INTEGER; (* Result code for Open method. *)
+			name: ARRAY 64 OF CHAR; (* Command used for installing the printer. *)
+			Height, Width, Depth: INTEGER;	(* Page size (in printer pixels), and available colors (bit depth) *)
+			FrameX, FrameY, FrameW, FrameH: INTEGER; (* Printable region of the page. *)
+			Unit: LONGINT;	(* Printer resolution in 1/36000 mm per pixel. *)
+			InitMetrics: PROCEDURE (P: Printer);
+			Open: PROCEDURE (P: Printer; printer, options: ARRAY OF CHAR); (* Initialize printer & set result code. *)
+			Close: PROCEDURE (P: Printer);	(* Stop printing & set result code. *)
+			Page: PROCEDURE (P: Printer; nofcopies: INTEGER);	(* End of page reached. *)
+			ReplConst: PROCEDURE (P: Printer; x, y, w, h: INTEGER);	(* Block fill. *)
+			ReplPattern: PROCEDURE (P: Printer; x, y, w, h: INTEGER; patno: INTEGER);	(* Pattern fill. *)
+			Line: PROCEDURE (P: Printer; x0, y0, x1, y1: INTEGER);	(* Line between (x0, y0) and (x1, y1). *)
+			Circle: PROCEDURE (P: Printer; x0, y0, r: INTEGER);
+			Ellipse: PROCEDURE (P: Printer; x0, y0, a, b: INTEGER);
+			Spline: PROCEDURE (P: Printer; x0, y0, n, open: INTEGER; VAR X, Y: ARRAY OF INTEGER);
+			Picture: PROCEDURE (P: Printer; pict: Pictures.Picture; sx, sy, sw, sh, dx, dy, dw, dh, mode: INTEGER);
+			UseListFont: PROCEDURE (P: Printer; name: ARRAY OF CHAR);
+			String: PROCEDURE (P: Printer; x, y: INTEGER; str: ARRAY OF CHAR; fnt: Fonts.Font);
+			ContString: PROCEDURE (P: Printer; str: ARRAY OF CHAR; fnt: Fonts.Font);
+			UseColor: PROCEDURE (P: Printer; red, green, blue: INTEGER);
+			GetMetric: PROCEDURE (P: Printer; fnt: Fonts.Font): Fonts.Font
+		END;
+
+	VAR 
+		Height, Width, Depth: INTEGER;	(* In printer pixels, and bit depth *)
+		FrameX, FrameY, FrameW, FrameH: INTEGER;	(* Printable area. *)
+		Unit: LONGINT;	(* Printer resolution in 1/36000 mm per pixel. *)
+		res: INTEGER;	(* result code. 0 = ok, 1 = no such printer, 2 = no link, 3 = printer not ready, 4 = no permission *)
+		current: Printer;	(* Current active printer. *)
+
+(* Install printer driver. P.InitMetrics is called to initialise the page metrics. *)
+	PROCEDURE Install (P: Printer);
+		(* precondition (100):	P # NIL *)
+
+(* Open specified printer.  res code is set. *)
+	PROCEDURE Open (printer, options: ARRAY OF CHAR);
+	PROCEDURE Close;
+	PROCEDURE Page (nofcopies: INTEGER);
+	PROCEDURE ReplConst (x, y, w, h: INTEGER);
+	PROCEDURE ReplPattern (x, y, w, h: INTEGER; patno: INTEGER);
+	PROCEDURE Line (x0, y0, x1, y1: INTEGER);
+	PROCEDURE Circle (x0, y0, r: INTEGER);
+	PROCEDURE Ellipse (x0, y0, a, b: INTEGER);
+	PROCEDURE Spline (x0, y0, n, open: INTEGER; VAR X, Y: ARRAY OF INTEGER);
+	PROCEDURE Picture (P: Pictures.Picture; sx, sy, sw, sh, dx, dy, dw, dh, mode: INTEGER);
+	PROCEDURE UseListFont (name: ARRAY OF CHAR);
+	PROCEDURE String (x, y: INTEGER; str: ARRAY OF CHAR; fnt: Fonts.Font);
+	PROCEDURE ContString (str: ARRAY OF CHAR; fnt: Fonts.Font);
+	PROCEDURE UseColor (red, green, blue: INTEGER);
+	PROCEDURE GetMetric (fnt: Fonts.Font): Fonts.Font;
+
+(* Send file to the local printer specified by its name, or if not a known printer, register the file.  res code is set. *)
+	PROCEDURE Spool (f: Files.File);	(* non-portable *)
+END Printer.
+
+(* Remarks:
+
+1. Installing a printer involves calling Printer.Install with a filled-out printer (say P) descriptor. The installed printer is assigned to Printer.current. Immediately after installation, the InitMetrics method is called so that the printer can return its metrics in P.Width, P.Height, P.Depth, P.FrameX, P.FrameY, P.FrameW, P.FrameH, and P.Unit (see next remark also). These variables are copied to the global variables with the same names. Calling procedures of module Printer results in a call to a corresponding method of the currently active printer Printer.current.
+
+2. The Open method may interpret the user and password for allowing access to a printer. A res code of 0 indicates that the printer has successfully been opened. The Open method must fill in the fields Height, Width, Depth, FrameX, FrameY, FrameW, FrameH, and Unit of the printer descriptor. All values except Unit and Depth are in printer pixels. Typical printers have 300 pixels per inch (commonly abbreviated dots-per-inch (dpi)). Unit specifies the width and height of a single pixel in units of 1/36000 mm. The printer origin 0, 0 is the left bottom corner of the page (and may not be printable). FrameX, FrameY, FrameW, FrameH indicate the printable area of the page. Depth (bits per pixel) has a typical value of 1 (black and white printer) or 24 (true-color printer). A printer must be closed for output to appear.
+
+3. All coordinates are in printer pixels. Only the first characters of a font name (fname) up to the first period are relevant. Strings are positioned relative to their base-line. A module is free to print anywhere on the page regardless of the printer connected (there is no need to print from the top to the bottom of a page when a line printer is connected).
+
+4. The printer patterns are defined as follows:
+
+1	2	3	4	5	6	7	8
+	
+5. UseListFont has no meaning.
+
+6. The String method keeps track of where the last character ends, allowing ContString to continue from that position.
+
+7. UseColor takes intensity values in the range 0 <= x < 256 for each color component. Setting a color influences all further drawing operations. Setting the color to white allows you to delete already printer areas (a single page is normally cached in memory).
+
+8. Method Spline draws a spline through the n points in arrays X, Y. (x0, y0) specifies a translation vector. Open set to 1 indicates an open spline should be drawn, otherwise a closed spline is assumed.
+
+9. Implementation restriction: On Oberon for Windows nofcopies is ignored and defaults to 1.
+
+10. Method Picture prints the area sx, sy, sw, sh of a picture onto the area dx, dy, dw, dh of the printer (scaling as needed).
+
+11. The default printer driver that is installed at startup is specified with System.DefaultPrinter in the Oberon.Text/Registry. The value of the key must be the name of a command that installs a printer.
+*)

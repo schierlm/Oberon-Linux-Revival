@@ -1,0 +1,55 @@
+DEFINITION ColorGadgets; (* portable *)
+
+	(*
+		Gadget controls for displaying and manipulating colors and color objects
+	*)
+	IMPORT
+		Objects, Gadgets;
+
+	TYPE
+		(* color wells displaying color model *)
+		Well = POINTER TO WellDesc;
+		WellDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		(* circular area for manipulating hue and saturation of a color *)
+		Disc = POINTER TO DiscDesc;
+		DiscDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+		(* wedge shaped area for manipulating saturation and value *)
+		Wedge = POINTER TO WedgeDesc;
+		WedgeDesc = RECORD ( Gadgets.FrameDesc ) 
+		END;
+
+	(*--- Wells ---*)
+	PROCEDURE CopyWell (VAR msg: Objects.CopyMsg; from, to: Well);
+	PROCEDURE HandleWell (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE NewWell;
+
+	(*--- Discs ---*)
+	PROCEDURE CopyDisc (VAR msg: Objects.CopyMsg; from, to: Disc);
+	PROCEDURE HandleDisc (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE NewDisc;
+
+	(*--- Wedges ---*)
+	PROCEDURE WedgeAttr (wedge: Wedge; VAR msg: Objects.AttrMsg);
+	PROCEDURE CopyWedge (VAR msg: Objects.CopyMsg; from, to: Wedge);
+	PROCEDURE HandleWedge (obj: Objects.Object; VAR msg: Objects.ObjMsg);
+	PROCEDURE NewWedge;
+
+	(*--- Commands ---*)
+
+	(* set selected text color *)
+	PROCEDURE SetText;
+
+	(* get color of selected text and store it in attribute (2.) of named (1.) object *)
+	PROCEDURE GetText;
+
+	(* set attribute (1.) of selected objects to color value (2.) *)
+	PROCEDURE SetAttr;
+
+	(* get attribute (1.) of selected objects and set attribute (3.) of named (2.) object *)
+	PROCEDURE GetAttr;
+
+END ColorGadgets.

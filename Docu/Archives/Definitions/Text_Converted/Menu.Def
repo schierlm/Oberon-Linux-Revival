@@ -1,0 +1,8 @@
+DEFINITION Menu;	(* portable *)
+
+	IMPORT Texts;
+	PROCEDURE CmdMenu (menu: Texts.Text; x, y: INTEGER; VAR cmd: INTEGER);
+	PROCEDURE ShowCmd;
+	PROCEDURE Reset;
+
+END Menu.

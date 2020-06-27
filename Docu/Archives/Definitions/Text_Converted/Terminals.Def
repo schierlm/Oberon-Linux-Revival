@@ -1,0 +1,48 @@
+DEFINITION Terminals;	(* portable *)
+
+	IMPORT Texts;
+
+	CONST
+		Height = 58; MaxWidth = 132;
+		none = 0; bold = 1; underline = 2; blinking = 4; reverse = 8;
+		update = 1; moveCursor = 2; scroll = 3;
+		ansi = 0; applic = 1; lineFeed = 2; insert = 3; relative = 4; cursorKeys = 5; autowrap = 6;
+
+	TYPE
+		Char = RECORD
+			ch: CHAR; attr: SHORTINT END;
+
+		Line = POINTER TO RECORD
+			len: INTEGER;
+			ch: ARRAY MaxWidth + 1 OF Char
+		END;
+
+		Location = RECORD
+			line, col: INTEGER
+		END;
+
+		Terminal = POINTER TO TerminalDesc;
+		Sender = PROCEDURE (T: Terminal; ch: CHAR);
+		Breaker = PROCEDURE (T: Terminal);
+		Notifier = PROCEDURE (T: Terminal; op, fromLine, fromCol, toLine, toCol: INTEGER; oldCursor: Location);
+		TerminalDesc = RECORD
+			attr: SHORTINT;
+			width, height: INTEGER;
+			cursor: Location;
+			notify: Notifier;
+			line: ARRAY Height + 1 OF Line;
+			flags: SET;
+			answerback: ARRAY 32 OF CHAR;
+			cache: Texts.Writer;
+			text: Texts.Text;
+			pin: LONGINT;
+		END;
+	PROCEDURE Reset (T: Terminal);
+	PROCEDURE Flush (T: Terminal);
+	PROCEDURE Receive (T: Terminal; ch: CHAR);
+	PROCEDURE Send (T: Terminal; ch: CHAR);
+	PROCEDURE SendString (T: Terminal; VAR s: ARRAY OF CHAR);
+	PROCEDURE SendText (T: Terminal; text: Texts.Text; beg, end: LONGINT);
+	PROCEDURE Open (T: Terminal; text: Texts.Text; send: Sender; break: Breaker; notify: Notifier; height: INTEGER);
+
+END Terminals.

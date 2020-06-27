@@ -1,0 +1,58 @@
+DEFINITION ZlibBuffers;	(* Stefan Walthert  *)
+(* AUTHOR "swalthert"; PURPOSE "Zlib buffering"; *)
+
+	TYPE
+	(* input/output buffer *)
+		Buffer = RECORD
+			avail-: LONGINT;	(* number of bytes that can be produced/consumed *)
+			size-: LONGINT;	(* total number of bytes in buffer memory *)
+			totalOut-, totalIn-: LONGINT;	(* total number of bytes produced/consumed *)
+		END;
+
+(* set buf.totalIn and buf.totalOut to zero *)
+	PROCEDURE Reset (VAR buf: Buffer);
+
+(* initialize buffer on memory in client space *)
+	PROCEDURE Init (VAR buf: Buffer; VAR mem: ARRAY OF CHAR; offset, size, avail: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 < size) & (offset + size <= LEN(mem)) *)
+		(* precondition (101):	(0 <= avail) & (avail <= size) *)
+
+(* read byte from (input) buffer *)
+	PROCEDURE Read (VAR buf: Buffer; VAR ch: CHAR);
+		(* precondition (100):	buf.avail > 0 *)
+
+(* read len bytes from (input) buffer *)
+	PROCEDURE ReadBytes (VAR buf: Buffer; VAR dst: ARRAY OF CHAR; offset, len: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 < len) & (offset + len <= LEN(dst)) & (len <= buf.avail) *)
+
+(* write byte into (output) buffer *)
+	PROCEDURE Write (VAR buf: Buffer; ch: CHAR);
+		(* precondition (100):	buf.avail > 0 *)
+
+(* write len bytes into (output) buffer *)
+	PROCEDURE WriteBytes (VAR buf: Buffer; VAR src: ARRAY OF CHAR; offset, len: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 < len) & (offset + len <= LEN(src)) & (len <= buf.avail) *)
+
+(* rewind previously empty input buffer to first position after it has been filled with new input *)
+	PROCEDURE Rewind (VAR buf: Buffer; avail: LONGINT);
+		(* precondition (100):	buf.avail = 0 *)
+		(* precondition (101):	(0 <= avail) & (avail <= buf.size) *)
+
+(* move position of next read for -offset bytes *)
+	PROCEDURE Reread (VAR buf: Buffer; offset: LONGINT);
+		(* precondition (101):	(0 <= offset) & (buf.avail + offset <= buf.size) *)
+
+(* restart writing at starting position of output buffer after it has been emptied *)
+	PROCEDURE Rewrite (VAR buf: Buffer);
+
+(* fill input buffer with new bytes to consume *)
+	PROCEDURE Fill (VAR buf: Buffer; VAR src: ARRAY OF CHAR; offset, size: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 < size) & (offset + size <= LEN(src)) *)
+		(* precondition (101):	buf.avail + size <= buf.size *)
+
+(* extract bytes from output buffer to make room for new bytes *)
+	PROCEDURE Drain (VAR buf: Buffer; VAR dst: ARRAY OF CHAR; offset, size: LONGINT);
+		(* precondition (100):	(0 <= offset) & (0 < size) & (offset + size <= LEN(dst)) *)
+		(* precondition (101):	buf.avail + size <= buf.size *)
+
+END ZlibBuffers.

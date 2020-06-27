@@ -1,0 +1,88 @@
+DEFINITION NetTools;	(* portable *)
+
+	IMPORT Files, NetSystem, Documents, HyperDocs, Streams;
+
+(* NetTools is a utility module that contains procedures commonly used with TCP services. *)
+	CONST
+		MaxLine = 1024;
+		BufLen = MaxLine;
+		ServerStrLen = HyperDocs.ServerStrLen;
+		PathStrLen = HyperDocs.PathStrLen;
+		Done = 0; Failed = MAX(INTEGER); (* res codes *)
+
+	TYPE
+	(* Message send to the http link scheme object, when a service (gopher, ftp) is used via a proxy host.
+			key is associated to the requested url. host and port specify the proxy host to be used.
+			The resulting document is returned in D. *)
+		ProxyMsg = RECORD ( HyperDocs.LinkSchemeMsg ) 
+			host: ARRAY ServerStrLen OF CHAR;
+			D: Documents.Document;
+			port: INTEGER
+		END;
+	(* Session with an TCP server, e.g.: FTP, POP, ... *)
+
+		Session = POINTER TO SessionDesc;
+		SessionDesc = RECORD
+			C: NetSystem.Connection; (* the connection *)
+			S: Streams.Stream; (* a stream for the connection *)
+			reply: ARRAY MaxLine OF CHAR; (* reply-line of the last command sent *)
+			status: INTEGER; (* result code of the TCP-protocoll used *)
+			res: INTEGER (* result code: 0: Done; # 0: Failed *)
+		END;
+	(* a TCP Stream implementation *)
+
+		TCPStream = POINTER TO TCPStreamDesc;
+		TCPStreamDesc = RECORD ( Streams.StreamDesc ) 
+			C: NetSystem.Connection;
+		END;
+
+	VAR 
+		curLen: LONGINT; (* maximum length of the current blocking transfer *)
+		curPos: LONGINT; (* state of the current blocking transfer *)
+		TimeOut: LONGINT; (* typical time-out for blocking transfer *)
+
+(* TRUE if the BreakChar-key (ESC) has been pressed. *)
+	PROCEDURE UserBreak (): BOOLEAN;
+	PROCEDURE ProgMNotify ();
+
+(* Open a new connection C to host on port. Switch logging of error-messages with log on or off.
+		If the connection could be established TRUE is returned. *)
+	PROCEDURE Connect (VAR C: NetSystem.Connection; port: INTEGER; host: ARRAY OF CHAR; log: BOOLEAN): BOOLEAN;
+
+(* Start opening a new connection C to host on port. Switch logging of error-messages with log on or off.
+		If the connection could be established TRUE is returned. *)
+	PROCEDURE AsyncConnect (VAR C: NetSystem.Connection; port: INTEGER; host: ARRAY OF CHAR; log: BOOLEAN): BOOLEAN;
+
+(* Check if connection C is still open for incoming (mode = NetSystem.in) or outgoing (mode = NetSystem.out) data. *)
+	PROCEDURE Connected (C: NetSystem.Connection; mode: INTEGER): BOOLEAN;
+
+(* Close the connection C. *)
+	PROCEDURE Disconnect (VAR C: NetSystem.Connection);
+
+(* Send the string str on connection C without any termination characters. *)
+	PROCEDURE SendString (C: NetSystem.Connection; str: ARRAY OF CHAR);
+	PROCEDURE TCPAvailable (S: Streams.Stream): LONGINT;
+
+(* Opens a stream on connection C. *)
+	PROCEDURE OpenStream (C: NetSystem.Connection): Streams.Stream;
+
+(* Write all incoming data on connection C to R, until the connection is closed. notify is called after each
+		packet received. *)
+	PROCEDURE ReadData (C: NetSystem.Connection; VAR R: Files.Rider; maxLen: LONGINT);
+	PROCEDURE WriteData (C: NetSystem.Connection; VAR R: Files.Rider);
+
+(* Query a string setting in the NetSystem section in Registry. *)
+	PROCEDURE QueryString (key: ARRAY OF CHAR; VAR s: ARRAY OF CHAR): BOOLEAN;
+
+(* Get host and port of the Registry entry key in section NetSystem. *)
+	PROCEDURE GetHostPort (key: ARRAY OF CHAR; VAR host: ARRAY OF CHAR; VAR port: INTEGER; defPort: INTEGER);
+
+(* Query a boolean setting in the NetSystem section in Registry. *)
+	PROCEDURE QueryBool (key: ARRAY OF CHAR): BOOLEAN;
+
+(* Get host and port of an url link. *)
+	PROCEDURE SplitHostPort (VAR url, host: ARRAY OF CHAR; VAR port: INTEGER);
+
+(* Checks if a proxy should be used for host. *)
+	PROCEDURE UseProxy (VAR host: ARRAY OF CHAR): BOOLEAN;
+END NetTools.

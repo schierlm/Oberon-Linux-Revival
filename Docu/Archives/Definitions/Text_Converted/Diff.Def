@@ -1,0 +1,18 @@
+DEFINITION Diff; (* portable *)	(* PS  *)
+
+	(* options
+		s: produce statistic output
+		S: produce more stat. output
+		n: do not open a document
+	*)
+
+(* looks for differences in two texts: Diff.Do [%options] text1 text2 ~ *)
+	PROCEDURE Do;
+
+(* locates a line in the marked document (line number from stat. output) *)
+	PROCEDURE LocateLine;
+
+(* hashes a line, starts at begin of selection *)
+	PROCEDURE HashThis;
+
+END Diff.

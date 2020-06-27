@@ -1,0 +1,38 @@
+DEFINITION FontEditor; (* portable *)
+(* Dieses Modul enthlt einen Editor fr Fonts basierend auf Rembrandt-Editor *)
+
+(* Zoomfaktor des Pictures wird erhht *)
+	PROCEDURE Inc;
+
+(* Zoomfaktor des Pictures wird erniedrigt *)
+	PROCEDURE Dec;
+
+(* Speichert das markierte Zeichen im zugehrigen Font ab *)
+	PROCEDURE StoreCharacter;
+
+(* ffnet ein neues Document *)
+	PROCEDURE NewDoc;
+	PROCEDURE ShowTeststring;
+
+(* Flip horizontal/verticaL *)
+	PROCEDURE FlipH;
+	PROCEDURE FlipV;
+
+(* Turn 90 Degrees *)
+	PROCEDURE Turn;
+
+(* Neue Gadgets *)
+	PROCEDURE NewFonttable;
+	PROCEDURE NewPreview;
+
+(* Font laden *)
+	PROCEDURE Load;
+
+(* Font speichern *)
+	PROCEDURE Store;
+
+(* Handler fr mittlere Maustaste *)
+	PROCEDURE MoveMetric;
+	PROCEDURE EditPixels;
+
+END FontEditor.

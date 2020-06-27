@@ -1,0 +1,115 @@
+DEFINITION Graphics;	(* portable *)
+
+	IMPORT Files, Modules, Fonts, Texts;
+
+	CONST
+		NameLen = 16;
+
+	TYPE
+		Graph = POINTER TO GraphDesc;
+		Object = POINTER TO ObjectDesc;
+		Method = POINTER TO MethodDesc;
+		Line = POINTER TO LineDesc;
+		Caption = POINTER TO CaptionDesc;
+		Macro = POINTER TO MacroDesc;
+		ObjectDesc = RECORD
+			x, y, w, h, col: INTEGER;
+			selected, marked: BOOLEAN;
+			do: Method;
+		END;
+
+		Msg = RECORD END;
+
+		WidMsg = RECORD ( Msg ) 
+			w: INTEGER END;
+
+		ColorMsg = RECORD ( Msg ) 
+			col: INTEGER END;
+
+		FontMsg = RECORD ( Msg ) 
+			fnt: Fonts.Font END;
+
+		Name = ARRAY NameLen OF CHAR;
+		GraphDesc = RECORD
+			time: LONGINT;
+			sel: Object
+		END;
+
+		MacHead = POINTER TO MacHeadDesc;
+		MacExt = POINTER TO MacExtDesc;
+		Library = POINTER TO LibraryDesc;
+		MacHeadDesc = RECORD
+			name: Name;
+			w, h: INTEGER;
+			ext: MacExt;
+			lib: Library;
+		END;
+
+		LibraryDesc = RECORD
+			name: Name;
+		END;
+
+		MacExtDesc = RECORD END;
+
+		Context = RECORD
+		END;
+
+		MethodDesc = RECORD
+			module, allocator: Name;
+			new: Modules.Command;
+			copy: PROCEDURE (from, to: Object);
+			draw, handle: PROCEDURE (obj: Object; VAR msg: Msg);
+			selectable: PROCEDURE (obj: Object; x, y: INTEGER): BOOLEAN;
+			read: PROCEDURE (obj: Object; VAR R: Files.Rider; VAR C: Context);
+			write: PROCEDURE (obj: Object; cno: SHORTINT; VAR R: Files.Rider; VAR C: Context);
+			print: PROCEDURE (obj: Object; x, y: INTEGER)
+		END;
+
+		LineDesc = RECORD ( ObjectDesc ) 
+		END;
+
+		CaptionDesc = RECORD ( ObjectDesc ) 
+			pos, len: INTEGER
+		END;
+
+		MacroDesc = RECORD ( ObjectDesc ) 
+			mac: MacHead
+		END;
+
+	VAR 
+		new: Object;
+		width, res: INTEGER;
+		T: Texts.Text;
+		LineMethod, CapMethod, MacMethod: Method;
+		scale: INTEGER;
+	PROCEDURE Add (G: Graph; obj: Object);
+	PROCEDURE Draw (G: Graph; VAR M: Msg);
+	PROCEDURE ThisObj (G: Graph; x, y: INTEGER): Object;
+	PROCEDURE SelectObj (G: Graph; obj: Object);
+	PROCEDURE SelectArea (G: Graph; x0, y0, x1, y1: INTEGER);
+	PROCEDURE Enumerate (G: Graph; handle: PROCEDURE (obj: Object; VAR done: BOOLEAN));
+	PROCEDURE Deselect (G: Graph);
+	PROCEDURE DrawSel (G: Graph; VAR M: Msg);
+	PROCEDURE Handle (G: Graph; VAR M: Msg);
+	PROCEDURE Move (G: Graph; dx, dy: INTEGER);
+	PROCEDURE Copy (Gs, Gd: Graph; dx, dy: INTEGER);
+	PROCEDURE Delete (G: Graph);
+	PROCEDURE FontNo (VAR W: Files.Rider; VAR C: Context; fnt: Fonts.Font): SHORTINT;
+	PROCEDURE Store (G: Graph; VAR W: Files.Rider);
+	PROCEDURE WriteObj (VAR W: Files.Rider; cno: SHORTINT; obj: Object);
+	PROCEDURE WriteFile (G: Graph; name: ARRAY OF CHAR);
+	PROCEDURE Print (G: Graph; x0, y0: INTEGER);
+	PROCEDURE ThisClass (VAR module, allocator: ARRAY OF CHAR): Modules.Command;
+	PROCEDURE Font (VAR R: Files.Rider; VAR C: Context): Fonts.Font;
+	PROCEDURE Load (G: Graph; VAR R: Files.Rider);
+	PROCEDURE Open (G: Graph; name: ARRAY OF CHAR);
+	PROCEDURE ThisLib (VAR name: ARRAY OF CHAR; replace: BOOLEAN): Library;
+	PROCEDURE NewLib (VAR Lname: ARRAY OF CHAR): Library;
+	PROCEDURE StoreLib (L: Library; VAR Fname: ARRAY OF CHAR);
+	PROCEDURE RemoveLibraries;
+	PROCEDURE ThisMac (L: Library; VAR Mname: ARRAY OF CHAR): MacHead;
+	PROCEDURE OpenMac (mh: MacHead; G: Graph; x, y: INTEGER);
+	PROCEDURE DrawMac (mh: MacHead; VAR M: Msg);
+	PROCEDURE MakeMac (G: Graph; x, y, w, h: INTEGER; VAR Mname: ARRAY OF CHAR): MacHead;
+	PROCEDURE InsertMac (mh: MacHead; L: Library; VAR new: BOOLEAN);
+END Graphics.

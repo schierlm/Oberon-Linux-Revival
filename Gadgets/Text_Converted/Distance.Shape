@@ -1,0 +1,90 @@
+import colors, matrix, rectangles, shapes;
+
+shapes.name("Distance Line");
+
+const unit=91.44/25.4, unitname="mm";
+const p1 = shapes.point(0, 0), p2 = shapes.point(100*unit, 0);
+const offset=5;
+const fontname="Oberon-Italic", fontsize=12;
+const col=colors.black;
+const digits=0;
+
+define roundtostr (x) as
+	`number->string`(`inexact->exact`(round(x)))
+end roundtostr;
+
+define tochar (x) as
+	`integer->char`(48 + `inexact->exact`(x))
+end tochar;
+
+define fractostr (str, x, pos, d) as
+	if pos = d then
+		`string-set!`(str, pos, tochar(round(10*x)));
+		str
+	else
+		let y = 10*x, i = truncate(y) in
+			`string-set!`(str, pos, tochar(i));
+			fractostr(str, y-i, pos+1, d)
+		end
+	end
+end fractostr;
+
+define tento (n) as
+	if n = 0 then 1
+	else 10*tento(n-1)
+	end
+end tento;
+
+define realtostrfix (x, d) as
+	if d = 0 then roundtostr(x)
+	else
+		let t = tento(d), x = round(t * x)/t in
+			roundtostr(x) ++ "." ++ fractostr(`make-string`(d), x - truncate(x), 0, d-1)
+		end
+	end
+end realtostrfix;
+
+define bbox as
+	let x1 = attr(p1, "X"), y1 = attr(p1, "Y"), dx = attr(p2, "X") - x1, dy = attr(p2, "Y") - y1 in
+		const mat = matrix.rotate(matrix.init(1, 0, 0, 1, x1, y1), atan(dy, dx));
+		rectangles.apply(rectangles.init(0, 0, sqrt(dx*dx + dy*dy), offset + 1.5*fontsize), mat)
+	end
+end bbox;
+
+define drag as
+	stroke from (attr(p1, "X"), attr(p1, "Y")) to (attr(p2, "X"), attr(p2, "Y")) end
+end drag;
+
+define render as
+	let x1 = attr(p1, "X"), y1 = attr(p1, "Y"), dx = attr(p2, "X") - x1, dy = attr(p2, "Y") - y1, len=sqrt(dx*dx + dy*dy) in
+		translate(x1, y1);
+		rotate(atan(dy, dx));
+		translate(0, offset);
+		with font=fontname, size=fontsize, color=col do
+			stroke
+				from (0, 0) to (len, 0);
+				from (0, -offset) to (0, offset);
+				from (len, -offset) to (len, offset)
+			end;
+			label realtostrfix(len/unit, digits) ++ unitname above (len/2, 0)
+		end
+	end
+end render;
+
+define locate (llx, lly, urx, ury) as
+	let x1 = attr(p1, "X"), y1 = attr(p1, "Y"), dx = attr(p2, "X") - x1, dy = attr(p2, "Y") - y1 in
+		const mat = matrix.rotate(matrix.init(1, 0, 0, 1, 0, 0), -atan(dy, dx));
+		const r = rectangles.apply(rectangles.init(llx - x1, lly - y1, urx - x1, ury - y1), mat);
+		rectangles.overlap?(r, rectangles.init(0, 0, sqrt(dx*dx + dy*dy), offset + 1.5*fontsize))
+	end
+end locate;
+
+shapes.component("p1");
+shapes.component("p2");
+shapes.real("unit", "Unit", 0.001);
+shapes.string("unitname", "Unit Name");
+shapes.integer("digits", "Digits", 0, 5);
+shapes.real("offset", "Offset");
+shapes.string("fontname", "Font Name");
+shapes.integer("fontsize", "Font Size");
+shapes.color("col", "Color");
